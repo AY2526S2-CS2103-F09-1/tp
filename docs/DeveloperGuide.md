@@ -300,32 +300,193 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is `EduConnect` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC01 - Add contact (Must have)**
+
+**Preconditions**
+
+* EduConnect is running.
+
+**Guarantees**
+
+* A new contact is saved in the contact list.
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1.  User enters an add command with `/name` and optional `/hp` and `/address` fields.
+2.  EduConnect validates the input.
+3.  EduConnect adds the contact.
+4.  EduConnect shows a success message with the added contact details.
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. User omits the `/name` field.
+  * 1a1. EduConnect shows an error message and the expected command format.
 
-  Use case ends.
+    Use case ends.
 
-* 3a. The given index is invalid.
+* 1b. User provides an empty name.
+  * 1b1. EduConnect shows an error message.
 
-    * 3a1. AddressBook shows an error message.
+    Use case ends.
 
-      Use case resumes at step 2.
+* 1c. User provides invalid field values (e.g., invalid phone format).
+  * 1c1. EduConnect shows an error message for the invalid field.
 
-*{More to be added}*
+    Use case ends.
+
+* 1d. User repeats the same field more than once.
+  * 1d1. EduConnect shows an error message.
+
+    Use case ends.
+
+* 3a. The new contact duplicates an existing contact.
+  * 3a1. EduConnect shows a duplicate contact error.
+
+    Use case ends.
+
+**Use case: UC02 - Delete contact (Must have)**
+
+**Preconditions**
+
+* Contact list is displayed.
+
+**Guarantees**
+
+* The selected contact is removed from the contact list.
+
+**MSS**
+
+1.  User enters a `del` command with an index.
+2.  EduConnect validates the index against the displayed list.
+3.  EduConnect deletes the selected contact.
+4.  EduConnect shows a success message with deleted contact details.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User does not provide an index.
+  * 1a1. EduConnect shows an error message.
+
+    Use case ends.
+
+* 1b. User provides too many arguments.
+  * 1b1. EduConnect shows an error message.
+
+    Use case ends.
+
+* 2a. The given index is not an integer.
+  * 2a1. EduConnect shows an invalid index error.
+
+    Use case ends.
+
+* 2b. The given index is outside the valid range.
+  * 2b1. EduConnect shows an invalid index range error.
+
+    Use case ends.
+
+* 2c. The contact list is empty.
+  * 2c1. EduConnect shows a message that there are no contacts to delete.
+
+    Use case ends.
+
+**Use case: UC03 - Tag contact to categorize (Must have)**
+
+**Preconditions**
+
+* At least one contact exists in the current list view.
+
+**Guarantees**
+
+* The selected contact's category tag is set to one of: `Student`, `Parent`, `Tutor`.
+
+**MSS**
+
+1.  User enters a `tag` command with `/index` and `/tag`.
+2.  EduConnect validates the index and tag value.
+3.  EduConnect applies the new tag to the selected contact.
+4.  EduConnect shows a success message.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User omits `/index` or `/tag`.
+  * 1a1. EduConnect shows an error message and expected format.
+
+    Use case ends.
+
+* 1b. User leaves `/index` or `/tag` empty.
+  * 1b1. EduConnect shows an error message.
+
+    Use case ends.
+
+* 1c. User repeats `/index` or `/tag`.
+  * 1c1. EduConnect shows an error message.
+
+    Use case ends.
+
+* 2a. The index is invalid or out of range.
+  * 2a1. EduConnect shows an invalid index error.
+
+    Use case ends.
+
+* 2b. The tag is not one of `Student`, `Parent`, `Tutor`.
+  * 2b1. EduConnect shows an invalid tag error.
+
+    Use case ends.
+
+* 3a. The selected contact already has a tag.
+  * 3a1. EduConnect overwrites the existing tag with the new tag and shows a success message.
+
+    Use case ends.
+
+**Use case: UC04 - View phone number and address (Must have)**
+
+**MSS**
+
+1.  User enters `list` (or `view`) to display all contacts.
+2.  EduConnect shows each contact's name, phone number and address.
+
+    Use case ends.
+
+**Extensions**
+
+* 2a. The contact list is empty.
+  * 2a1. EduConnect shows that no contacts are currently available.
+
+    Use case ends.
+
+* 2b. A contact has missing phone number or address.
+  * 2b1. EduConnect shows a clear missing-field indicator for that field.
+
+    Use case ends.
+
+* 2c. Multiple contacts have the same name and tag.
+  * 2c1. EduConnect displays all matching contacts and lets the user choose the intended contact.
+
+    Use case ends.
+
+**Use case: UC05 - Search contacts by name (Nice-to-have)**
+
+**MSS**
+
+1.  User enters `find` with one or more keywords.
+2.  EduConnect filters contacts whose names match at least one keyword.
+3.  EduConnect shows the filtered results and count.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. User does not provide any keyword.
+  * 1a1. EduConnect shows an error message.
+
+    Use case ends.
 
 ### Non-Functional Requirements
 

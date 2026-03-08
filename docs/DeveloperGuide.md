@@ -479,7 +479,7 @@ Extensions:
 * **Student**: Refers to a student who the tutor is teaching
 * **Parent**: Refers to a parent of a student who the tutor is teaching
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Duplicate contacts**: Two contacts are said to be duplicates if they have an identical set of details, across all fields
+* **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number and address
 
 --------------------------------------------------------------------------------------------------------------------
 

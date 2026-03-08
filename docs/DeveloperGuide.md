@@ -300,32 +300,166 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+System: EduConnect
 
-**Use case: Delete a person**
+#### Use case: UC01 - Add Contact
 
-**MSS**
+Actor: User
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+Guarantees:
+* On successful completion, exactly one new contact is stored.
+* If the operation fails, the stored contacts remain unchanged.
 
-    Use case ends.
+MSS:
+1. User requests to add a contact by providing a name, and optionally a phone number and address.
+2. EduConnect validates the provided details.
+3. EduConnect adds the contact.
+4. EduConnect shows a success message with the added contact details.
+Use case ends.
 
-**Extensions**
+Extensions:
+* 1a. User omits a required detail, or provides an empty required detail.
+  * 1a1. EduConnect shows an error message and input guidance.
+  * 1a2. User re-enters the contact details.
+  * Steps 1a1-1a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. User provides an invalid phone number format.
+  * 2a1. EduConnect shows an error message.
+  * 2a2. User re-enters the contact details.
+  * Steps 2a1-2a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2b. User provides the same field more than once.
+  * 2b1. EduConnect shows an error message.
+  * 2b2. User re-enters the contact details.
+  * Steps 2b1-2b2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2c. The contact duplicates an existing contact.
+  * 2c1. EduConnect shows a duplicate contact error.
+  * 2c2. User re-enters the contact details.
+  * Steps 2c1-2c2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
 
-* 2a. The list is empty.
+#### Use case: UC02 - Delete Contact
+Actor: User
 
-  Use case ends.
+Guarantees:
+* On successful completion, exactly one existing contact is removed from the stored contacts.
+* If the operation fails, the stored contacts remain unchanged.
 
-* 3a. The given index is invalid.
+MSS:
+1. User requests to delete a contact by specifying the displayed contact reference.
+2. EduConnect validates the contact reference.
+3. EduConnect deletes the selected contact.
+4. EduConnect shows a success message with deleted contact details.
+Use case ends.
 
-    * 3a1. AddressBook shows an error message.
+Extensions:
+* 1a. User omits the contact reference, or provides too much input.
+  * 1a1. EduConnect shows an error message.
+  * 1a2. User re-submits the deletion request.
+  * Steps 1a1-1a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. The contact reference is not a valid positive integer.
+  * 2a1. EduConnect shows an error message.
+  * 2a2. User re-submits the deletion request.
+  * Steps 2a1-2a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2b. The contact reference is out of range.
+  * 2b1. EduConnect shows an error message.
+  * 2b2. User re-submits the deletion request.
+  * Steps 2b1-2b2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+  
+#### Use case: UC03 - Tag Contact to Categorize
+Actor: User
 
-      Use case resumes at step 2.
+Guarantees:
+* On successful completion, the selected contact has the updated category tag.
+* If the operation fails, no contact is modified.
 
-*{More to be added}*
+MSS:
+1. User requests to assign a category to a contact.
+2. EduConnect validates the contact reference and category value.
+3. EduConnect applies the tag to the selected contact.
+4. EduConnect shows a success message.
+Use case ends.
+
+Extensions:
+* 1a. User omits required details, or provides an empty required detail.
+  * 1a1. EduConnect shows an error message and input guidance.
+  * 1a2. User re-submits the tagging request.
+  * Steps 1a1-1a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 1b. User provides the same required detail more than once.
+  * 1b1. EduConnect shows an error message.
+  * 1b2. User re-submits the tagging request.
+  * Steps 1b1-1b2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. The contact reference is invalid or out of range.
+  * 2a1. EduConnect shows an error message.
+  * 2a2. User re-submits the tagging request.
+  * Steps 2a1-2a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2b. The provided category is not a supported category.
+  * 2b1. EduConnect shows an error message.
+  * 2b2. User re-submits the tagging request.
+  * Steps 2b1-2b2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 3a. The selected contact already has a tag.
+  * 3a1. EduConnect overwrites the existing tag with the new tag.
+  * Use case resumes from step 4.
+
+#### Use case: UC04 - View Phone Number and Address
+Actor: User
+
+Guarantees:
+* On successful completion, EduConnect displays the stored contacts with their names, phone numbers, and addresses.
+* If a stored phone number or address is missing, EduConnect indicates that the field is missing.
+* This use case does not modify stored contact data.
+
+MSS:
+1. User requests to view contact information.
+2. EduConnect displays each contact's name, phone number, and address.
+Use case ends.
+
+Extensions:
+* 2a. There are no contacts.
+  * 2a1. EduConnect displays that no contacts are currently available.
+  * Use case ends.
+* 2b. A contact is missing a phone number or address.
+  * 2b1. EduConnect displays a missing-field indicator for that field.
+  * Use case resumes from step 2.
+* 2c. Multiple contacts share the same name and category tag.
+  * 2c1. EduConnect displays all matching contacts distinctly so the user can differentiate them.
+  * Use case resumes from step 2.
+
+#### Use case: UC05 - Search Contacts by Name
+Actor: User
+
+Guarantees:
+* On successful completion, EduConnect shows the filtered contacts whose names match the provided keyword(s), together with the number of matches.
+* Each matching contact appears at most once in the filtered results.
+* If no contacts match, EduConnect shows an empty filtered result.
+* If the operation fails, the currently displayed contacts remain unchanged.
+
+MSS:
+1. User requests to search contacts by entering one or more keywords.
+2. EduConnect finds contacts whose names match any of the keywords.
+3. EduConnect shows the filtered results and match count.
+Use case ends.
+
+Extensions:
+* 1a. User provides no keyword.
+  * 1a1. EduConnect shows an error message and requests at least one keyword.
+  * 1a2. User re-enters the search input.
+  * Steps 1a1-1a2 are repeated until at least one keyword is provided.
+  * Use case resumes from step 2.
+* 2a. No contacts match the keywords.
+  * 2a1. EduConnect shows empty filtered results and a count of zero.
+  * Use case ends.
+* 2b. A contact matches multiple keywords.
+  * 2b1. EduConnect includes that contact once in the filtered results.
+  * Use case ends.
 
 ### Non-Functional Requirements
 

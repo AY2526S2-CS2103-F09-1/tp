@@ -23,7 +23,7 @@ You can reach us at the email `e0970391@u.nus.edu`
 
 <img src="images/limyifei1513.png" width="200px">
 
-[[github](http://github.com/limyifei)] 
+[[github](https://github.com/limyifei1513)] 
 [[portfolio](team/limyifei1513.md)]
 
 * Role: Deliverables and deadlines

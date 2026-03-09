@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Gradle: run (debug-jvm)",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["run", "--debug-jvm"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -52,4 +52,15 @@ public class PhoneTest {
         // different values -> returns false
         assertFalse(phone.equals(new Phone("99541352")));
     }
+
+    @Test
+    public void constructor_validInput_storesCorrectValue() {
+        String emptyString = "";
+        // no phone number
+        assertTrue(new Phone(emptyString).value.equals(emptyString));
+
+        String validPhone = "81120129";
+        // a valid phone number
+        assertTrue(new Phone(validPhone).value.equals(validPhone));
+    }
 }

@@ -2,6 +2,7 @@
 
 [![CI Status](https://github.com/se-edu/addressbook-level3/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S2-CS2103-F09-1/tp/actions)
 
+## UI Mockup
 ![Ui](docs/images/Ui.png)
 
 * This project serves to develop EduConnect, a desktop application that enables private tutors to seamlessly manage their work contacts.

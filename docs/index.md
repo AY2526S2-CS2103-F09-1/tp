@@ -6,6 +6,7 @@ title: EduConnect
 [![CI Status](https://github.com/se-edu/addressbook-level3/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S2-CS2103-F09-1/tp/actions)
 [![codecov](https://codecov.io/gh/AY2526S2-CS2103-F09-1/tp/graph/badge.svg?token=CE6UKLQ1IM)](https://codecov.io/gh/AY2526S2-CS2103-F09-1/tp)
 
+## UI Mockup
 ![Ui](images/Ui.png)
 
 **EduConnect is a desktop application that enables private tutors to manage their work contacts.** While it has a GUI, most of the user interactions happen using a CLI (Command Line Interface).

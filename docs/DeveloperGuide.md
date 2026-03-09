@@ -9,7 +9,8 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+* This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
+* Libraries used: [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), [JUnit5](https://github.com/junit-team/junit5)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -260,73 +261,225 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Product scope
 
-**Target user profile**:
+**Target user profile**: Part-time private tutors
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Teach many students at the same time, all across Singapore
+* Contact parents daily for administrative purposes (payment, scheduling of lessons, location of lessons, etc.)
+* In contact with many other private tutors, to exchange teaching ideas and learning materials
+* Type very fast, dislike using the mouse
+* Face-blind
+* Have a bad memory
+* Use WhatsApp as their main mode of contact 
+* Prefer quick filtering of contacts
+* Value speed, efficiency, and minimal friction in workflows
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
-
+**Value proposition**: To help private tutors seamlessly manage daily tasks in their work. These include contacting parents for announcements, administrative matters or emergencies. They can also involve contacting other tutors for pedagogical discussions or the exchange of learning materials.
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | new user                                   | see usage instructions         | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person               |                                                                        |
-| `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
+| Priority | As a …​                                                                  | I want to …​                                                           | So that I can…​                                                                                               |
+|----------|--------------------------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| `* * *`  | tutor                                                                    | add new contacts to EduConnect                                         | track the contact details of relevant people involved in my work - such as students, parents and other tutors |
+| `* * *`  | clumsy tutor                                                             | delete existing contacts from EduConnect                               | remove details that have been entered incorrectly                                                             |
+| `* * *`  | tutor who teaches many students and is in contact with many other tutors | categorise my contact list into 3 groups - students, parents and tutors | filter for the required group more quickly                                                                    |
+| `* * *`  | tutor                                                                    | view a student’s home address in EduConnect                            | navigate to the correct location for lessons                                                                  |
+| `* *`    | tutor who has many clients                                               | search for a specific contact by name                                       | more swiftly obtain the contact information of the person in question                                         |
+| `* *`    | tutor                                                                    | quickly retrieve a student’s phone number from EduConnect and copy it                   | contact the student via WhatsApp without searching manually                                                   |
+| `* *`    | tutor whose students’ or parents’ phone numbers change                                                              | easily update their contact details           | avoid contacting the wrong number in the future                                                               |
+| `* *`    | tutor who has online lessons       | access an online meeting link for the lesson on EduConnect and copy it into my clipboard with a click    | start the lesson quickly     |
+| `*`    | tutor who values efficiency       | learn about EduConnect’s basic controls through a beginner’s tutorial         | pick up the app more quickly       |
+| `*`    | face-blind tutor | add pictures of my students to their names and contact details | remember how each of my students look like    |
+| `*`    | tutor who teaches many students | pair up the contact details of a student with those of his / her parents | remember who are the parents of a given student |
+| `*`    | tutor | save frequently used commands as shortcuts | perform common commands more quickly |
+| `*`    | tutor | view shortcuts I added | look it up when I forget |
+| `*`    | tutor | edit and remove those shortcuts I added if they become irrelevant | prevent shortcuts from clustering too much or I need to change it to something more convenient |
 
 *{More to be added}*
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+System: EduConnect
 
-**Use case: Delete a person**
+#### Use case: UC01 - Add Contact
 
-**MSS**
+Actor: User
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+Guarantees:
+* On successful completion, exactly one new contact is stored.
+* If the operation fails, the stored contacts remain unchanged.
 
-    Use case ends.
+MSS:
+1. User requests to add a contact by providing a name, and optionally a phone number and address.
+2. EduConnect validates the provided details.
+3. EduConnect adds the contact.
+4. EduConnect shows a success message with the added contact details.
+Use case ends.
 
-**Extensions**
+Extensions:
+* 1a. User omits a required detail, or provides an empty required detail.
+  * 1a1. EduConnect shows an error message and input guidance.
+  * 1a2. User re-enters the contact details.
+  * Steps 1a1-1a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. User provides an invalid phone number format.
+  * 2a1. EduConnect shows an error message.
+  * 2a2. User re-enters the contact details.
+  * Steps 2a1-2a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2b. User provides the same field more than once.
+  * 2b1. EduConnect shows an error message.
+  * 2b2. User re-enters the contact details.
+  * Steps 2b1-2b2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2c. The contact duplicates an existing contact.
+  * 2c1. EduConnect shows a duplicate contact error.
+  * 2c2. User re-enters the contact details.
+  * Steps 2c1-2c2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
 
-* 2a. The list is empty.
+#### Use case: UC02 - Delete Contact
+Actor: User
 
-  Use case ends.
+Guarantees:
+* On successful completion, exactly one existing contact is removed from the stored contacts.
+* If the operation fails, the stored contacts remain unchanged.
 
-* 3a. The given index is invalid.
+MSS:
+1. User requests to delete a contact by specifying the displayed contact reference.
+2. EduConnect validates the contact reference.
+3. EduConnect deletes the selected contact.
+4. EduConnect shows a success message with deleted contact details.
+Use case ends.
 
-    * 3a1. AddressBook shows an error message.
+Extensions:
+* 1a. User omits the contact reference, or provides too much input.
+  * 1a1. EduConnect shows an error message.
+  * 1a2. User re-submits the deletion request.
+  * Steps 1a1-1a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. The contact reference is not a valid positive integer.
+  * 2a1. EduConnect shows an error message.
+  * 2a2. User re-submits the deletion request.
+  * Steps 2a1-2a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2b. The contact reference is out of range.
+  * 2b1. EduConnect shows an error message.
+  * 2b2. User re-submits the deletion request.
+  * Steps 2b1-2b2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+  
+#### Use case: UC03 - Tag Contact to Categorize
+Actor: User
 
-      Use case resumes at step 2.
+Guarantees:
+* On successful completion, the selected contact has the updated category tag.
+* If the operation fails, no contact is modified.
 
-*{More to be added}*
+MSS:
+1. User requests to assign a category to a contact.
+2. EduConnect validates the contact reference and category value.
+3. EduConnect applies the tag to the selected contact.
+4. EduConnect shows a success message.
+Use case ends.
+
+Extensions:
+* 1a. User omits required details, or provides an empty required detail.
+  * 1a1. EduConnect shows an error message and input guidance.
+  * 1a2. User re-submits the tagging request.
+  * Steps 1a1-1a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 1b. User provides the same required detail more than once.
+  * 1b1. EduConnect shows an error message.
+  * 1b2. User re-submits the tagging request.
+  * Steps 1b1-1b2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. The contact reference is invalid or out of range.
+  * 2a1. EduConnect shows an error message.
+  * 2a2. User re-submits the tagging request.
+  * Steps 2a1-2a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2b. The provided category is not a supported category.
+  * 2b1. EduConnect shows an error message.
+  * 2b2. User re-submits the tagging request.
+  * Steps 2b1-2b2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 3a. The selected contact already has a tag.
+  * 3a1. EduConnect overwrites the existing tag with the new tag.
+  * Use case resumes from step 4.
+
+#### Use case: UC04 - View Phone Number and Address
+Actor: User
+
+Guarantees:
+* On successful completion, EduConnect displays the stored contacts with their names, phone numbers, and addresses.
+* If a stored phone number or address is missing, EduConnect indicates that the field is missing.
+* This use case does not modify stored contact data.
+
+MSS:
+1. User requests to view contact information.
+2. EduConnect displays each contact's name, phone number, and address.
+Use case ends.
+
+Extensions:
+* 2a. There are no contacts.
+  * 2a1. EduConnect displays that no contacts are currently available.
+  * Use case ends.
+* 2b. A contact is missing a phone number or address.
+  * 2b1. EduConnect displays a missing-field indicator for that field.
+  * Use case resumes from step 2.
+* 2c. Multiple contacts share the same name and category tag.
+  * 2c1. EduConnect displays all matching contacts distinctly so the user can differentiate them.
+  * Use case resumes from step 2.
+
+#### Use case: UC05 - Search Contacts by Name
+Actor: User
+
+Guarantees:
+* On successful completion, EduConnect shows the filtered contacts whose names match the provided keyword(s), together with the number of matches.
+* Each matching contact appears at most once in the filtered results.
+* If no contacts match, EduConnect shows an empty filtered result.
+* If the operation fails, the currently displayed contacts remain unchanged.
+
+MSS:
+1. User requests to search contacts by entering one or more keywords.
+2. EduConnect finds contacts whose names match any of the keywords.
+3. EduConnect shows the filtered results and match count.
+Use case ends.
+
+Extensions:
+* 1a. User provides no keyword.
+  * 1a1. EduConnect shows an error message and requests at least one keyword.
+  * 1a2. User re-enters the search input.
+  * Steps 1a1-1a2 are repeated until at least one keyword is provided.
+  * Use case resumes from step 2.
+* 2a. No contacts match the keywords.
+  * 2a1. EduConnect shows empty filtered results and a count of zero.
+  * Use case ends.
+* 2b. A contact matches multiple keywords.
+  * 2b1. EduConnect includes that contact once in the filtered results.
+  * Use case ends.
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
-*{More to be added}*
+1. Should work on any Mainstream OS (Windows, macOS, Linux) as long as it has Java 17 installed.
+2. Should be able to hold up to 1000 contacts without a noticeable drop in performance for typical usage.
+3. Should not require more than 200MB of total disk space, including the application and all stored data, for up to 1000 contacts.
+4. Should respond to any user command within 1 second on a machine with at least 1GB of RAM available.
+5. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+6. Should not require internet connection to function.
+7. A user should be able to transfer all contact data to another computer by transferring a single contact data file.
+8. Should ensure no data is lost by saving all changes to disk after every command that modifies contact data.
+9. The program should not crash upon reading from a corrupted contact data file.
 
 ### Glossary
 
+* **Tutor**: Refers to a private tutor, which is a user of the EduConnect application
+* **Student**: Refers to a student who the tutor is teaching
+* **Parent**: Refers to a parent of a student who the tutor is teaching
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number and address
 
 --------------------------------------------------------------------------------------------------------------------
 

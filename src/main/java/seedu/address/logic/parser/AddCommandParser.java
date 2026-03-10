@@ -31,9 +31,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_TAG);
 
-        // NOTE: removed PREFIX_PHONE from arePrefixesPresent() method so that user is able to not
-        // specify it
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS)
+        // NOTE: removed PREFIX_PHONE and PREFIX_ADDRESS from arePrefixesPresent() method so that
+        // user is able to not specify it
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -41,7 +41,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS);
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).orElse(Parser.DEFAULT_EMPTY_STRING));
-        Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
+        Address address = ParserUtil.parseAddress(
+            argMultimap.getValue(PREFIX_ADDRESS).orElse(Parser.DEFAULT_EMPTY_STRING)
+        );
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         Person person = new Person(name, phone, address, tagList);

@@ -16,6 +16,11 @@ public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
 
+    private static final String MESSAGE_MISSING_PHONE_NUMBER = "No phone number provided";
+    private static final String MESSAGE_MISSING_ADDRESS = "No address provided";
+
+    private static final String CSS_CLASS_MISSING_FIELD = "missing-field";
+
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -45,12 +50,48 @@ public class PersonCard extends UiPart<Region> {
     public PersonCard(Person person, int displayedIndex) {
         super(FXML);
         this.person = person;
-        id.setText(displayedIndex + ". ");
-        name.setText(person.getName().fullName);
-        phone.setText(person.getPhone().value);
-        address.setText(person.getAddress().value);
+
+        renderId(displayedIndex, id);
+        renderName(person, name);
+        renderPhone(person, phone);
+        renderAddress(person, address);
+
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+    }
+
+    private void renderId(int displayedIndex, Label idLabel) {
+        idLabel.setText(displayedIndex + ". ");
+    }
+
+    private void renderName(Person person, Label nameLabel) {
+        nameLabel.setText(person.getName().fullName);
+    }
+
+    private void renderPhone(Person person, Label phoneLabel) {
+        String phoneNumber = person.getPhone().value;
+
+        if (phoneNumber.isEmpty()) {
+            phoneLabel.setText(MESSAGE_MISSING_PHONE_NUMBER);
+            setTextToRed(phoneLabel);
+        } else {
+            phoneLabel.setText(phoneNumber);
+        }
+    }
+
+    private void renderAddress(Person person, Label addressLabel) {
+        String address = person.getAddress().value;
+
+        if (address.isEmpty()) {
+            addressLabel.setText(MESSAGE_MISSING_ADDRESS);
+            setTextToRed(addressLabel);
+        } else {
+            addressLabel.setText(address);
+        }
+    }
+
+    private void setTextToRed(Label label) {
+        label.getStyleClass().add(CSS_CLASS_MISSING_FIELD);
     }
 }

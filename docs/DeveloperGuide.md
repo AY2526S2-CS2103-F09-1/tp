@@ -476,8 +476,8 @@ Extensions:
 ### Glossary
 
 * **Tutor**: Refers to a private tutor, which is a user of the EduConnect application
-* **Student**: Refers to a student who the tutor is teaching
-* **Parent**: Refers to a parent of a student who the tutor is teaching
+* **Student**: Refers to a student whom the tutor is teaching
+* **Parent**: Refers to a parent of a student whom the tutor is teaching
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number and address
 

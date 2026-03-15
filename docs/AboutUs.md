@@ -7,16 +7,16 @@ We are a team based in the [School of Computing, National University of Singapor
 
 You can reach us at the email `e0970391@u.nus.edu`
 
-## Project team
+## Project Team
 
-### Jia Hao
+### Ngu Jia Hao
 
 <img src="images/yjiahao.png" width="200px">
 
 [[github](https://github.com/yjiahao)]
 [[portfolio](team/yjiahao.md)]
 
-* Role: Scheduling and tracking, Documentation
+* Role: Scheduling, Tracking and Documentation
 * Responsibilities: Responsible for the quality of various project documents, and defining, assigning, and tracking project tasks.
 
 ### Lim Yi Fei
@@ -26,7 +26,7 @@ You can reach us at the email `e0970391@u.nus.edu`
 [[github](https://github.com/limyifei1513)] 
 [[portfolio](team/limyifei1513.md)]
 
-* Role: Deliverables and deadlines
+* Role: Deliverables and Deadlines
 * Responsibilities: Ensure project deliverables are done on time and in the right format.
 
 ### Chia Bing Xuan
@@ -57,4 +57,4 @@ You can reach us at the email `e0970391@u.nus.edu`
 [[portfolio](team/basilkuok.md)]
 
 * Role: Testing
-* Responsibilities: Ensures the testing of the project is done properly and on time
+* Responsibilities: Ensures the testing of the project is done properly and on time.

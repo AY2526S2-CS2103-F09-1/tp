@@ -35,6 +35,12 @@ public class TagCommandParserTest {
     }
 
     @Test
+    public void parse_missingCategoryPrefix_throwsParseException() {
+        assertParseFailure(parser, " 1",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE));
+    }
+
+    @Test
     public void parse_nonEmptyPreamble_throwsParseException() {
         assertParseFailure(parser, " preamble t/Student", ParserUtil.MESSAGE_INVALID_INDEX);
     }

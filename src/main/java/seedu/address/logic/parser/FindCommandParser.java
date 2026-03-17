@@ -68,10 +68,11 @@ public class FindCommandParser implements Parser<FindCommand> {
     }
 
     /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * Returns true if any of the specified prefixes has at least one value in the given
      * {@code ArgumentMultimap}.
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+        return Arrays.stream(prefixes)
+                .anyMatch(prefix -> !argumentMultimap.getAllValues(prefix).isEmpty());
     }
 }

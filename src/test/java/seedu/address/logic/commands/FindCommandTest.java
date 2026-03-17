@@ -30,9 +30,11 @@ public class FindCommandTest {
     @Test
     public void equals() {
         PersonContainsKeywordsPredicate firstPredicate =
-                new PersonContainsKeywordsPredicate(Collections.singletonList("first"));
+                new PersonContainsKeywordsPredicate(Collections.singletonList("first"),
+                        true, true, true, false);
         PersonContainsKeywordsPredicate secondPredicate =
-                new PersonContainsKeywordsPredicate(Collections.singletonList("second"));
+                new PersonContainsKeywordsPredicate(Collections.singletonList("second"),
+                        true, true, true, false);
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);

@@ -70,10 +70,17 @@ public class NameContainsKeywordsPredicateTest {
                 .withName("Alice Bob")
                 .withPhone("94351253")
                 .build()));
+
+        // Partial keywords
+        predicate = new NameContainsKeywordsPredicate(Collections.singletonList("Clem"));
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("123 Clementi Road")
+                .build()));
     }
 
     @Test
-    public void test_nameDoesNotContainKeywords_returnsFalse() {
+    public void test_personDoesNotContainKeywords_returnsFalse() {
         // Zero keywords
         NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(Collections.emptyList());
         assertFalse(predicate.test(new PersonBuilder().withName("Alice").build()));

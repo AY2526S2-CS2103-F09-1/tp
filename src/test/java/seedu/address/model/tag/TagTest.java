@@ -20,13 +20,13 @@ public class TagTest {
     }
 
     @Test
-    public void isValidTagName() {
+    public void isValidTagName_nullTagName_throwsNullPointerException() {
         // null tag name
         assertThrows(NullPointerException.class, () -> Tag.isValidTagName(null));
     }
 
     @Test
-    public void isValidCategoryTagName() {
+    public void isValidCategoryTagName_validAndInvalidInputs_returnsExpectedResult() {
         assertThrows(NullPointerException.class, () -> Tag.isValidCategoryTagName(null));
         assertTrue(Tag.isValidCategoryTagName("student"));
         assertTrue(Tag.isValidCategoryTagName("Tutor"));

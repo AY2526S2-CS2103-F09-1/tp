@@ -25,7 +25,8 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         }
 
         if (trimmedArgs.split("\\s+").length > 1) {
-            throw new ParseException(DeleteCommand.MESSAGE_TOO_MANY_ARGUMENTS);
+            throw new ParseException(
+                    String.format(DeleteCommand.MESSAGE_TOO_MANY_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
         }
 
         Index index = ParserUtil.parseIndex(trimmedArgs);

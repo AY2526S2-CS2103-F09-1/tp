@@ -31,6 +31,7 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_tooManyArguments_throwsParseException() {
-        assertParseFailure(parser, "1 2", DeleteCommand.MESSAGE_TOO_MANY_ARGUMENTS);
+        assertParseFailure(parser, "1 2", String.format(
+                DeleteCommand.MESSAGE_TOO_MANY_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
     }
 }

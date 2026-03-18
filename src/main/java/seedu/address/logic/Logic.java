@@ -33,6 +33,9 @@ public interface Logic {
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
 
+    /** Returns the display person list for the UI (may include deleted persons) */
+    ObservableList<Person> getDisplayPersonList();
+
     /**
      * Returns the user prefs' address book file path.
      */

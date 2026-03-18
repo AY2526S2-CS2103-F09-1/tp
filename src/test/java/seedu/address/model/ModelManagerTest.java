@@ -129,4 +129,12 @@ public class ModelManagerTest {
         differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
         assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
     }
+
+    @Test
+    public void getDisplayPersonList_afterDeletePerson_showsDeletedPerson() {
+        modelManager.addPerson(ALICE);
+        modelManager.deletePerson(ALICE);
+        assertEquals(1, modelManager.getDisplayPersonList().size());
+        assertEquals(ALICE, modelManager.getDisplayPersonList().get(0));
+    }
 }

@@ -86,6 +86,16 @@ public class LogicManagerTest {
         assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredPersonList().remove(0));
     }
 
+    @Test
+    public void getDisplayPersonList_returnsEmptyListInitially() {
+        assertEquals(0, logic.getDisplayPersonList().size());
+    }
+
+    @Test
+    public void getAddressBookFilePath_returnsFilePath() {
+        assertEquals(model.getAddressBookFilePath(), logic.getAddressBookFilePath());
+    }
+
     /**
      * Executes the command and confirms that
      * - no exceptions are thrown <br>

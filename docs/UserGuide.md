@@ -146,8 +146,8 @@ Format: `del INDEX`
 Examples:
 * `list` followed by `del 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `del 1` deletes the 1st person in the results of the `find` command.
-* `add n/ Andrew` followed by `del 1` deletes the contact that was just added.
-* `add n/ Andrew` followed by `del 2` will fail since the displayed list size is only 1.
+* `add n/Andrew` followed by `del 1` deletes the contact that was just added.
+* `add n/Andrew` followed by `del 2` will fail since the displayed list size is only 1.
 * `del 1` followed by `del 1` deletes the contact in index 1 of the contact list shown before the first `del` command.
 
 ### Clearing all entries : `clear`

@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ModelManagerTest {
 
@@ -136,5 +137,16 @@ public class ModelManagerTest {
         modelManager.deletePerson(ALICE);
         assertEquals(1, modelManager.getDisplayPersonList().size());
         assertEquals(ALICE, modelManager.getDisplayPersonList().get(0));
+    }
+
+    @Test
+    public void setPerson_updatesDisplayPersonList() {
+        modelManager.addPerson(ALICE);
+        var editedAlice = new PersonBuilder(ALICE).withTags("Student").build();
+
+        modelManager.setPerson(ALICE, editedAlice);
+
+        assertEquals(1, modelManager.getDisplayPersonList().size());
+        assertEquals(editedAlice, modelManager.getDisplayPersonList().get(0));
     }
 }

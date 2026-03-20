@@ -4,8 +4,6 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import java.util.Optional;
 
-import seedu.address.commons.util.ToStringBuilder;
-
 /**
  * Represents a Person's id in the address book.
  * Guarantees: immutable.

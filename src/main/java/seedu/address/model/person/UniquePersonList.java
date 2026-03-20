@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -99,12 +100,12 @@ public class UniquePersonList implements Iterable<Person> {
 
     /**
      * Returns the maximum {@code Id} found in the list.
+     * Returns {@code Optional.empty} if list is empty.
      */
-    public Id findMaxId() {
+    public Optional<Id> findMaxId() {
         return internalList.stream()
                 .map(person -> person.getId())
-                .max((id1, id2) -> id1.compareTo(id2))
-                .orElse(Id.minimumPossible());
+                .max((id1, id2) -> id1.compareTo(id2));
     }
 
     /**

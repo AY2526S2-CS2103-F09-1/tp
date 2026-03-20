@@ -3,6 +3,7 @@ package seedu.address.logic;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -47,7 +48,7 @@ public class LogicManager implements Logic {
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
-        Id currentMaxId = model.findMaxId();
+        Optional<Id> currentMaxId = model.findMaxId();
 
         CommandResult commandResult;
         Command command = addressBookParser.parseCommand(commandText, currentMaxId);

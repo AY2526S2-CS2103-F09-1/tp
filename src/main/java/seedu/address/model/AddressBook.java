@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
@@ -97,8 +98,9 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Returns the maximum {@code Id} found in this {@code AddressBook}.
+     * Returns {@code Optional.empty} if this {@code AddressBook} is empty.
      */
-    public Id findMaxId() {
+    public Optional<Id> findMaxId() {
         return persons.findMaxId();
     }
 

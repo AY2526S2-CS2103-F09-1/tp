@@ -8,10 +8,13 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
+import static seedu.address.testutil.TypicalPersons.DANIEL;
+import static seedu.address.testutil.TypicalPersons.FIONA;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -160,6 +163,24 @@ public class UniquePersonListTest {
     public void setPersons_listWithDuplicatePersons_throwsDuplicatePersonException() {
         List<Person> listWithDuplicatePersons = Arrays.asList(ALICE, ALICE);
         assertThrows(DuplicatePersonException.class, () -> uniquePersonList.setPersons(listWithDuplicatePersons));
+    }
+
+    @Test
+    public void findMaxId_nonEmptyList_success() {
+        uniquePersonList.add(ALICE);
+        uniquePersonList.add(DANIEL);
+        uniquePersonList.add(FIONA);
+
+        Optional<Id> maxIdInList = uniquePersonList.findMaxId();
+        Optional<Id> expectedMaxId = Optional.of(Id.of(6));
+        assertEquals(expectedMaxId, maxIdInList);
+    }
+
+    @Test
+    public void findMaxId_emptyList_success() {
+        Optional<Id> maxIdInList = uniquePersonList.findMaxId();
+        Optional<Id> expectedMaxId = Optional.empty();
+        assertEquals(expectedMaxId, maxIdInList);
     }
 
     @Test

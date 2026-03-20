@@ -1,5 +1,9 @@
 package seedu.address.model.person;
 
+import static seedu.address.commons.util.AppUtil.checkArgument;
+
+import java.util.Optional;
+
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
@@ -13,26 +17,15 @@ public class Id implements Comparable<Id> {
     public final int value;
 
     /**
-     * Constructs the smallest possible {@code Id}.
+     * Creates a new {@code Id} with the smallest possible value.
      */
     private Id() {
-        this.value = SMALLEST_VALUE;
+        this(SMALLEST_VALUE);
     }
 
     private Id(int value) {
+        checkArgument(isValidId(value), MESSAGE_CONSTRAINTS);
         this.value = value;
-    }
-
-    private Id(Id currentMaxId) {
-        // increment by 1 to avoid duplicated ids
-        this.value = currentMaxId.value + 1;
-    }
-
-    /**
-     * Creates a new {@code Id} with the smallest possible value.
-     */
-    public static Id minimumPossible() {
-        return new Id();
     }
 
     /**
@@ -45,8 +38,10 @@ public class Id implements Comparable<Id> {
     /**
      * Creates a new {@code Id} using the maximum id that is saved in the address book currently.
      */
-    public static Id fromCurrentMaxId(Id currentMaxId) {
-        return new Id(currentMaxId);
+    public static Id fromCurrentMaxId(Optional<Id> currentMaxId) {
+        // increment by 1 to avoid duplicated ids
+        return currentMaxId.map(maxId -> new Id(maxId.value + 1))
+                .orElse(new Id());
     }
 
     /**
@@ -58,7 +53,7 @@ public class Id implements Comparable<Id> {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).add("id", this.value).toString();
+        return String.valueOf(this.value);
     }
 
     @Override

@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -22,9 +23,9 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new AddCommand object
  */
 public class AddCommandParser implements Parser<AddCommand> {
-    private final Id currentMaxId;
+    private final Optional<Id> currentMaxId;
 
-    public AddCommandParser(Id currentMaxId) {
+    public AddCommandParser(Optional<Id> currentMaxId) {
         this.currentMaxId = currentMaxId;
     }
 

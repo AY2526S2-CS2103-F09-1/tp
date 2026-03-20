@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -80,7 +81,7 @@ public interface Model {
     /**
      * Returns the maximum {@code Id} found in the address book.
      */
-    Id findMaxId();
+    Optional<Id> findMaxId();
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();

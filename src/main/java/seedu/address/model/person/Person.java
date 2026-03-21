@@ -78,7 +78,6 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same identity fields and data fields.
      * Checks whether two persons have the same {@code Id}.
      *
      * @param otherPerson other person to check Id for.

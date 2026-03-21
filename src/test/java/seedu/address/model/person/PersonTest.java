@@ -85,6 +85,20 @@ public class PersonTest {
     }
 
     @Test
+    public void iSameId_samePerson_success() {
+        assertTrue(ALICE.isSameId(ALICE));
+    }
+
+    @Test
+    public void iSameId_differentId_success() {
+        Person editedAlice = new PersonBuilder(ALICE)
+            .withId(2)
+            .build();
+
+        assertFalse(editedAlice.isSameId(ALICE));
+    }
+
+    @Test
     public void equals() {
         // same values -> returns true
         Person aliceCopy = new PersonBuilder(ALICE).build();

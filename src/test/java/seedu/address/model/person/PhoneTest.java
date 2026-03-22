@@ -13,11 +13,11 @@ public class PhoneTest {
         assertThrows(NullPointerException.class, () -> new Phone(null));
     }
 
-    // @Test
-    // public void constructor_invalidPhone_throwsIllegalArgumentException() {
-    //     String invalidPhone = "";
-    //     assertThrows(IllegalArgumentException.class, () -> new Phone(invalidPhone));
-    // }
+    @Test
+    public void constructor_invalidPhone_throwsIllegalArgumentException() {
+        String invalidPhone = "";
+        assertThrows(IllegalArgumentException.class, () -> new Phone(invalidPhone));
+    }
 
     @Test
     public void isValidPhone() {
@@ -61,12 +61,25 @@ public class PhoneTest {
 
     @Test
     public void constructor_validInput_storesCorrectValue() {
-        // String emptyString = "";
-        // // no phone number
-        // assertTrue(new Phone(emptyString).value.equals(emptyString));
-
         String validPhone = "81120129";
         // a valid phone number
         assertTrue(new Phone(validPhone).value.equals(validPhone));
+    }
+
+    @Test
+    public void isValidPhoneFromJson() {
+        // empty string treated as a valid phone when reading from JSON
+        // use empty string to denote empty phone
+        String empty = "";
+        assertTrue(Phone.isValidPhoneFromJson(empty));
+
+        String validPhone = "91234567";
+        assertTrue(Phone.isValidPhoneFromJson(validPhone));
+
+        String phoneLessThanEightString = "8123942";
+        assertFalse(Phone.isValidPhoneFromJson(phoneLessThanEightString));
+
+        String invalidPhoneNumber = "+6591234567";
+        assertFalse(Phone.isValidPhone(invalidPhoneNumber));
     }
 }

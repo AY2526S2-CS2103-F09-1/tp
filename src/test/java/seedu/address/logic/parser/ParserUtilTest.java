@@ -2,9 +2,8 @@ package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.testutil.Assert.assertThrows;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIds.ID_FIRST;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
@@ -34,23 +34,23 @@ public class ParserUtilTest {
     private static final String WHITESPACE = " \t\r\n";
 
     @Test
-    public void parseIndex_invalidInput_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseIndex("10 a"));
+    public void parseId_invalidInput_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseId("10 a"));
     }
 
     @Test
-    public void parseIndex_outOfRangeInput_throwsParseException() {
-        assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, ()
-            -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
+    public void parseId_outOfRangeInput_throwsParseException() {
+        assertThrows(ParseException.class, Id.MESSAGE_CONSTRAINTS, ()
+            -> ParserUtil.parseId(Long.toString(Integer.MAX_VALUE + 1)));
     }
 
     @Test
-    public void parseIndex_validInput_success() throws Exception {
+    public void parseId_validInput_success() throws Exception {
         // No whitespaces
-        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("1"));
+        assertEquals(ID_FIRST, ParserUtil.parseId("1"));
 
         // Leading and trailing whitespaces
-        assertEquals(INDEX_FIRST_PERSON, ParserUtil.parseIndex("  1  "));
+        assertEquals(ID_FIRST, ParserUtil.parseId("  1  "));
     }
 
     @Test

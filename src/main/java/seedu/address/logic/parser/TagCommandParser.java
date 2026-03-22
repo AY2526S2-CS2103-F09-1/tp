@@ -5,9 +5,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.stream.Stream;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.TagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Id;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -31,9 +31,9 @@ public class TagCommandParser implements Parser<TagCommand> {
 
         argumentMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TAG);
 
-        Index targetIndex = ParserUtil.parseIndex(argumentMultimap.getPreamble());
+        Id targetId = ParserUtil.parseId(argumentMultimap.getPreamble());
         Tag categoryTag = ParserUtil.parseCategoryTag(argumentMultimap.getValue(PREFIX_TAG).get());
-        return new TagCommand(targetIndex, categoryTag);
+        return new TagCommand(targetId, categoryTag);
     }
 
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {

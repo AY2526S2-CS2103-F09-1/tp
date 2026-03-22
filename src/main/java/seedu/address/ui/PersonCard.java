@@ -36,9 +36,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label index;
     @FXML
-    private Label name;
-    @FXML
-    private Label id;
+    private Label nameWithId;
     @FXML
     private Label phone;
     @FXML
@@ -56,8 +54,7 @@ public class PersonCard extends UiPart<Region> {
         // to produce a numbered list
         renderIndex(displayedIndex, index);
 
-        renderId(person, id);
-        renderName(person, name);
+        renderNameWithId(person, nameWithId);
         renderPhone(person, phone);
         renderAddress(person, address);
 
@@ -70,13 +67,10 @@ public class PersonCard extends UiPart<Region> {
         indexLabel.setText(displayedIndex + ". ");
     }
 
-    private void renderId(Person person, Label idLabel) {
-        int idValue = person.getId().value;
-        idLabel.setText("ID: " + idValue);
-    }
-
-    private void renderName(Person person, Label nameLabel) {
-        nameLabel.setText(person.getName().fullName);
+    private void renderNameWithId(Person person, Label nameWithIdLabel) {
+        String fullName = person.getName().fullName;
+        int idValue = person.getId().getValue();
+        nameWithIdLabel.setText(fullName + " (ID: " + idValue + ")");
     }
 
     private void renderPhone(Person person, Label phoneLabel) {

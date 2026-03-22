@@ -99,6 +99,12 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public Optional<Person> findPersonById(Id id) {
+        requireNonNull(id);
+        return addressBook.findPersonById(id);
+    }
+
+    @Override
     public void deletePerson(Person target) {
         addressBook.removePerson(target);
         displayPersons.setAll(target);

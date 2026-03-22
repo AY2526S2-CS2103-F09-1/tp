@@ -144,6 +144,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public Optional<Person> findPersonById(Id id) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void setPerson(Person target, Person editedPerson) {
             throw new AssertionError("This method should not be called.");
         }

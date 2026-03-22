@@ -11,11 +11,12 @@ import static seedu.address.testutil.Assert.assertThrows;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -112,14 +113,17 @@ public class CommandTestUtil {
     }
 
     /**
-     * Updates {@code model}'s filtered list to show only the person at the given
-     * {@code targetIndex} in the
+     * Updates {@code model}'s filtered list to show only the person with the given
+     * {@code targetId} in the
      * {@code model}'s address book.
      */
-    public static void showPersonAtIndex(Model model, Index targetIndex) {
-        assertTrue(targetIndex.getZeroBased() < model.getFilteredPersonList().size());
+    public static void showPersonWithId(Model model, Id targetId) {
+        assertTrue(model.findPersonById(targetId).isPresent());
 
-        Person person = model.getFilteredPersonList().get(targetIndex.getZeroBased());
+        Optional<Person> personFound = model.findPersonById(targetId);
+        assertTrue(personFound.isPresent());
+
+        Person person = personFound.get();
         final String[] splitName = person.getName().fullName.split("\\s+");
         model.updateFilteredPersonList(new PersonContainsKeywordsPredicate(Arrays.asList(splitName[0]),
                 true, true, true, false));

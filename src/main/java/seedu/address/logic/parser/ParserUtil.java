@@ -6,10 +6,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import seedu.address.commons.core.index.Index;
-import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
@@ -19,19 +18,29 @@ import seedu.address.model.tag.Tag;
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX = "Invalid index. Index must be a positive integer.";
-
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
-     * trimmed.
-     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
+     * Parses {@code idString} into an {@code Id} and returns it.
+     * Leading and trailing whitespaces will be trimmed.
+     * @throws ParseException if the specified id is invalid (not a positive integer that can be parsed).
      */
-    public static Index parseIndex(String oneBasedIndex) throws ParseException {
-        String trimmedIndex = oneBasedIndex.trim();
-        if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
-            throw new ParseException(MESSAGE_INVALID_INDEX);
+    public static Id parseId(String idString) throws ParseException {
+        requireNonNull(idString);
+        String trimmedId = idString.trim();
+
+        // check if id obtained from the input
+        // can be parsed into an int value
+        int parsedIdValue;
+        try {
+            parsedIdValue = Integer.parseInt(trimmedId);
+        } catch (NumberFormatException ex) {
+            throw new ParseException(Id.MESSAGE_CONSTRAINTS);
         }
-        return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+
+        if (!Id.isValidId(parsedIdValue)) {
+            throw new ParseException(Id.MESSAGE_CONSTRAINTS);
+        }
+
+        return Id.of(parsedIdValue);
     }
 
     /**

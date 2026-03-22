@@ -51,6 +51,41 @@ public class UniquePersonListTest {
     }
 
     @Test
+    public void findPersonById_idInList_returnsPersonFound() {
+        uniquePersonList.add(ALICE);
+        uniquePersonList.add(DANIEL);
+        uniquePersonList.add(FIONA);
+
+        Id idToSearchFor = Id.of(4);
+        Optional<Person> expectedPersonFound = Optional.of(DANIEL);
+        Optional<Person> personFound = uniquePersonList.findPersonById(idToSearchFor);
+
+        assertEquals(expectedPersonFound, personFound);
+    }
+
+    @Test
+    public void findPersonById_idNotInList_returnsEmpty() {
+        uniquePersonList.add(ALICE);
+        uniquePersonList.add(DANIEL);
+        uniquePersonList.add(FIONA);
+
+        Id idToSearchFor = Id.of(5);
+        Optional<Person> expectedPersonFound = Optional.empty();
+        Optional<Person> personFound = uniquePersonList.findPersonById(idToSearchFor);
+
+        assertEquals(expectedPersonFound, personFound);
+    }
+
+    @Test
+    public void findPersonById_emptyList_returnsEmpty() {
+        Id idToSearchFor = Id.of(1);
+        Optional<Person> expectedPersonFound = Optional.empty();
+        Optional<Person> personFound = uniquePersonList.findPersonById(idToSearchFor);
+
+        assertEquals(expectedPersonFound, personFound);
+    }
+
+    @Test
     public void add_nullPerson_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> uniquePersonList.add(null));
     }

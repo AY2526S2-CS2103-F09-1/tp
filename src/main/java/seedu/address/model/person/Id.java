@@ -10,9 +10,9 @@ import java.util.Optional;
  */
 public class Id implements Comparable<Id> {
     public static final String MESSAGE_CONSTRAINTS =
-            "Ids should not be blank, and must be a positive integer.";
+            "IDs should not be blank, and must be a positive integer.";
     private static final int SMALLEST_VALUE = 1;
-    public final int value;
+    private final int value;
 
     /**
      * Creates a new {@code Id} with the smallest possible value.
@@ -47,6 +47,10 @@ public class Id implements Comparable<Id> {
      */
     public static boolean isValidId(int test) {
         return test >= SMALLEST_VALUE;
+    }
+
+    public int getValue() {
+        return this.value;
     }
 
     @Override

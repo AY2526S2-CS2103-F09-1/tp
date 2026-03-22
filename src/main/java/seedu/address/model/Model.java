@@ -60,6 +60,11 @@ public interface Model {
     boolean hasPerson(Person person);
 
     /**
+     * Returns the person in the address book who has the specified {@code Id}.
+     */
+    Optional<Person> findPersonById(Id id);
+
+    /**
      * Deletes the given person.
      * The person must exist in the address book.
      */

@@ -2,11 +2,12 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIds.ID_FIRST;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.model.person.Id;
 
 /**
  * As we are only doing white-box testing, our test cases do not cover path variations
@@ -21,12 +22,12 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {
-        assertParseSuccess(parser, "1", new DeleteCommand(INDEX_FIRST_PERSON));
+        assertParseSuccess(parser, "1", new DeleteCommand(ID_FIRST));
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "a", ParserUtil.MESSAGE_INVALID_INDEX);
+        assertParseFailure(parser, "a", Id.MESSAGE_CONSTRAINTS);
     }
 
     @Test

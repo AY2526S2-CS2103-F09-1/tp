@@ -30,7 +30,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
    * `add n/John Doe p/98765432 a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
-   * `del 3` : Deletes the 3rd contact shown in the current list.
+   * `del 3` : Deletes the contact with an `ID` of 3.
 
    * `clear` : Deletes all contacts.
 
@@ -102,9 +102,9 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
@@ -112,8 +112,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​`
     specifying any tags after it.
 
 Examples:
-*  `edit 1 p/91234567` Edits the phone number of the 1st person to be `91234567`.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
+*  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 
 ### Locating persons: `find`
 
@@ -148,22 +148,20 @@ Notes:
 
 Deletes the specified person from the address book.
 
-Format: `del INDEX`
+Format: `del ID`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* Deletes the person with the specified `ID`.
+* `ID` **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `del 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `del 1` deletes the 1st person in the results of the `find` command.
-* `add n/Andrew` followed by `del 1` deletes the contact that was just added.
-* `add n/Andrew` followed by `del 2` will fail since the displayed list size is only 1.
-* `del 1` followed by `del 1` deletes the contact in index 1 of the contact list shown before the first `del` command.
+* `del 2` deletes the person with `ID` 2 from the address book.
+* `find Betsy` followed by `del 1` deletes the person with `ID` 1 from the address book. Note that it does not delete the first person in the results of the `find` command.
+* `add n/Andrew` followed by `del 1` deletes the person with `ID` 1 from the address book. Note that it does not delete the contact that was just added.
+* `add n/Andrew` followed by `del 1` will fail if there is no person with `ID` 1 in the address book.
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book. While displaying all the contact that have been removed.
+Clears all entries from the address book, whilst displaying all the contacts that have been removed.
 
 Format: `clear`
 
@@ -212,8 +210,8 @@ Action | Format, Examples
 --------|------------------
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear** | `clear`
-**Delete** | `del INDEX`<br> e.g., `del 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
+**Delete** | `del ID`<br> e.g., `del 3`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List** | `list`
 **Help** | `help`

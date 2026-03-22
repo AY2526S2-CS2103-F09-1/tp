@@ -38,6 +38,15 @@ public class UniquePersonList implements Iterable<Person> {
     }
 
     /**
+     * Returns the person in the address book who has the specified {@code Id}.
+     */
+    public Optional<Person> findPersonById(Id id) {
+        return internalList.stream()
+                .filter(person -> person.getId().equals(id))
+                .findFirst();
+    }
+
+    /**
      * Checks whether the list contains a person with the same id as the id of the person
      * in the given argument.
      *

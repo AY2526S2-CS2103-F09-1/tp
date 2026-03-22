@@ -78,7 +78,24 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same identity fields and data fields.
+     * Checks whether two persons have the same {@code Id}.
+     *
+     * @param otherPerson other person to check Id for.
+     * @return true if two persons have the same Id, else false.
+     */
+    public boolean isSameId(Person otherPerson) {
+        if (otherPerson == this) {
+            return true;
+        }
+
+        Id otherId = otherPerson.getId();
+        boolean sameId = otherId.equals(getId());
+
+        return sameId;
+    }
+
+    /**
+     * Returns true if both persons have the same identity and data fields.
      * This defines a stronger notion of equality between two persons.
      */
     @Override

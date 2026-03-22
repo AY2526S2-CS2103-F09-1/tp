@@ -53,7 +53,7 @@ public class TypicalPersons {
     public static final Person HOON = new PersonBuilder().withId(8)
             .withName("Hoon Meier").withPhone("84821424")
             .withAddress("little india").build();
-    public static final Person IDA = new PersonBuilder().withId(8)
+    public static final Person IDA = new PersonBuilder().withId(9)
             .withName("Ida Mueller").withPhone("84821131")
             .withAddress("chicago ave").build();
 

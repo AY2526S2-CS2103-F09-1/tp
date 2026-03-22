@@ -43,7 +43,7 @@ public class PersonBuilder {
     public PersonBuilder(Person personToCopy) {
         id = personToCopy.getId();
         name = personToCopy.getName();
-        phone = personToCopy.getPhone();
+        phone = personToCopy.getPhone().get();
         address = personToCopy.getAddress();
         tags = new HashSet<>(personToCopy.getTags());
     }

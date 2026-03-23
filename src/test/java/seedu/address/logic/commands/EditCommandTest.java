@@ -7,7 +7,6 @@ import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonWithId;
@@ -39,13 +38,20 @@ public class EditCommandTest {
 
     @Test
     public void execute_idInAddressBookAllFieldsSpecified_success() {
-        Person editedPerson = new PersonBuilder().build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(editedPerson).build();
-        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
-
         Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withName(PersonBuilder.DEFAULT_NAME)
+                .withPhone(PersonBuilder.DEFAULT_PHONE)
+                .withAddress(PersonBuilder.DEFAULT_ADDRESS)
+                .build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withName(PersonBuilder.DEFAULT_NAME)
+                .withPhone(PersonBuilder.DEFAULT_PHONE)
+                .withAddress(PersonBuilder.DEFAULT_ADDRESS)
+                .build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
@@ -66,11 +72,10 @@ public class EditCommandTest {
         Person personWithMaxId = personWithMaxIdFound.get();
 
         PersonBuilder personBuilderForMaxId = new PersonBuilder(personWithMaxId);
-        Person editedPerson = personBuilderForMaxId.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
-                .withTags(VALID_TAG_HUSBAND).build();
+        Person editedPerson = personBuilderForMaxId.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB).build();
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
-                .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_HUSBAND).build();
+                .withPhone(VALID_PHONE_BOB).build();
         EditCommand editCommand = new EditCommand(maxId, descriptor);
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,

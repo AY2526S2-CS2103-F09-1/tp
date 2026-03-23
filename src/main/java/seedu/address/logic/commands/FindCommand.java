@@ -17,9 +17,9 @@ public class FindCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds persons whose name, address, or phone number "
             + "contains any of the specified keywords.\n"
-            + "Format: " + COMMAND_WORD + " KEYWORD [MORE_KEYWORDS]...\n"
-            + "   or: " + COMMAND_WORD + " [n/NAME] [a/ADDRESS] [p/PHONE]\n"
-            + "Examples: " + COMMAND_WORD + " Ali\n"
+            + "Format: " + COMMAND_WORD + " [n/NAME] [a/ADDRESS] [p/PHONE]\n"
+
+            + "Examples: " + COMMAND_WORD + " n/Ali n/August\n"
             + "          " + COMMAND_WORD + " a/119224\n"
             + "          " + COMMAND_WORD + " n/Clement p/9234\n";
 

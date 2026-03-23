@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalPersons.BENSON;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 
 public class JsonAdaptedPersonTest {
@@ -26,7 +28,7 @@ public class JsonAdaptedPersonTest {
 
     private static final int VALID_ID = BENSON.getId().getValue();
     private static final String VALID_NAME = BENSON.getName().toString();
-    private static final String VALID_PHONE = BENSON.getPhone().toString();
+    private static final String VALID_PHONE = BENSON.getPhone().get().value.toString();
     private static final String VALID_ADDRESS = BENSON.getAddress().toString();
     private static final List<JsonAdaptedTag> VALID_TAGS = BENSON.getTags().stream()
             .map(JsonAdaptedTag::new)
@@ -36,6 +38,25 @@ public class JsonAdaptedPersonTest {
     public void toModelType_validPersonDetails_returnsPerson() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(BENSON);
         assertEquals(BENSON, person.toModelType());
+    }
+
+    @Test
+    public void toModelType_emptyPhone_returnsPersonWithEmptyPhone() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(
+            VALID_ID, VALID_NAME, "", VALID_ADDRESS, VALID_TAGS
+        );
+        Person modelPerson = person.toModelType();
+
+        assertEquals(Optional.empty(), modelPerson.getPhone());
+    }
+
+    @Test
+    public void toModelType_validPhone_returnsPersonWithPhone() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(
+                VALID_ID, VALID_NAME, VALID_PHONE, VALID_ADDRESS, VALID_TAGS);
+        Person modelPerson = person.toModelType();
+
+        assertEquals(Optional.of(new Phone(VALID_PHONE)), modelPerson.getPhone());
     }
 
     @Test

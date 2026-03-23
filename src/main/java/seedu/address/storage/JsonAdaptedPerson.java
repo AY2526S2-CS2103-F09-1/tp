@@ -3,6 +3,7 @@ package seedu.address.storage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import seedu.address.model.tag.Tag;
 class JsonAdaptedPerson {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
+    private static final String EMPTY_STRING = "";
 
     private final int id;
     private final String name;
@@ -54,7 +56,8 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(Person source) {
         id = source.getId().getValue();
         name = source.getName().fullName;
-        phone = source.getPhone().value;
+        phone = source.getPhone().map(x -> x.value)
+            .orElse(EMPTY_STRING);
         address = source.getAddress().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
@@ -88,10 +91,13 @@ class JsonAdaptedPerson {
         if (phone == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
         }
-        if (!Phone.isValidPhone(phone)) {
+        if (!Phone.isValidPhoneOrEmptyString(phone)) {
             throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
         }
-        final Phone modelPhone = new Phone(phone);
+        // if empty phone string in JSON, make it optional empty
+        final Optional<Phone> modelPhone = phone.isEmpty()
+            ? Optional.empty()
+            : Optional.of(new Phone(phone));
 
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));

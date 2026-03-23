@@ -24,14 +24,14 @@ public class FindCommandParserTest {
     }
 
     @Test
-    public void parse_validArgs_returnsFindCommand() {
-        // no leading and trailing whitespaces
+    public void parse_multipleNamePrefixes_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
-                new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "Bob")));
-        assertParseSuccess(parser, "Alice Bob", expectedFindCommand);
+                new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"),
+                        true, false, false, false));
+        assertParseSuccess(parser, " " + PREFIX_NAME + "Alice " + PREFIX_NAME + "Bob", expectedFindCommand);
 
-        // multiple whitespaces between keywords
-        assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindCommand);
+        assertParseSuccess(parser, " " + PREFIX_NAME + "  Alice " + PREFIX_NAME + " \t Bob  \t",
+                expectedFindCommand);
     }
 
     @Test
@@ -88,6 +88,15 @@ public class FindCommandParserTest {
     @Test
     public void parse_emptyAddressPrefix_throwsParseException() {
         assertParseFailure(parser, " " + PREFIX_ADDRESS,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_noPrefix_throwsParseException() {
+        assertParseFailure(parser, "Alice Bob",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+
+        assertParseFailure(parser, " \n Alice \n \t Bob  \t",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 }

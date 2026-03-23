@@ -18,6 +18,26 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 public class EditPersonDescriptorTest {
 
     @Test
+    public void getPhone_phoneFieldIsNull_returnsEmptyOptional() throws NoSuchFieldException, IllegalAccessException {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.setPhone(null);
+
+        assertTrue(descriptor.getPhone().isEmpty());
+    }
+
+    @Test
+    public void setPhone_nullPhone_resetsPhoneAndEditState() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.setPhone(null);
+
+        assertTrue(descriptor.getPhone().isEmpty());
+        assertFalse(descriptor.isPhoneChanged());
+        assertFalse(descriptor.isAnyFieldEdited());
+    }
+
+    @Test
     public void equals() {
         // same values -> returns true
         EditPersonDescriptor descriptorWithSameValues = new EditPersonDescriptor(DESC_AMY);
@@ -57,7 +77,7 @@ public class EditPersonDescriptorTest {
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         String expected = EditPersonDescriptor.class.getCanonicalName() + "{name="
                 + editPersonDescriptor.getName().orElse(null) + ", phone="
-                + editPersonDescriptor.getPhone().orElse(null) + ", address="
+                + editPersonDescriptor.getPhone() + ", address="
                 + editPersonDescriptor.getAddress().orElse(null) + ", tags="
                 + editPersonDescriptor.getTags().orElse(null) + "}";
         assertEquals(expected, editPersonDescriptor.toString());

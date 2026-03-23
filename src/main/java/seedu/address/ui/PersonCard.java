@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -8,6 +9,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -20,6 +22,9 @@ public class PersonCard extends UiPart<Region> {
     private static final String MESSAGE_MISSING_ADDRESS = "No address provided";
 
     private static final String CSS_CLASS_MISSING_FIELD = "missing-field";
+
+    private static final String PHONE_ICON = "\uD83D\uDCDE";
+    private static final String ADDRESS_ICON = "\uD83C\uDFE0";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -74,24 +79,24 @@ public class PersonCard extends UiPart<Region> {
     }
 
     private void renderPhone(Person person, Label phoneLabel) {
-        String phoneNumber = person.getPhone().value;
+        Optional<Phone> phone = person.getPhone();
 
-        if (phoneNumber.isEmpty()) {
+        // if the Phone inside is not empty, set text
+        // else inform user the Phone is missing
+        phone.ifPresentOrElse(p -> phoneLabel.setText(p.value), () -> {
             phoneLabel.setText(MESSAGE_MISSING_PHONE_NUMBER);
             addCssClass(phoneLabel, CSS_CLASS_MISSING_FIELD);
-        } else {
-            phoneLabel.setText(phoneNumber);
-        }
+        });
     }
 
     private void renderAddress(Person person, Label addressLabel) {
         String address = person.getAddress().value;
 
         if (address.isEmpty()) {
-            addressLabel.setText(MESSAGE_MISSING_ADDRESS);
+            addressLabel.setText(ADDRESS_ICON + " " + MESSAGE_MISSING_ADDRESS);
             addCssClass(addressLabel, CSS_CLASS_MISSING_FIELD);
         } else {
-            addressLabel.setText(address);
+            addressLabel.setText(ADDRESS_ICON + " " + address);
         }
     }
 

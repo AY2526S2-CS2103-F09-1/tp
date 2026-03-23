@@ -19,9 +19,10 @@ public class PersonContainsKeywordsPredicateTest {
         List<String> firstPredicateKeywordList = Collections.singletonList("first");
         List<String> secondPredicateKeywordList = Arrays.asList("first", "second");
 
-        PersonContainsKeywordsPredicate firstPredicate = new PersonContainsKeywordsPredicate(firstPredicateKeywordList);
+        PersonContainsKeywordsPredicate firstPredicate = new PersonContainsKeywordsPredicate(
+                firstPredicateKeywordList, true, true, true, false);
         PersonContainsKeywordsPredicate secondPredicate = new PersonContainsKeywordsPredicate(
-                secondPredicateKeywordList);
+                secondPredicateKeywordList, true, true, true, false);
 
         // same object -> returns true
         assertTrue(firstPredicate.equals(firstPredicate));
@@ -65,7 +66,7 @@ public class PersonContainsKeywordsPredicateTest {
     public void test_personContainsKeywords_returnsTrue() {
         // One keyword
         PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(
-                Collections.singletonList("Alice"));
+                Collections.singletonList("Alice"), true, true, true, false);
         assertTrue(predicate.test(new PersonBuilder().withName("Alice Bob").build()));
 
         // Multiple keywords
@@ -160,7 +161,8 @@ public class PersonContainsKeywordsPredicateTest {
     @Test
     public void toStringMethod() {
         List<String> keywords = List.of("keyword1", "keyword2");
-        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(keywords);
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(keywords,
+                true, true, true, false);
 
         String expected = PersonContainsKeywordsPredicate.class.getCanonicalName()
                 + "{keywords=" + keywords + "}";

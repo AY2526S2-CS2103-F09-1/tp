@@ -90,7 +90,9 @@ public class EditCommand extends Command {
 
         Id personId = personToEdit.getId();
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
-        Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
+        Optional<Phone> updatedPhone = editPersonDescriptor.isPhoneChanged()
+            ? editPersonDescriptor.getPhone()
+            : personToEdit.getPhone();
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
@@ -127,11 +129,18 @@ public class EditCommand extends Command {
      */
     public static class EditPersonDescriptor {
         private Name name;
-        private Phone phone;
+        private Optional<Phone> phone;
+        private boolean phoneChanged;
         private Address address;
         private Set<Tag> tags;
 
-        public EditPersonDescriptor() {}
+        /**
+         * Creates an empty descriptor with no edited fields.
+         */
+        public EditPersonDescriptor() {
+            this.phoneChanged = false;
+            this.phone = Optional.empty();
+        }
 
         /**
          * Copy constructor.
@@ -139,7 +148,7 @@ public class EditCommand extends Command {
          */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
             setName(toCopy.name);
-            setPhone(toCopy.phone);
+            setPhone(toCopy.phone, toCopy.phoneChanged);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
         }
@@ -148,29 +157,72 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, address, tags);
+            return CollectionUtil.isAnyNonNull(name, address, tags)
+                    || phoneChanged;
         }
 
+        /**
+         * Sets the edited name.
+         */
         public void setName(Name name) {
             this.name = name;
         }
 
+        /**
+         * Returns the edited name if it was provided.
+         */
         public Optional<Name> getName() {
             return Optional.ofNullable(name);
         }
 
-        public void setPhone(Phone phone) {
+        /**
+         * Sets the edited phone value.
+         * For public use.
+         */
+        public void setPhone(Optional<Phone> phone) {
+            if (phone == null) {
+                setPhone(Optional.empty(), false);
+            } else {
+                setPhone(phone, true);
+            }
+        }
+
+        /**
+         * Sets edited phone value and explicit edit state.
+         * For private use.
+         */
+        private void setPhone(Optional<Phone> phone, boolean phoneChanged) {
             this.phone = phone;
+            this.phoneChanged = phoneChanged;
         }
 
+        /**
+         * Returns true if phone field was explicitly edited by the user.
+         */
+        public boolean isPhoneChanged() {
+            return phoneChanged;
+        }
+
+        /**
+         * Returns the edited phone if it was provided.
+         */
         public Optional<Phone> getPhone() {
-            return Optional.ofNullable(phone);
+            if (phone == null) {
+                return Optional.empty();
+            }
+            return phone;
         }
 
+        /**
+         * Sets the edited address.
+         */
         public void setAddress(Address address) {
             this.address = address;
         }
 
+        /**
+         * Returns the edited address if it was provided.
+         */
         public Optional<Address> getAddress() {
             return Optional.ofNullable(address);
         }
@@ -206,6 +258,7 @@ public class EditCommand extends Command {
             EditPersonDescriptor otherEditPersonDescriptor = (EditPersonDescriptor) other;
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
+                    && phoneChanged == otherEditPersonDescriptor.phoneChanged
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }

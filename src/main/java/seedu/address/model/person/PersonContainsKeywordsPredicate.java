@@ -9,19 +9,14 @@ import seedu.address.commons.util.ToStringBuilder;
  * Tests whether a {@code Person} matches any keyword in the enabled fields.
  */
 public class PersonContainsKeywordsPredicate implements Predicate<Person> {
+    private static final String EMPTY_STRING = "";
+
     private final List<String> keywords;
     private final boolean searchName;
     private final boolean searchAddress;
     private final boolean searchPhone;
     // To be implemented
     private final boolean searchTag;
-
-    /**
-     * Creates a predicate that searches across all default searchable fields.
-     */
-    public PersonContainsKeywordsPredicate(List<String> keywords) {
-        this(keywords, true, true, true, false);
-    }
 
     /**
      * Creates a predicate that searches only the specified fields.
@@ -42,7 +37,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     public boolean test(Person person) {
         String name = person.getName().fullName.toLowerCase();
         String address = person.getAddress().value.toLowerCase();
-        String phone = person.getPhone().value;
+        String phone = person.getPhone().map(x -> x.value).orElse(EMPTY_STRING);
 
         return keywords.stream().anyMatch(keyword -> {
             String lower = keyword.toLowerCase();

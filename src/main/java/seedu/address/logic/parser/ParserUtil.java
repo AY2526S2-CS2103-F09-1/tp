@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -64,13 +65,22 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code phone} is invalid.
      */
-    public static Phone parsePhone(String phone) throws ParseException {
+    public static Optional<Phone> parsePhone(Optional<String> phone) throws ParseException {
         requireNonNull(phone);
-        String trimmedPhone = phone.trim();
-        if (!Phone.isValidPhone(trimmedPhone)) {
-            throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
+
+        // need another check here to see if inside is empty string, if so then give optional empty
+        phone = phone.filter(phoneString -> !phoneString.isEmpty());
+        if (phone.isEmpty()) {
+            return Optional.empty();
         }
-        return new Phone(trimmedPhone);
+
+        Phone parsedPhone = phone.map(phoneString -> requireNonNull(phoneString))
+            .map(phoneString -> phoneString.trim())
+            .filter(trimmedPhoneString -> Phone.isValidPhone(trimmedPhoneString))
+            .map(trimmedPhoneString -> new Phone(trimmedPhoneString))
+            .orElseThrow(() -> new ParseException(Phone.MESSAGE_CONSTRAINTS));
+
+        return Optional.of(parsedPhone);
     }
 
     /**

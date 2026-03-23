@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
@@ -11,7 +12,6 @@ import static seedu.address.testutil.TypicalIds.ID_FIRST;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -94,10 +94,11 @@ public class AddressBookParserTest {
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")),
+                FindCommand.COMMAND_WORD + " "
+                        + PREFIX_NAME + String.join(" " + PREFIX_NAME, keywords),
                 currentMaxId);
         assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
-                keywords, true, true, true, false)), command);
+                keywords, true, false, false, false)), command);
     }
 
     @Test

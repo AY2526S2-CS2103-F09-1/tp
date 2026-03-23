@@ -116,11 +116,6 @@ public class ParserUtilTest {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((String) null));
     }
 
-    // @Test
-    // public void parseAddress_invalidValue_throwsParseException() {
-    //     assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_ADDRESS));
-    // }
-
     @Test
     public void parseAddress_validValueWithoutWhitespace_returnsAddress() throws Exception {
         Address expectedAddress = new Address(VALID_ADDRESS);
@@ -164,6 +159,12 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTag_validValueWithDifferentCase_returnsNormalizedTag() throws Exception {
+        Tag expectedTag = new Tag("Tutor");
+        assertEquals(expectedTag, ParserUtil.parseTag("tUtOr"));
+    }
+
+    @Test
     public void parseTags_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseTags(null));
     }
@@ -171,6 +172,11 @@ public class ParserUtilTest {
     @Test
     public void parseTags_collectionWithInvalidTags_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parseTags(Arrays.asList(VALID_TAG_1, INVALID_TAG)));
+    }
+
+    @Test
+    public void parseTags_collectionWithUnsupportedTags_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTags(Arrays.asList(VALID_TAG_1, UNSUPPORTED_TAG)));
     }
 
     @Test

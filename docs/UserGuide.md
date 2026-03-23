@@ -170,10 +170,10 @@ Format: `copy ID field`
 * If the person's field is empty, then nothing will be copy to the clipboard.
 
 Examples:
-* `copy 6 /n` copy the person with `ID` 6 name to the clipboard.
-* `copy 7 /p` copy the person with `ID` 7 phone number to the clipboard.
-* `copy 9 /a` copy the person with `ID` 9 address to the clipboard.
-* `copy 1 /p` will not copy anything if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
+* `copy 6 n/` copy the person with `ID` 6 name to the clipboard.
+* `copy 7 p/` copy the person with `ID` 7 phone number to the clipboard.
+* `copy 9 a/` copy the person with `ID` 9 address to the clipboard.
+* `copy 1 p/` will fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
 
 ### Clearing all entries : `clear`
 

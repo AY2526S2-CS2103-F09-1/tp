@@ -2,12 +2,10 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
-import java.util.Optional;
-
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Id;
@@ -20,9 +18,9 @@ public class CopyCommand extends Command {
 
     public static final String COMMAND_WORD = "copy";
 
-    public static final String FIELD_NAME = "name";
-    public static final String FIELD_PHONE = "phone";
-    public static final String FIELD_ADDRESS = "address";
+    public static final String FIELD_NAME = "/n";
+    public static final String FIELD_PHONE = "/p";
+    public static final String FIELD_ADDRESS = "/a";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Copies a field of the person identified by their ID to the clipboard.\n"
@@ -34,8 +32,6 @@ public class CopyCommand extends Command {
 
     public static final String MESSAGE_INVALID_FIELD = "Invalid field. The valid fields include: "
             + FIELD_NAME + ", " + FIELD_PHONE + ", " + FIELD_ADDRESS;
-
-    public static final String MESSAGE_PERSON_NOT_FOUND = "No contact with ID %d found.";
 
     public static final String MESSAGE_MISSING_FIELD = "Please specify a field to copy. Valid fields: "
             + FIELD_NAME + ", " + FIELD_PHONE + ", " + FIELD_ADDRESS;
@@ -57,10 +53,11 @@ public class CopyCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        List<Person> fullList = model.getAddressBook().getPersonList();
-        Person personToCopy = findPersonById(fullList);
+        Person personToCopy = model.findPersonById(targetId)
+                .orElseThrow(() -> new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID,
+                targetId.getValue())));
         String fieldLabel = getFieldLabel();
-        String valueToCopy = getValidFieldValue(personToCopy);
+        String valueToCopy = getValidFieldValue(personToCopy, fieldLabel);
 
         final Clipboard clipboard = Clipboard.getSystemClipboard();
         final ClipboardContent content = new ClipboardContent();
@@ -70,18 +67,7 @@ public class CopyCommand extends Command {
         return new CommandResult(String.format(MESSAGE_COPY_SUCCESS, personToCopy.getName(), fieldLabel));
     }
 
-    private Person findPersonById(List<Person> list) throws CommandException {
-        Optional<Person> match = list.stream()
-                .filter(p -> p.getId().equals(targetId))
-                .findFirst();
-        if (match.isEmpty()) {
-            throw new CommandException(String.format(MESSAGE_PERSON_NOT_FOUND, targetId.getValue()));
-        }
-        return match.get();
-    }
-
-    private String getValidFieldValue(Person person) throws CommandException {
-        String fieldLabel = getFieldLabel();
+    private String getValidFieldValue(Person person, String fieldLabel) throws CommandException {
         String value = getFieldValue(person);
         if (value.equals("")) {
             throw new CommandException(String.format(MESSAGE_EMPTY_FIELD_VALUE, fieldLabel));

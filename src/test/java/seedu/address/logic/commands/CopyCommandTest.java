@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_ID;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
 import static seedu.address.testutil.TypicalIds.ID_SECOND;
@@ -31,7 +32,7 @@ public class CopyCommandTest {
         Id notInAddressBookId = Id.fromCurrentMaxId(model.findMaxId());
         CopyCommand copyCommand = new CopyCommand(notInAddressBookId, CopyCommand.FIELD_PHONE);
 
-        String expectedMessage = String.format(CopyCommand.MESSAGE_PERSON_NOT_FOUND,
+        String expectedMessage = String.format(MESSAGE_INVALID_PERSON_ID,
                 notInAddressBookId.getValue());
 
         assertCommandFailure(copyCommand, model, expectedMessage);
@@ -43,7 +44,7 @@ public class CopyCommandTest {
         Id anyId = ID_FIRST;
         CopyCommand copyCommand = new CopyCommand(anyId, CopyCommand.FIELD_PHONE);
 
-        String expectedMessage = String.format(CopyCommand.MESSAGE_PERSON_NOT_FOUND, anyId.getValue());
+        String expectedMessage = String.format(MESSAGE_INVALID_PERSON_ID, anyId.getValue());
 
         assertCommandFailure(copyCommand, emptyModel, expectedMessage);
     }

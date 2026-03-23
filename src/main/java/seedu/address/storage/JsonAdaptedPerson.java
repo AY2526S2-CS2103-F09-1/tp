@@ -91,7 +91,7 @@ class JsonAdaptedPerson {
         if (phone == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
         }
-        if (!Phone.isValidPhoneFromJson(phone)) {
+        if (!Phone.isValidPhoneOrEmptyString(phone)) {
             throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
         }
         // if empty phone string in JSON, make it optional empty

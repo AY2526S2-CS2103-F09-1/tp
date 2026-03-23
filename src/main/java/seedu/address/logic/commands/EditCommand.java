@@ -132,11 +132,13 @@ public class EditCommand extends Command {
      */
     public static class EditPersonDescriptor {
         private Name name;
-        private Phone phone;
+        private Optional<Phone> phone;
         private Address address;
         private Set<Tag> tags;
 
-        public EditPersonDescriptor() {}
+        public EditPersonDescriptor() {
+            this.phone = Optional.empty();
+        }
 
         /**
          * Copy constructor.
@@ -153,7 +155,8 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, address, tags);
+            return CollectionUtil.isAnyNonNull(name, address, tags)
+                    || (phone != null && phone.isPresent());
         }
 
         public void setName(Name name) {
@@ -164,12 +167,19 @@ public class EditCommand extends Command {
             return Optional.ofNullable(name);
         }
 
-        public void setPhone(Phone phone) {
-            this.phone = phone;
+        public void setPhone(Optional<Phone> phone) {
+            if (phone == null) {
+                this.phone = Optional.empty();
+            } else {
+                this.phone = phone;
+            }
         }
 
         public Optional<Phone> getPhone() {
-            return Optional.ofNullable(phone);
+            if (phone == null) {
+                return Optional.empty();
+            }
+            return phone;
         }
 
         public void setAddress(Address address) {

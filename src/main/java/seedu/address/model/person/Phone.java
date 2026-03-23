@@ -35,14 +35,15 @@ public class Phone {
     }
 
     /**
-     * Checks if phone is valid when parsing from JSON.
+     * Checks if phone is valid or an empty string.
+     * Used mainly when parsing from JSON file.
      * As the absent phone numbers will be stored as empty strings in the JSON file,
      * use this method to check validity when reading from a JSON file instead.
      *
-     * @param phoneString phone number in string read from JSON file.
-     * @return true if phone read from JSON file is valid else false.
+     * @param phoneString phone number in string.
+     * @return true if phone read from is valid or an empty string else false.
      */
-    public static boolean isValidPhoneFromJson(String phoneString) {
+    public static boolean isValidPhoneOrEmptyString(String phoneString) {
         return phoneString.equals(EMPTY_STRING) || phoneString.matches(VALIDATION_REGEX);
     }
 

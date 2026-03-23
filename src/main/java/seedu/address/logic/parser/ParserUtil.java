@@ -59,6 +59,8 @@ public class ParserUtil {
     public static Optional<Phone> parsePhone(Optional<String> phone) throws ParseException {
         requireNonNull(phone);
 
+        // need another check here to see if inside is empty string, if so then give optional empty
+        phone = phone.filter(phoneString -> !phoneString.isEmpty());
         if (phone.isEmpty()) {
             return Optional.empty();
         }

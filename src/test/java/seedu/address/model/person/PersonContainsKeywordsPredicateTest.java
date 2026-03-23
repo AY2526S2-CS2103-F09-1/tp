@@ -163,6 +163,29 @@ public class PersonContainsKeywordsPredicateTest {
                 .withName("Alice Bob")
                 .withAddress("123 Clementi Road")
                 .build()));
+        
+        // Tag search enabled, but no tag matches
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("enemy"),
+                false, false, false, true);
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withTags("friend", "colleague")
+                .build()));
+
+        // Tag search enabled, one of multiple tags matches
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("col"),
+                false, false, false, true);
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withTags("friend", "colleague")
+                .build()));
+
+        // Tag search enabled, but person has no tags
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("friend"),
+                false, false, false, true);
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .build()));
 
         // No enabled field contains the keyword
         predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("zzz"),
@@ -171,6 +194,29 @@ public class PersonContainsKeywordsPredicateTest {
                 .withName("Alice Bob")
                 .withPhone("94351253")
                 .withAddress("123 Clementi Road")
+                .build()));
+
+        // Name search disabled
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("Alice"),
+                false, false, false, false);
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .build()));
+
+        // Address search disabled
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("Clementi"),
+                false, false, false, false);
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("123 Clementi Road")
+                .build()));
+
+        // Phone search disabled
+        predicate = new PersonContainsKeywordsPredicate(Collections.singletonList("9435"),
+                false, false, false, false);
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withPhone("94351253")
                 .build()));
 
         // Tag search disabled

@@ -72,14 +72,4 @@ public class DeleteCommand extends Command {
                 .add("targetId", targetId)
                 .toString();
     }
-
-    private String getInvalidIdMessage(int listSize) {
-        if (listSize == 0) {
-            return MESSAGE_EMPTY_CONTACT_LIST;
-        }
-        if (listSize == 1) {
-            return MESSAGE_SINGLE_CONTACT_ONLY;
-        }
-        return String.format(MESSAGE_INVALID_ID, listSize);
-    }
 }

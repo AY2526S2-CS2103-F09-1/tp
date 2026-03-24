@@ -28,7 +28,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/Jane Doe` : Adds a contact named `Jane Doe` without a phone number.
 
    * `del 3` : Deletes the contact with an `ID` of 3.
 
@@ -83,10 +83,15 @@ Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`
 A person can have any number of tags (including 0)
 </div>
 
+* Only `n/NAME` is required.
+* `p/PHONE_NUMBER`, `a/ADDRESS`, and `t/TAG` are optional.
+* `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
+
 Examples:
 * `add n/John Doe p/98765432 a/John street, block 123, #01-01`
-* `add n/Jane Doe p/98765432`
-* `add n/Betsy Crowe t/friend a/Newgate Prison p/1234567 t/criminal`
+* `add n/Jane Doe`
+* `add n/John Doe p/`
+* `add n/Betsy Crowe t/friend a/Newgate Prison p/12345678 t/criminal`
 
 ### Listing all persons : `list`
 
@@ -224,7 +229,7 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`

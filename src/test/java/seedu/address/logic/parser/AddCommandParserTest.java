@@ -118,8 +118,44 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY,
                 new AddCommand(expectedPerson));
 
-        // no phone number
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY,
+        // no phone prefix
+        Person expectedPersonWithoutPhone = new PersonBuilder()
+                .withName("Amy Bee")
+                .withoutPhone()
+                .withAddress("")
+                .build();
+        assertParseSuccess(parser, NAME_DESC_AMY,
+                new AddCommand(expectedPersonWithoutPhone));
+
+        // empty phone prefix
+        assertParseSuccess(parser, NAME_DESC_AMY + " " + PREFIX_PHONE,
+                new AddCommand(expectedPersonWithoutPhone));
+
+        // no address prefix
+        Person expectedPersonWithoutAddress = new PersonBuilder()
+                .withName("Amy Bee")
+                .withPhone("11111111")
+                .withAddress("")
+                .build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY,
+                new AddCommand(expectedPersonWithoutAddress));
+
+        // empty address prefix
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " " + PREFIX_ADDRESS,
+                new AddCommand(expectedPersonWithoutAddress));
+    }
+
+    @Test
+    public void parse_withCurrentMaxId_assignsNextId() {
+        AddCommandParser parserWithCurrentMaxId = new AddCommandParser(Optional.of(Id.of(5)));
+        Person expectedPerson = new PersonBuilder()
+                .withId(6)
+                .withName("Amy Bee")
+                .withoutPhone()
+                .withAddress("")
+                .build();
+
+        assertParseSuccess(parserWithCurrentMaxId, NAME_DESC_AMY,
                 new AddCommand(expectedPerson));
     }
 

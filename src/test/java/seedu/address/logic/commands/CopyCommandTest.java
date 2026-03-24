@@ -51,7 +51,7 @@ public class CopyCommandTest {
 
     @Test
     public void execute_emptyPhoneField_throwsCommandException() {
-        Person personWithEmptyPhone = new PersonBuilder().withId(67).withPhone("").build();
+        Person personWithEmptyPhone = new PersonBuilder().withId(67).withoutPhone().build();
         AddressBook ab = new AddressBook();
         ab.addPerson(personWithEmptyPhone);
         Model modelWithEmptyPhone = new ModelManager(ab, new UserPrefs());

@@ -16,9 +16,10 @@ public class CopyCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsCopyCommand() {
-        assertParseSuccess(parser, "1 phone", new CopyCommand(ID_FIRST, CopyCommand.FIELD_PHONE));
-        assertParseSuccess(parser, "1 name", new CopyCommand(ID_FIRST, CopyCommand.FIELD_NAME));
-        assertParseSuccess(parser, "1 address", new CopyCommand(ID_FIRST, CopyCommand.FIELD_ADDRESS));
+        assertParseSuccess(parser, "1 " + CopyCommand.FIELD_PHONE, new CopyCommand(ID_FIRST, CopyCommand.FIELD_PHONE));
+        assertParseSuccess(parser, "1 " + CopyCommand.FIELD_NAME, new CopyCommand(ID_FIRST, CopyCommand.FIELD_NAME));
+        assertParseSuccess(parser, "1 " + CopyCommand.FIELD_ADDRESS,
+                new CopyCommand(ID_FIRST, CopyCommand.FIELD_ADDRESS));
     }
 
     @Test
@@ -37,15 +38,15 @@ public class CopyCommandParserTest {
 
     @Test
     public void parse_tooManyArgs_throwsParseException() {
-        assertParseFailure(parser, "1 phone extra",
+        assertParseFailure(parser, "1 " + CopyCommand.FIELD_PHONE + " extra",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, CopyCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_invalidId_throwsParseException() {
-        assertParseFailure(parser, "abc phone", Id.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, "-1 phone", Id.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, "0 phone", Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "abc " + CopyCommand.FIELD_PHONE, Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "-1 " + CopyCommand.FIELD_PHONE, Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "0 " + CopyCommand.FIELD_PHONE, Id.MESSAGE_CONSTRAINTS);
     }
 
     @Test

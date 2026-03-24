@@ -22,6 +22,8 @@ public class CopyCommand extends Command {
     public static final String FIELD_PHONE = "p/";
     public static final String FIELD_ADDRESS = "a/";
 
+    public static final String EMPTY_STRING = "";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Copies a field of the person identified by their ID to the clipboard.\n"
             + "Parameters: ID (must be a positive integer) FIELD ("
@@ -69,7 +71,7 @@ public class CopyCommand extends Command {
 
     private String getValidFieldValue(Person person, String fieldLabel) throws CommandException {
         String value = getFieldValue(person);
-        if (value.equals("")) {
+        if (value.equals(EMPTY_STRING)) {
             throw new CommandException(String.format(MESSAGE_EMPTY_FIELD_VALUE, fieldLabel));
         }
         return value;
@@ -80,12 +82,12 @@ public class CopyCommand extends Command {
         case FIELD_NAME:
             return person.getName().fullName;
         case FIELD_PHONE:
-            return person.getPhone().map(p -> p.value).orElse("");
+            return person.getPhone().map(p -> p.value).orElse(EMPTY_STRING);
         case FIELD_ADDRESS:
             return person.getAddress().value;
         default:
             assert false : "Invalid field: " + field;
-            return "";
+            return EMPTY_STRING;
         }
     }
 
@@ -99,7 +101,7 @@ public class CopyCommand extends Command {
             return "address";
         default:
             assert false : "Invalid field: " + field;
-            return "";
+            return EMPTY_STRING;
         }
     }
 

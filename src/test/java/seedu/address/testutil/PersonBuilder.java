@@ -89,6 +89,14 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Phone} of the {@code Person} that we are building as empty.
+     */
+    public PersonBuilder withoutPhone() {
+        this.phone = Optional.empty();
+        return this;
+    }
+
     public Person build() {
         return new Person(id, name, phone, address, tags);
     }

@@ -14,6 +14,7 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.UNSUPPORTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
@@ -144,9 +145,25 @@ public class AddCommandParserTest {
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY,
                 new AddCommand(expectedPersonWithoutAddress));
 
-        // empty address prefix
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " " + PREFIX_ADDRESS,
-                new AddCommand(expectedPersonWithoutAddress));
+        // there is an address prefix, but no address - phone numbers and tags present
+        Person expectedPersonNoAddressOnly = new PersonBuilder()
+                .withName("Amy Bee")
+                .withPhone("11111111")
+                .withAddress("")
+                .withTags(VALID_CATEGORY_STUDENT)
+                .build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " "
+                        + PREFIX_ADDRESS + TAG_DESC_STUDENT,
+                new AddCommand(expectedPersonNoAddressOnly));
+
+        // there is an address prefix, but no address - no phone numbers or tags present
+        Person expectedPersonNoOptionalFields = new PersonBuilder()
+                .withName("Amy Bee")
+                .withoutPhone()
+                .withAddress("")
+                .build();
+        assertParseSuccess(parser, NAME_DESC_AMY + " " + PREFIX_ADDRESS,
+                new AddCommand(expectedPersonNoOptionalFields));
     }
 
     @Test

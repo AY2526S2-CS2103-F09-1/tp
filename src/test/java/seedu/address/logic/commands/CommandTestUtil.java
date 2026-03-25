@@ -34,6 +34,8 @@ public class CommandTestUtil {
     public static final String VALID_TAG_STUDENT = "Student";
     public static final String VALID_TAG_PARENT = "Parent";
     public static final String VALID_TAG_TUTOR = "Tutor";
+    public static final String VALID_CATEGORY_STUDENT = VALID_TAG_STUDENT;
+    public static final String VALID_CATEGORY_PARENT = VALID_TAG_PARENT;
 
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
@@ -52,8 +54,12 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String TAG_DESC_AMY = " " + PREFIX_TAG + VALID_TAG_AMY;
     public static final String TAG_DESC_BOB = " " + PREFIX_TAG + VALID_TAG_BOB;
+    public static final String TAG_DESC_STUDENT = " " + PREFIX_TAG + VALID_TAG_STUDENT;
+    public static final String TAG_DESC_PARENT = " " + PREFIX_TAG + VALID_TAG_PARENT;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+    public static final String CATEGORY_DESC_STUDENT = TAG_DESC_STUDENT;
+    public static final String CATEGORY_DESC_PARENT = TAG_DESC_PARENT;
     public static final String UNSUPPORTED_TAG_DESC = " " + PREFIX_TAG + VALID_TAG_FRIEND;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names

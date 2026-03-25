@@ -433,26 +433,30 @@ Extensions:
   * 2c1. EduConnect displays all matching contacts distinctly so the user can differentiate them.
   * Use case resumes from step 2.
 
-#### Use case: UC05 - Search Contacts by Name
+#### Use case: UC05 - Search Contacts by Specified Fields
 Actor: User
 
 Guarantees:
-* On successful completion, EduConnect shows the filtered contacts whose names match the provided keyword(s), together with the number of matches.
+* On successful completion, EduConnect shows the filtered contacts whose names, addresses, phone numbers, or tags match at least one provided prefixed keyword, together with the number of matches.
 * Each matching contact appears at most once in the filtered results.
 * If no contacts match, EduConnect shows an empty filtered result.
 * If the operation fails, the currently displayed contacts remain unchanged.
 
 MSS:
-1. User requests to search contacts by entering one or more keywords.
-2. EduConnect finds contacts whose names match any of the keywords.
+1. User requests to search contacts by entering one or more prefixed keywords.
+2. EduConnect finds contacts whose specified fields match at least one of the keywords.
 3. EduConnect shows the filtered results and match count.
 Use case ends.
 
 Extensions:
 * 1a. User provides no keyword.
-  * 1a1. EduConnect shows an error message and requests at least one keyword.
+  * 1a1. EduConnect shows an error message and requests at least one prefixed keyword.
   * 1a2. User re-enters the search input.
   * Steps 1a1-1a2 are repeated until at least one keyword is provided.
+  * Use case resumes from step 2.
+* 1b. User provides unprefixed input or mixes prefixed and unprefixed input.
+  * 1b1. EduConnect shows an error message explaining the required prefixed format.
+  * 1b2. User re-enters the search input.
   * Use case resumes from step 2.
 * 2a. No contacts match the keywords.
   * 2a1. EduConnect shows empty filtered results and a count of zero.

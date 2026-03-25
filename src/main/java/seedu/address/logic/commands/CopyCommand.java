@@ -28,7 +28,8 @@ public class CopyCommand extends Command {
             + ": Copies a field of the person identified by their ID to the clipboard.\n"
             + "Parameters: ID (must be a positive integer) FIELD ("
             + FIELD_NAME + ", " + FIELD_PHONE + ", " + FIELD_ADDRESS + ")\n"
-            + "Example: " + COMMAND_WORD + " 1 " + FIELD_PHONE;
+            + "Example:\n"
+            + "\t" + COMMAND_WORD + " 1 " + FIELD_PHONE + "\n";
 
     public static final String MESSAGE_COPY_SUCCESS = "Copied %s's %s to clipboard!";
 

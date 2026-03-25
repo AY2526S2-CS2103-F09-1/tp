@@ -19,10 +19,11 @@ public class TagCommand extends Command {
 
     public static final String COMMAND_WORD = "tag";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a categorical tag to the person with"
-            + " the specified ID.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Adds a categorical tag to the person with the specified ID.\n"
             + "Parameters: ID " + PREFIX_TAG + "CATEGORY\n"
-            + "Example: " + COMMAND_WORD + " 1 " + PREFIX_TAG + "Student";
+            + "Example:\n"
+            + "\t" + COMMAND_WORD + " 1 " + PREFIX_TAG + "Student\n";
 
     public static final String MESSAGE_TAG_PERSON_SUCCESS =
             "Alright, the tag %1$s has been added to the contact with ID %2$d.";

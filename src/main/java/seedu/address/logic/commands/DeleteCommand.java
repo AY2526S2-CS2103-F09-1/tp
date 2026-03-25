@@ -19,7 +19,8 @@ public class DeleteCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the person with the specified ID.\n"
             + "Parameters: ID (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + "Example:\n"
+            + "\t" + COMMAND_WORD + " 1\n";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Alright, the contact below has been removed "
             + "from your list!";

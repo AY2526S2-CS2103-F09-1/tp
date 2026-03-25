@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -37,6 +39,13 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         this.tagKeywords = tagKeywords;
         // To be implemented
         this.matchWord = matchWord;
+
+        // Defensive Programming
+        requireNonNull(nameKeywords);
+        requireNonNull(addressKeywords);
+        requireNonNull(phoneKeywords);
+        requireNonNull(tagKeywords);
+        requireNonNull(matchWord);
     }
 
     @Override

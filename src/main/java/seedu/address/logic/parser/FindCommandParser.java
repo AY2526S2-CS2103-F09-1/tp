@@ -1,11 +1,13 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +20,14 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
  */
 public class FindCommandParser implements Parser<FindCommand> {
 
+    // defensive programming & abstration
+    private static List<String> getSanitizedKeywords(List<String> keywords) {
+        requireNonNull(keywords);
+        List<String> sanitizedKeywords = new ArrayList<>(keywords);
+        sanitizedKeywords.removeIf(String::isBlank);
+        return sanitizedKeywords;
+    }
+
     /**
      * Parses the given {@code String} of arguments in the context of the
      * FindCommand
@@ -25,6 +35,7 @@ public class FindCommandParser implements Parser<FindCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public FindCommand parse(String args) throws ParseException {
+        requireNonNull(args);
         String trimmedArgs = args.trim();
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(
@@ -41,15 +52,16 @@ public class FindCommandParser implements Parser<FindCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        List<String> nameKeywords = argMultimap.getAllValues(PREFIX_NAME);
-        List<String> addressKeywords = argMultimap.getAllValues(PREFIX_ADDRESS);
-        List<String> phoneKeywords = argMultimap.getAllValues(PREFIX_PHONE);
-        List<String> tagKeywords = argMultimap.getAllValues(PREFIX_TAG);
+        List<String> nameKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_NAME));
+        List<String> addressKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_ADDRESS));
+        List<String> phoneKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_PHONE));
+        List<String> tagKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_TAG));
 
-        nameKeywords.removeIf(String::isBlank);
-        addressKeywords.removeIf(String::isBlank);
-        phoneKeywords.removeIf(String::isBlank);
-        tagKeywords.removeIf(String::isBlank);
+        // Ensure there are no blank strings in Keywords
+        assert nameKeywords.stream().noneMatch(String::isBlank);
+        assert addressKeywords.stream().noneMatch(String::isBlank);
+        assert phoneKeywords.stream().noneMatch(String::isBlank);
+        assert tagKeywords.stream().noneMatch(String::isBlank);
 
         if (nameKeywords.isEmpty() && addressKeywords.isEmpty()
                 && phoneKeywords.isEmpty() && tagKeywords.isEmpty()) {

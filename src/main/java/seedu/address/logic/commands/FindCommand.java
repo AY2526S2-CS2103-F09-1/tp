@@ -25,7 +25,15 @@ public class FindCommand extends Command {
 
     private final PersonContainsKeywordsPredicate predicate;
 
+    /**
+     * Creates a {@code FindCommand} with the given predicate.
+     *
+     * @param predicate Predicate used to filter persons.
+     * @throws NullPointerException if {@code predicate} is {@code null}.
+     */
     public FindCommand(PersonContainsKeywordsPredicate predicate) {
+        // predicate should never be null
+        requireNonNull(predicate);
         this.predicate = predicate;
     }
 

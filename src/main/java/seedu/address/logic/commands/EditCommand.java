@@ -168,8 +168,6 @@ public class EditCommand extends Command {
          * Sets the edited name.
          */
         public void setName(Name name) {
-            assert name != null;
-
             this.name = name;
         }
 
@@ -195,10 +193,6 @@ public class EditCommand extends Command {
          * For private use.
          */
         private void setPhone(Optional<Phone> phone, boolean phoneChanged) {
-            // boolean not checked here because boolean cannot be null
-            // while interestingly, Boolean can be null
-            assert phone != null;
-
             this.phone = phone;
             this.phoneChanged = phoneChanged;
         }
@@ -224,8 +218,6 @@ public class EditCommand extends Command {
          * Sets the edited address.
          */
         public void setAddress(Address address) {
-            assert address != null;
-
             this.address = address;
         }
 

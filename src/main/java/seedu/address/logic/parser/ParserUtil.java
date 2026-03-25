@@ -99,10 +99,10 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a {@code Tag}.
+     * Parses a {@code String tag} into a supported category {@code Tag}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the given {@code tag} is invalid.
+     * @throws ParseException if the given {@code tag} is invalid or not a supported category.
      */
     public static Tag parseTag(String tag) throws ParseException {
         requireNonNull(tag);
@@ -110,19 +110,8 @@ public class ParserUtil {
         if (!Tag.isValidTagName(trimmedTag)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
-        return new Tag(trimmedTag);
-    }
 
-    /**
-     * Parses a {@code String tag} into a supported category {@code Tag}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code tag} is not a supported category.
-     */
-    public static Tag parseCategoryTag(String tag) throws ParseException {
-        Tag parsedTag = parseTag(tag);
-        String normalizedCategoryTagName = Tag.getNormalizedCategoryTagName(parsedTag.tagName);
-
+        String normalizedCategoryTagName = Tag.getNormalizedCategoryTagName(trimmedTag);
         if (normalizedCategoryTagName == null) {
             throw new ParseException(Tag.MESSAGE_CATEGORY_CONSTRAINTS);
         }

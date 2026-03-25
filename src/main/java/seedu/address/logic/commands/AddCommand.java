@@ -25,12 +25,12 @@ public class AddCommand extends Command {
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example:\n"
-            + "         " + COMMAND_WORD + " "
+            + "\t" + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_ADDRESS + "1A Kent Ridge Rd, 119224 "
             + PREFIX_TAG + "friends\n"
-            + "         " + COMMAND_WORD + " "
+            + "\t" + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe\n";
 
     public static final String MESSAGE_SUCCESS = "Alright, the contact below has been added to your list!";

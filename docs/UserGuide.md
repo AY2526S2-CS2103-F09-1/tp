@@ -50,10 +50,10 @@ EduConnect is a **desktop application that enables private tutors to manage thei
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n/NAME [t/CATEGORY]` can be used as `n/John Doe t/Student` or as `n/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+  e.g. `[t/CATEGORY]…​` can be used as ` ` (i.e. 0 times), `t/Student`, `t/Student t/Parent` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -77,10 +77,10 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`
+Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
+A person can have any number of categories (including 0)
 </div>
 
 * Only `n/NAME` is required.
@@ -88,10 +88,8 @@ A person can have any number of tags (including 0)
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
 
 Examples:
-* `add n/John Doe p/98765432 a/John street, block 123, #01-01`
-* `add n/Jane Doe`
-* `add n/John Doe p/`
-* `add n/Betsy Crowe t/friend a/Newgate Prison p/12345678 t/criminal`
+* `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01`
+* `add n/Jane Doe p/98765432`
 
 ### Listing all persons : `list`
 

@@ -16,7 +16,7 @@ public class Tag {
     public static final String MESSAGE_CONSTRAINTS = "Tag names should be alphanumeric";
     public static final String VALIDATION_REGEX = "\\p{Alnum}+";
     private static final Map<String, String> SUPPORTED_CATEGORY_TAGS = createSupportedCategoryTags();
-    public static final String MESSAGE_CATEGORY_CONSTRAINTS =
+    public static final String MESSAGE_TAG_CONSTRAINTS =
             "Category must be one of the following values: "
                     + String.join(", ", SUPPORTED_CATEGORY_TAGS.values()) + ".";
 

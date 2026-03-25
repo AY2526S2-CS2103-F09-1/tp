@@ -24,12 +24,13 @@ public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_TAG = "#friend";
+    private static final String UNSUPPORTED_TAG = "friend";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "12345678";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
-    private static final String VALID_TAG_1 = "friend";
-    private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_TAG_1 = "student";
+    private static final String VALID_TAG_2 = "parent";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -114,11 +115,6 @@ public class ParserUtilTest {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((String) null));
     }
 
-    // @Test
-    // public void parseAddress_invalidValue_throwsParseException() {
-    //     assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_ADDRESS));
-    // }
-
     @Test
     public void parseAddress_validValueWithoutWhitespace_returnsAddress() throws Exception {
         Address expectedAddress = new Address(VALID_ADDRESS);
@@ -143,46 +139,28 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseTag_validValueWithoutWhitespace_returnsTag() throws Exception {
-        Tag expectedTag = new Tag(VALID_TAG_1);
+    public void parseTag_unsupportedCategory_throwsParseException() {
+        assertThrows(ParseException.class, Tag.MESSAGE_TAG_CONSTRAINTS, () ->
+                ParserUtil.parseTag(UNSUPPORTED_TAG));
+    }
+
+    @Test
+    public void parseTag_validValueWithoutWhitespace_returnsNormalizedTag() throws Exception {
+        Tag expectedTag = new Tag("Student");
         assertEquals(expectedTag, ParserUtil.parseTag(VALID_TAG_1));
     }
 
     @Test
-    public void parseTag_validValueWithWhitespace_returnsTrimmedTag() throws Exception {
+    public void parseTag_validValueWithWhitespace_returnsNormalizedTag() throws Exception {
         String tagWithWhitespace = WHITESPACE + VALID_TAG_1 + WHITESPACE;
-        Tag expectedTag = new Tag(VALID_TAG_1);
+        Tag expectedTag = new Tag("Student");
         assertEquals(expectedTag, ParserUtil.parseTag(tagWithWhitespace));
     }
 
     @Test
-    public void parseCategoryTag_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseCategoryTag(null));
-    }
-
-    @Test
-    public void parseCategoryTag_invalidValue_throwsParseException() {
-        assertThrows(ParseException.class, Tag.MESSAGE_CATEGORY_CONSTRAINTS, ()
-                -> ParserUtil.parseCategoryTag(VALID_TAG_1));
-    }
-
-    @Test
-    public void parseCategoryTag_invalidFormat_throwsParseException() {
-        assertThrows(ParseException.class, Tag.MESSAGE_CONSTRAINTS, ()
-                -> ParserUtil.parseCategoryTag(INVALID_TAG));
-    }
-
-    @Test
-    public void parseCategoryTag_validValueWithoutWhitespace_returnsTag() throws Exception {
-        Tag expectedTag = new Tag("Student");
-        assertEquals(expectedTag, ParserUtil.parseCategoryTag("student"));
-    }
-
-    @Test
-    public void parseCategoryTag_validValueWithWhitespace_returnsNormalizedTag() throws Exception {
-        String categoryTagWithWhitespace = WHITESPACE + "parent" + WHITESPACE;
-        Tag expectedTag = new Tag("Parent");
-        assertEquals(expectedTag, ParserUtil.parseCategoryTag(categoryTagWithWhitespace));
+    public void parseTag_validValueWithDifferentCase_returnsNormalizedTag() throws Exception {
+        Tag expectedTag = new Tag("Tutor");
+        assertEquals(expectedTag, ParserUtil.parseTag("tUtOr"));
     }
 
     @Test
@@ -196,6 +174,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTags_collectionWithUnsupportedTags_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTags(Arrays.asList(VALID_TAG_1, UNSUPPORTED_TAG)));
+    }
+
+    @Test
     public void parseTags_emptyCollection_returnsEmptySet() throws Exception {
         assertTrue(ParserUtil.parseTags(Collections.emptyList()).isEmpty());
     }
@@ -203,7 +186,7 @@ public class ParserUtilTest {
     @Test
     public void parseTags_collectionWithValidTags_returnsTagSet() throws Exception {
         Set<Tag> actualTagSet = ParserUtil.parseTags(Arrays.asList(VALID_TAG_1, VALID_TAG_2));
-        Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
+        Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag("Student"), new Tag("Parent")));
 
         assertEquals(expectedTagSet, actualTagSet);
     }

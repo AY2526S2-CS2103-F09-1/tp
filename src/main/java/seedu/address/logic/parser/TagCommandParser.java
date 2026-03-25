@@ -32,7 +32,7 @@ public class TagCommandParser implements Parser<TagCommand> {
         argumentMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TAG);
 
         Id targetId = ParserUtil.parseId(argumentMultimap.getPreamble());
-        Tag categoryTag = ParserUtil.parseCategoryTag(argumentMultimap.getValue(PREFIX_TAG).get());
+        Tag categoryTag = ParserUtil.parseTag(argumentMultimap.getValue(PREFIX_TAG).get());
         return new TagCommand(targetId, categoryTag);
     }
 

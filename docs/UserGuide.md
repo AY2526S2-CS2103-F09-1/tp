@@ -50,10 +50,10 @@ EduConnect is a **desktop application that enables private tutors to manage thei
   e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n/NAME [t/CATEGORY]` can be used as `n/John Doe t/Student` or as `n/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+  e.g. `[t/CATEGORY]…​` can be used as ` ` (i.e. 0 times), `t/Student`, `t/Student t/Parent` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -77,16 +77,16 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`
+Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
+A person can have any number of categories (including 0)
 </div>
 
 Examples:
 * `add n/John Doe p/98765432 a/John street, block 123, #01-01`
 * `add n/Jane Doe p/98765432`
-* `add n/Betsy Crowe t/friend a/Newgate Prison p/1234567 t/criminal`
+* `add n/Betsy Crowe t/Student a/Newgate Prison p/1234567`
 
 ### Listing all persons : `list`
 
@@ -224,7 +224,7 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​` <br> e.g., `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Student`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee`

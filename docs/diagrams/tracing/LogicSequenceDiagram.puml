@@ -7,14 +7,18 @@ Participant ":AddressBookParser" as abp LOGIC_COLOR
 Participant ":EditCommandParser" as ecp LOGIC_COLOR
 Participant "command:EditCommand" as ec LOGIC_COLOR
 
-[-> logic : execute
+[-> logic : execute("edit 1 t/Parent")
 activate logic
-logic -> abp ++: parseCommand(commandText)
+logic -> abp ++: parseCommand("edit 1 t/Parent")
 create ecp
 abp -> ecp
-abp -> ecp ++: parse(arguments)
+abp -> ecp ++: parse("1 t/Parent")
 create ec
-ecp -> ec ++: index, editPersonDescriptor
+ecp -> ec ++: id, editPersonDescriptor
+note right of ec
+  Categories are appended.
+  A bare t/ clears all tags.
+end note
 ec --> ecp --
 ecp --> abp --: command
 abp --> logic --: command

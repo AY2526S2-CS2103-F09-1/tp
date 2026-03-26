@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_TUTOR;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -102,6 +103,26 @@ public class EditCommandTest {
     }
 
     @Test
+    public void execute_idInAddressBookAppendMultipleTags_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTags(VALID_CATEGORY_PARENT, VALID_CATEGORY_TUTOR).build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
+
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withTags("Student", VALID_CATEGORY_PARENT, VALID_CATEGORY_TUTOR).build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_idInAddressBookClearTags_success() {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags().build();
         EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
@@ -164,6 +185,27 @@ public class EditCommandTest {
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
+    @Test
+    public void execute_idInFilteredListAppendTag_success() {
+        showPersonWithId(model, ID_FIRST);
+
+        EditCommand editCommand = new EditCommand(ID_FIRST,
+                new EditPersonDescriptorBuilder().withTags(VALID_CATEGORY_TUTOR).build());
+
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+        Person editedPerson = new PersonBuilder(personToEdit).withTags("Student", VALID_CATEGORY_TUTOR).build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+                Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
     /**
      * Edit a person who is not in the current filtered list,
      * but is still present in the address book.
@@ -182,6 +224,29 @@ public class EditCommandTest {
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withName(VALID_NAME_BOB).build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+                Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_idInAddressBookButNotInFilteredListAppendTag_success() {
+        showPersonWithId(model, ID_FIRST);
+
+        Id idInAddressBookButNotInFilteredList = ID_SECOND;
+        EditCommand editCommand = new EditCommand(idInAddressBookButNotInFilteredList,
+                new EditPersonDescriptorBuilder().withTags(VALID_CATEGORY_TUTOR).build());
+
+        Optional<Person> personToEditFound = model.findPersonById(idInAddressBookButNotInFilteredList);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withTags("Parent", VALID_CATEGORY_TUTOR).build();
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));

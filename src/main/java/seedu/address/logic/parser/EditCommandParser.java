@@ -81,17 +81,17 @@ public class EditCommandParser implements Parser<EditCommand> {
             return Optional.of(Collections.emptySet());
         }
         if (containsTagResetValue(tags)) {
-            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+            throw new ParseException(EditCommand.MESSAGE_INVALID_TAG_RESET);
         }
 
         return Optional.of(ParserUtil.parseTags(tags));
     }
 
-    private boolean isTagReset(Collection<String> tags) {
+    private static boolean isTagReset(Collection<String> tags) {
         return tags.size() == 1 && containsTagResetValue(tags);
     }
 
-    private boolean containsTagResetValue(Collection<String> tags) {
+    private static boolean containsTagResetValue(Collection<String> tags) {
         return tags.contains(TAG_RESET_VALUE);
     }
 

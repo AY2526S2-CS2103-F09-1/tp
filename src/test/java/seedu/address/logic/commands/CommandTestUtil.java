@@ -35,6 +35,7 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_EMPTY_STRING = " " + PREFIX_ADDRESS; // empty string
     public static final String VALID_CATEGORY_STUDENT = "Student";
     public static final String VALID_CATEGORY_PARENT = "Parent";
+    public static final String VALID_CATEGORY_TUTOR = "Tutor";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
 
@@ -46,6 +47,7 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String CATEGORY_DESC_STUDENT = " " + PREFIX_TAG + VALID_CATEGORY_STUDENT;
     public static final String CATEGORY_DESC_PARENT = " " + PREFIX_TAG + VALID_CATEGORY_PARENT;
+    public static final String CATEGORY_DESC_TUTOR = " " + PREFIX_TAG + VALID_CATEGORY_TUTOR;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
     public static final String UNSUPPORTED_TAG_DESC = " " + PREFIX_TAG + VALID_TAG_FRIEND;

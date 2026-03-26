@@ -107,14 +107,17 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/CATEGORY]…​`
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the provided tags will be appended to the person’s existing tags.
-* Only the supported categories may be used as edit tags.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+* Use this command for all category updates. EduConnect does not provide a separate `tag` command.
+* When editing tags, the provided categories will be appended to the person’s existing tags.
+* Only the supported categories may be used as edit tags: `Student`, `Parent`, `Tutor`.
+* Repeating an existing category has no effect because duplicate categories are not stored.
+* You can remove all the person’s tags by typing `t/` without specifying any category after it.
+* `t/` must be used on its own. Do not combine `t/` with category values in the same command.
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
 *  `edit 2 t/Parent` Appends the tag `Parent` to the person with `ID` 2.
+*  `edit 2 t/Parent t/Tutor` Appends both `Parent` and `Tutor` to the person with `ID` 2.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 
 ### Locating persons: `find`
@@ -229,7 +232,7 @@ Action | Format, Examples
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​` <br> e.g., `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Student`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`<br> e.g.,`edit 2 t/Parent`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`<br> e.g.,`edit 2 t/Parent t/Tutor`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List** | `list`
 **Help** | `help`

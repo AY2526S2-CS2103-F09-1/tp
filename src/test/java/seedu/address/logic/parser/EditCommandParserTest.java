@@ -85,11 +85,11 @@ public class EditCommandParserTest {
         // while parsing {@code PREFIX_TAG} alone will reset the tags of the {@code Person} being edited,
         // parsing it together with a valid tag results in error
         assertParseFailure(parser, "1" + CATEGORY_DESC_STUDENT + CATEGORY_DESC_PARENT + TAG_EMPTY,
-                Tag.MESSAGE_CONSTRAINTS);
+                EditCommand.MESSAGE_INVALID_TAG_RESET);
         assertParseFailure(parser, "1" + CATEGORY_DESC_STUDENT + TAG_EMPTY + CATEGORY_DESC_PARENT,
-                Tag.MESSAGE_CONSTRAINTS);
+                EditCommand.MESSAGE_INVALID_TAG_RESET);
         assertParseFailure(parser, "1" + TAG_EMPTY + CATEGORY_DESC_STUDENT + CATEGORY_DESC_PARENT,
-                Tag.MESSAGE_CONSTRAINTS);
+                EditCommand.MESSAGE_INVALID_TAG_RESET);
 
         // multiple invalid values, but only the first invalid value is captured
         assertParseFailure(parser, "1" + INVALID_NAME_DESC + VALID_ADDRESS_AMY + VALID_PHONE_AMY,
@@ -147,6 +147,30 @@ public class EditCommandParserTest {
         userInput = targetId.getValue() + CATEGORY_DESC_STUDENT;
         descriptor = new EditPersonDescriptorBuilder().withTags(VALID_CATEGORY_STUDENT).build();
         expectedCommand = new EditCommand(targetId, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_multipleCategoriesSpecified_success() {
+        Id targetId = ID_THIRD;
+        String userInput = targetId.getValue() + CATEGORY_DESC_STUDENT + CATEGORY_DESC_PARENT;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTags(VALID_CATEGORY_STUDENT, VALID_CATEGORY_PARENT).build();
+        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_resetTagsWithOtherField_success() {
+        Id targetId = ID_SECOND;
+        String userInput = targetId.getValue() + NAME_DESC_AMY + TAG_EMPTY;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withName(VALID_NAME_AMY).withTags().build();
+        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
+
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 

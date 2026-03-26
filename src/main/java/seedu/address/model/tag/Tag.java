@@ -41,14 +41,6 @@ public class Tag {
     }
 
     /**
-     * Returns true if a given string is a supported category tag.
-     */
-    public static boolean isValidCategoryTagName(String test) {
-        requireNonNull(test);
-        return SUPPORTED_CATEGORY_TAGS.containsKey(test.toLowerCase());
-    }
-
-    /**
      * Returns the normalized category tag name for a supported category tag.
      */
     public static String getNormalizedCategoryTagName(String test) {

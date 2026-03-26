@@ -83,11 +83,7 @@ public class EditCommandParser implements Parser<EditCommand> {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
 
-        try {
-            return Optional.of(ParserUtil.parseTags(tags));
-        } catch (ParseException pe) {
-            throw new ParseException(Tag.MESSAGE_CATEGORY_CONSTRAINTS, pe);
-        }
+        return Optional.of(ParserUtil.parseTags(tags));
     }
 
 }

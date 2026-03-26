@@ -37,15 +37,8 @@ public class Tag {
      * Returns true if a given string is a valid tag name.
      */
     public static boolean isValidTagName(String test) {
-        return test.matches(VALIDATION_REGEX);
-    }
-
-    /**
-     * Returns true if a given string is a supported category tag.
-     */
-    public static boolean isValidCategoryTagName(String test) {
         requireNonNull(test);
-        return SUPPORTED_CATEGORY_TAGS.containsKey(test.toLowerCase());
+        return test.matches(VALIDATION_REGEX);
     }
 
     /**

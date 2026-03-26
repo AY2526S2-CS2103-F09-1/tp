@@ -23,6 +23,7 @@ import seedu.address.model.tag.Tag;
  * Parses input arguments and creates a new EditCommand object
  */
 public class EditCommandParser implements Parser<EditCommand> {
+    private static final String TAG_RESET_VALUE = "";
 
     /**
      * Parses the given {@code String} of arguments in the context of the EditCommand
@@ -71,13 +72,29 @@ public class EditCommandParser implements Parser<EditCommand> {
      * {@code Set<Tag>} containing zero tags.
      */
     private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
+        requireNonNull(tags);
 
         if (tags.isEmpty()) {
             return Optional.empty();
         }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
+
+        // A bare t/ clears all tags, but it cannot be combined with category values.
+        if (isTagReset(tags)) {
+            return Optional.of(Collections.emptySet());
+        }
+        if (containsTagResetValue(tags)) {
+            throw new ParseException(EditCommand.MESSAGE_INVALID_TAG_RESET);
+        }
+
+        return Optional.of(ParserUtil.parseTags(tags));
+    }
+
+    private static boolean isTagReset(Collection<String> tags) {
+        return tags.size() == 1 && containsTagResetValue(tags);
+    }
+
+    private static boolean containsTagResetValue(Collection<String> tags) {
+        return tags.contains(TAG_RESET_VALUE);
     }
 
 }

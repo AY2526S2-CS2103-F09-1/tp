@@ -32,21 +32,24 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Edits the details of the person with the specified ID. "
-            + "Existing values will be overwritten by the input values.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person with "
+            + "the specified ID. "
+            + "Existing values will be overwritten by the input values, except tags which are appended.\n"
             + "Parameters: ID (must be a positive integer) "
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
-            + "Example:\n"
-            + "\t" + COMMAND_WORD + " 1 "
-            + PREFIX_PHONE + "91234567\n";
+            + "[" + PREFIX_TAG + "CATEGORY]...\n"
+            + "Example: " + COMMAND_WORD + " 1 "
+            + PREFIX_PHONE + "91234567 "
+            + PREFIX_TAG + "Student\n"
+            + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG;
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
+    public static final String MESSAGE_INVALID_TAG_RESET =
+            "The tag reset prefix t/ cannot be combined with category values.";
 
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -66,6 +69,9 @@ public class EditCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        if (!editPersonDescriptor.isAnyFieldEdited()) {
+            throw new CommandException(MESSAGE_NOT_EDITED);
+        }
 
         Person personToEdit = model.findPersonById(id)
                 .orElseThrow(() -> new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID,
@@ -84,10 +90,12 @@ public class EditCommand extends Command {
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code editPersonDescriptor}.
+     * edited with {@code editPersonDescriptor}. Provided tags are appended to the
+     * existing tags, unless the edited tag set is empty, which clears all tags.
      */
     private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        assert personToEdit != null;
+        requireNonNull(personToEdit);
+        requireNonNull(editPersonDescriptor);
 
         Id personId = personToEdit.getId();
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -95,9 +103,31 @@ public class EditCommand extends Command {
             ? editPersonDescriptor.getPhone()
             : personToEdit.getPhone();
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Set<Tag> updatedTags = createUpdatedTags(personToEdit.getTags(), editPersonDescriptor);
 
         return new Person(personId, updatedName, updatedPhone, updatedAddress, updatedTags);
+    }
+
+    private static Set<Tag> createUpdatedTags(Set<Tag> existingTags, EditPersonDescriptor editPersonDescriptor) {
+        requireNonNull(existingTags);
+        requireNonNull(editPersonDescriptor);
+
+        return editPersonDescriptor.getTags()
+                .map(tagsToApply -> mergeTags(existingTags, tagsToApply))
+                .orElse(existingTags);
+    }
+
+    private static Set<Tag> mergeTags(Set<Tag> existingTags, Set<Tag> tagsToApply) {
+        requireNonNull(existingTags);
+        requireNonNull(tagsToApply);
+
+        if (tagsToApply.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        Set<Tag> combinedTags = new HashSet<>(existingTags);
+        combinedTags.addAll(tagsToApply);
+        return combinedTags;
     }
 
     @Override
@@ -126,7 +156,7 @@ public class EditCommand extends Command {
 
     /**
      * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person.
+     * corresponding field value of the person, except tags which will be appended.
      */
     public static class EditPersonDescriptor {
         private Name name;
@@ -193,6 +223,7 @@ public class EditCommand extends Command {
          * For private use.
          */
         private void setPhone(Optional<Phone> phone, boolean phoneChanged) {
+            requireNonNull(phone);
             this.phone = phone;
             this.phoneChanged = phoneChanged;
         }

@@ -1,7 +1,6 @@
 package seedu.address.model.tag;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -26,11 +25,13 @@ public class TagTest {
     }
 
     @Test
-    public void isValidCategoryTagName_validAndInvalidInputs_returnsExpectedResult() {
-        assertThrows(NullPointerException.class, () -> Tag.isValidCategoryTagName(null));
-        assertTrue(Tag.isValidCategoryTagName("student"));
-        assertTrue(Tag.isValidCategoryTagName("Tutor"));
-        assertFalse(Tag.isValidCategoryTagName("friend"));
+    public void getNormalizedCategoryTagName_nullTagName_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> Tag.getNormalizedCategoryTagName(null));
+    }
+
+    @Test
+    public void getNormalizedCategoryTagName_validTagName_returnsNormalizedCategory() {
+        assertEquals("Student", Tag.getNormalizedCategoryTagName("student"));
     }
 
 }

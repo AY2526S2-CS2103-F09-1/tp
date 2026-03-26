@@ -370,43 +370,51 @@ Extensions:
   * Steps 2b1-2b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
   
-#### Use case: UC03 - Tag Contact to Categorize
+#### Use case: UC03 - Update Contact Categories
 Actor: User
 
 Guarantees:
-* On successful completion, the selected contact has the updated category tag.
+* On successful completion, the selected contact has the updated category tags.
 * If the operation fails, no contact is modified.
 
 MSS:
-1. User requests to assign a category to a contact.
+1. User requests to edit a contact's categories.
 2. EduConnect validates the contact reference and category value.
-3. EduConnect applies the tag to the selected contact.
+3. EduConnect appends the provided categories to the selected contact.
 4. EduConnect shows a success message.
 Use case ends.
 
 Extensions:
 * 1a. User omits required details, or provides an empty required detail.
   * 1a1. EduConnect shows an error message and input guidance.
-  * 1a2. User re-submits the tagging request.
+  * 1a2. User re-submits the edit request.
   * Steps 1a1-1a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
 * 1b. User provides the same required detail more than once.
   * 1b1. EduConnect shows an error message.
-  * 1b2. User re-submits the tagging request.
+  * 1b2. User re-submits the edit request.
   * Steps 1b1-1b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
 * 2a. The contact reference is invalid or not found in the address book.
   * 2a1. EduConnect shows an error message.
-  * 2a2. User re-submits the tagging request.
+  * 2a2. User re-submits the edit request.
   * Steps 2a1-2a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
 * 2b. The provided category is not a supported category.
   * 2b1. EduConnect shows an error message.
-  * 2b2. User re-submits the tagging request.
+  * 2b2. User re-submits the edit request.
   * Steps 2b1-2b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 3a. The selected contact already has a tag.
-  * 3a1. EduConnect overwrites the existing tag with the new tag.
+* 2c. The user combines `t/` with one or more category values.
+  * 2c1. EduConnect shows an error message.
+  * 2c2. User re-submits the edit request.
+  * Steps 2c1-2c2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 3a. The selected contact already has one or more categories.
+  * 3a1. EduConnect appends any missing categories and keeps existing categories unchanged.
+  * Use case resumes from step 4.
+* 3b. The user enters `t/` with no category value.
+  * 3b1. EduConnect clears all existing categories for the selected contact.
   * Use case resumes from step 4.
 
 #### Use case: UC04 - View Phone Number and Address

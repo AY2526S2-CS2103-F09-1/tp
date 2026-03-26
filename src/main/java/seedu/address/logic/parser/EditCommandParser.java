@@ -76,8 +76,18 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (tags.isEmpty()) {
             return Optional.empty();
         }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
+        if (tags.size() == 1 && tags.contains("")) {
+            return Optional.of(Collections.emptySet());
+        }
+        if (tags.contains("")) {
+            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
+        }
+
+        try {
+            return Optional.of(ParserUtil.parseTags(tags));
+        } catch (ParseException pe) {
+            throw new ParseException(Tag.MESSAGE_CATEGORY_CONSTRAINTS, pe);
+        }
     }
 
 }

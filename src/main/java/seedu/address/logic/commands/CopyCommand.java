@@ -40,10 +40,6 @@ public class CopyCommand extends Command {
             + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS;
 
     public static final String MESSAGE_EMPTY_FIELD_VALUE = "There is no %s to copy for this contact.";
-    private static final String FIELD_NAME = "n/";
-    private static final String FIELD_PHONE = "p/";
-    private static final String FIELD_ADDRESS = "a/";
-
     private final Id targetId;
     private final String field;
     /**
@@ -82,28 +78,26 @@ public class CopyCommand extends Command {
     }
 
     private String getFieldValue(Person person) {
-        switch (field) {
-        case FIELD_NAME:
+        if (field.equals(PREFIX_NAME.getPrefix())) {
             return person.getName().fullName;
-        case FIELD_PHONE:
+        } else if (field.equals(PREFIX_PHONE.getPrefix())) {
             return person.getPhone().map(p -> p.value).orElse(EMPTY_STRING);
-        case FIELD_ADDRESS:
+        } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return person.getAddress().value;
-        default:
+        } else {
             assert false : "Invalid field: " + field;
             return EMPTY_STRING;
         }
     }
 
     private String getFieldLabel() {
-        switch (field) {
-        case FIELD_NAME:
+        if (field.equals(PREFIX_NAME.getPrefix())) {
             return "name";
-        case FIELD_PHONE:
+        } else if (field.equals(PREFIX_PHONE.getPrefix())) {
             return "phone number";
-        case FIELD_ADDRESS:
+        } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return "address";
-        default:
+        } else {
             assert false : "Invalid field: " + field;
             return EMPTY_STRING;
         }

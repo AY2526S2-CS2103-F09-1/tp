@@ -178,6 +178,8 @@ public class EditCommand extends Command {
          * A defensive copy of {@code tags} is used internally.
          */
         public EditPersonDescriptor(EditPersonDescriptor toCopy) {
+            assert toCopy != null;
+
             setName(toCopy.name);
             setPhone(toCopy.phone, toCopy.phoneChanged);
             setAddress(toCopy.address);
@@ -211,11 +213,9 @@ public class EditCommand extends Command {
          * For public use.
          */
         public void setPhone(Optional<Phone> phone) {
-            if (phone == null) {
-                setPhone(Optional.empty(), false);
-            } else {
-                setPhone(phone, true);
-            }
+            Optional.ofNullable(phone)
+                .ifPresentOrElse(p -> setPhone(p, true), () ->
+                        setPhone(Optional.empty(), false));
         }
 
         /**
@@ -239,10 +239,10 @@ public class EditCommand extends Command {
          * Returns the edited phone if it was provided.
          */
         public Optional<Phone> getPhone() {
-            if (phone == null) {
-                return Optional.empty();
-            }
-            return phone;
+            // if phone null return Optional.empty
+            // else return Optional<Phone>
+            return Optional.ofNullable(phone)
+                .flatMap(phone -> phone);
         }
 
         /**

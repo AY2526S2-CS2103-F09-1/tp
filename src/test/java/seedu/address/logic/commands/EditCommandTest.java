@@ -5,10 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_PARENT;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_TUTOR;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_TUTOR;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonWithId;
@@ -68,10 +69,10 @@ public class EditCommandTest {
 
         PersonBuilder personBuilderForMaxId = new PersonBuilder(personWithMaxId);
         Person editedPerson = personBuilderForMaxId.withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
-                .withTags("Tutor", VALID_CATEGORY_PARENT).build();
+                .withTags(VALID_TAG_TUTOR, VALID_TAG_PARENT).build();
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
-                .withPhone(VALID_PHONE_BOB).withTags(VALID_CATEGORY_PARENT).build();
+                .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_PARENT).build();
         EditCommand editCommand = new EditCommand(maxId, descriptor);
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
@@ -85,14 +86,14 @@ public class EditCommandTest {
 
     @Test
     public void execute_idInAddressBookAppendTag_success() {
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags(VALID_CATEGORY_PARENT).build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags(VALID_TAG_PARENT).build();
         EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
 
         Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit)
-                .withTags("Student", VALID_CATEGORY_PARENT).build();
+                .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
@@ -105,14 +106,14 @@ public class EditCommandTest {
     @Test
     public void execute_idInAddressBookAppendMultipleTags_success() {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withTags(VALID_CATEGORY_PARENT, VALID_CATEGORY_TUTOR).build();
+                .withTags(VALID_TAG_PARENT, VALID_TAG_TUTOR).build();
         EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
 
         Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit)
-                .withTags("Student", VALID_CATEGORY_PARENT, VALID_CATEGORY_TUTOR).build();
+                .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT, VALID_TAG_TUTOR).build();
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
@@ -142,7 +143,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_idInAddressBookAppendExistingTag_success() {
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags("Student").build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags(VALID_TAG_STUDENT).build();
         EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
 
         Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
@@ -190,12 +191,12 @@ public class EditCommandTest {
         showPersonWithId(model, ID_FIRST);
 
         EditCommand editCommand = new EditCommand(ID_FIRST,
-                new EditPersonDescriptorBuilder().withTags(VALID_CATEGORY_TUTOR).build());
+                new EditPersonDescriptorBuilder().withTags(VALID_TAG_TUTOR).build());
 
         Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
-        Person editedPerson = new PersonBuilder(personToEdit).withTags("Student", VALID_CATEGORY_TUTOR).build();
+        Person editedPerson = new PersonBuilder(personToEdit).withTags(VALID_TAG_STUDENT, VALID_TAG_TUTOR).build();
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
@@ -218,8 +219,6 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(idInAddressBookButNotInFilteredList,
                 new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
 
-        // ensures that idInAddressBookButNotInFilteredList is
-        // still in address book list
         Optional<Person> personToEditFound = model.findPersonById(idInAddressBookButNotInFilteredList);
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
@@ -240,13 +239,13 @@ public class EditCommandTest {
 
         Id idInAddressBookButNotInFilteredList = ID_SECOND;
         EditCommand editCommand = new EditCommand(idInAddressBookButNotInFilteredList,
-                new EditPersonDescriptorBuilder().withTags(VALID_CATEGORY_TUTOR).build());
+                new EditPersonDescriptorBuilder().withTags(VALID_TAG_TUTOR).build());
 
         Optional<Person> personToEditFound = model.findPersonById(idInAddressBookButNotInFilteredList);
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit)
-                .withTags("Parent", VALID_CATEGORY_TUTOR).build();
+                .withTags(VALID_TAG_PARENT, VALID_TAG_TUTOR).build();
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
@@ -273,7 +272,6 @@ public class EditCommandTest {
     public void execute_idInFilteredListDuplicatePersonInAddressBook_failure() {
         showPersonWithId(model, ID_FIRST);
 
-        // edit person in filtered list into a duplicate in address book
         Optional<Person> personInBookFound = model.findPersonById(ID_SECOND);
         assertTrue(personInBookFound.isPresent());
         Person personInBook = personInBookFound.get();
@@ -298,24 +296,14 @@ public class EditCommandTest {
     public void equals() {
         final EditCommand standardCommand = new EditCommand(ID_FIRST, DESC_AMY);
 
-        // same values -> returns true
         EditPersonDescriptor copyDescriptor = new EditPersonDescriptor(DESC_AMY);
         EditCommand commandWithSameValues = new EditCommand(ID_FIRST, copyDescriptor);
         assertTrue(standardCommand.equals(commandWithSameValues));
 
-        // same object -> returns true
         assertTrue(standardCommand.equals(standardCommand));
-
-        // null -> returns false
         assertFalse(standardCommand.equals(null));
-
-        // different types -> returns false
         assertFalse(standardCommand.equals(new ClearCommand()));
-
-        // different index -> returns false
         assertFalse(standardCommand.equals(new EditCommand(ID_SECOND, DESC_AMY)));
-
-        // different descriptor -> returns false
         assertFalse(standardCommand.equals(new EditCommand(ID_FIRST, DESC_BOB)));
     }
 
@@ -327,5 +315,4 @@ public class EditCommandTest {
                 + editPersonDescriptor + "}";
         assertEquals(expected, editCommand.toString());
     }
-
 }

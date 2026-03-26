@@ -11,15 +11,13 @@ import java.util.Optional;
 public class Id implements Comparable<Id> {
     public static final String MESSAGE_CONSTRAINTS =
             "IDs should not be blank, and must be a positive integer.";
-    private static final int SMALLEST_VALUE = 1;
-    private final int value;
+    public static final String OVERFLOW_MESSAGE =
+            "The provided ID is already of the maximum possible value, "
+            + "and will lead to an overflow.";
 
-    /**
-     * Creates a new {@code Id} with the smallest possible value.
-     */
-    private Id() {
-        this(SMALLEST_VALUE);
-    }
+    private static final int SMALLEST_VALUE = 1;
+    private static final int LARGEST_VALUE = Integer.MAX_VALUE;
+    private final int value;
 
     private Id(int value) {
         checkArgument(isValidId(value), MESSAGE_CONSTRAINTS);
@@ -37,9 +35,22 @@ public class Id implements Comparable<Id> {
      * Creates a new {@code Id} using the maximum id that is saved in the address book currently.
      */
     public static Id fromCurrentMaxId(Optional<Id> currentMaxId) {
-        // increment by 1 to avoid duplicated ids
-        return currentMaxId.map(maxId -> new Id(maxId.value + 1))
-                .orElse(new Id());
+        // for when the current address book is empty
+        // and there is no max id
+        int emptyMaxIdValue = SMALLEST_VALUE - 1;
+
+        Optional<Integer> currentMaxIdValue = currentMaxId
+                // get current id value
+                .map(maxId -> maxId.value)
+                .or(() -> Optional.of(emptyMaxIdValue));
+
+        return currentMaxIdValue
+                // if current id cannot be incremented further, we need to
+                // throw an exception to prevent overflow
+                .filter(idValue -> idValue < LARGEST_VALUE)
+                // increment by 1 to avoid duplicated ids
+                .map(idValue -> new Id(idValue + 1))
+                .orElseThrow(() -> new IllegalArgumentException(OVERFLOW_MESSAGE));
     }
 
     /**

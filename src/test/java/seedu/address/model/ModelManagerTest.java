@@ -11,11 +11,13 @@ import static seedu.address.testutil.TypicalPersons.BENSON;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
 import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.PersonBuilder;
 
@@ -120,7 +122,7 @@ public class ModelManagerTest {
         // different filteredList -> returns false
         String[] keywords = ALICE.getName().fullName.split("\\s+");
         modelManager.updateFilteredPersonList(new PersonContainsKeywordsPredicate(Arrays.asList(keywords),
-                true, true, true, false));
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests

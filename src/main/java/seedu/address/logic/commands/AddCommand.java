@@ -18,17 +18,20 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the contact list. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the contact list.\n"
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_TAG + "CATEGORY]...\n"
-            + "Example: " + COMMAND_WORD + " "
+            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "Example:\n"
+            + "\t" + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
-            + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
-            + PREFIX_TAG + "Student";
+            + PREFIX_ADDRESS + "1A Kent Ridge Rd, 119224 "
+            + PREFIX_TAG + "friends\n"
+            + "\t" + COMMAND_WORD + " "
+            + PREFIX_NAME + "John Doe\n";
 
     public static final String MESSAGE_SUCCESS = "Alright, the contact below has been added to your list!";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list";

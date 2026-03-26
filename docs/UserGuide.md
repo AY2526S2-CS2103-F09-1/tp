@@ -28,7 +28,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 a/1A Kent Ridge Rd, 119224` : Adds a contact named `John Doe` with a phone number and address to the Address Book.
 
    * `del 3` : Deletes the contact with an `ID` of 3.
 
@@ -83,10 +83,13 @@ Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`
 A person can have any number of categories (including 0)
 </div>
 
+* Only `n/NAME` is required.
+* `p/PHONE_NUMBER`, `a/ADDRESS`, and `t/TAG` are optional.
+* `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
+
 Examples:
-* `add n/John Doe p/98765432 a/John street, block 123, #01-01`
+* `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01`
 * `add n/Jane Doe p/98765432`
-* `add n/Betsy Crowe t/Student a/Newgate Prison p/1234567`
 
 ### Listing all persons : `list`
 
@@ -177,7 +180,7 @@ Format: `copy ID field`
 Examples:
 * `copy 6 n/` copy the name of the person with `ID` 6 to the clipboard.
 * `copy 7 p/` copy the phone number of the person with `ID` 7 to the clipboard.
-* `copy 9 a/` copy the address of the person with `ID` 9 to the clipboard .
+* `copy 9 a/` copy the address of the person with `ID` 9 to the clipboard.
 * `copy 1 p/` will fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
 
 ### Clearing all entries : `clear`
@@ -229,7 +232,7 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​` <br> e.g., `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Student`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`<br> e.g.,`edit 2 t/Parent t/Tutor`

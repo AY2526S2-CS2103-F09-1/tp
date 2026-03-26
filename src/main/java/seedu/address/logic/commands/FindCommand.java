@@ -8,20 +8,20 @@ import seedu.address.model.Model;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
- * Finds and lists all persons in address book whose name, address, or phone contains any of the argument keywords.
- * Keyword matching is case insensitive for name and address.
+ * Finds and lists all persons in address book whose name, address, phone, or tag contains
+ * any of the argument keywords. Keyword matching is case insensitive for name, address, and tag.
  */
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds persons whose name, address, or phone number "
-            + "contains any of the specified keywords.\n"
-            + "Format: " + COMMAND_WORD + " [n/NAME] [a/ADDRESS] [p/PHONE]\n"
-
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds persons whose specified fields "
+            + "contain any of the given keywords.\n"
+            + "Format: " + COMMAND_WORD + ": [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...\n"
             + "Examples: " + COMMAND_WORD + " n/Ali n/August\n"
             + "          " + COMMAND_WORD + " a/119224\n"
-            + "          " + COMMAND_WORD + " n/Clement p/9234\n";
+            + "          " + COMMAND_WORD + " n/Clement p/9234\n"
+            + "          " + COMMAND_WORD + " t/student\n";
 
     private final PersonContainsKeywordsPredicate predicate;
 

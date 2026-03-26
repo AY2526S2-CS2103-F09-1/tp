@@ -109,7 +109,7 @@ public class ParserUtil {
         String trimmedTag = tag.trim();
         String normalizedCategoryTagName = Tag.getNormalizedCategoryTagName(trimmedTag);
         if (normalizedCategoryTagName == null) {
-            throw new ParseException(Tag.MESSAGE_CATEGORY_CONSTRAINTS);
+            throw new ParseException(Tag.MESSAGE_TAG_CONSTRAINTS);
         }
 
         return new Tag(normalizedCategoryTagName);

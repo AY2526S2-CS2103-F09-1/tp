@@ -19,6 +19,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
 
 /**
  * Contains integration tests (interaction with the Model) for
@@ -32,10 +33,16 @@ public class FindCommandTest {
     public void equals() {
         PersonContainsKeywordsPredicate firstPredicate = new PersonContainsKeywordsPredicate(
                 Collections.singletonList("first"),
-                true, true, true, false);
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                MatchMode.OR);
         PersonContainsKeywordsPredicate secondPredicate = new PersonContainsKeywordsPredicate(
                 Collections.singletonList("second"),
-                true, true, true, false);
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                MatchMode.OR);
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
@@ -80,7 +87,7 @@ public class FindCommandTest {
     @Test
     public void toStringMethod() {
         PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(Arrays.asList("keyword"),
-                true, true, true, false);
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR);
         FindCommand findCommand = new FindCommand(predicate);
         String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
         assertEquals(expected, findCommand.toString());
@@ -92,6 +99,9 @@ public class FindCommandTest {
     private PersonContainsKeywordsPredicate preparePredicate(String userInput) {
         return new PersonContainsKeywordsPredicate(
                 Arrays.asList(userInput.split("\\s+")),
-                true, true, true, false);
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                MatchMode.OR);
     }
 }

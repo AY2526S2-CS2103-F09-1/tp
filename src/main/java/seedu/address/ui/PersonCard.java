@@ -83,8 +83,8 @@ public class PersonCard extends UiPart<Region> {
 
         // if the Phone inside is not empty, set text
         // else inform user the Phone is missing
-        phone.ifPresentOrElse(p -> phoneLabel.setText(p.value), () -> {
-            phoneLabel.setText(MESSAGE_MISSING_PHONE_NUMBER);
+        phone.ifPresentOrElse(p -> phoneLabel.setText(PHONE_ICON + " " + p.value), () -> {
+            phoneLabel.setText(PHONE_ICON + " " + MESSAGE_MISSING_PHONE_NUMBER);
             addCssClass(phoneLabel, CSS_CLASS_MISSING_FIELD);
         });
     }

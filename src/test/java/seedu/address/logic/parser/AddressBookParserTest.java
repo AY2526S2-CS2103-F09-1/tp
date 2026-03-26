@@ -4,13 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_PARENT;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_CATEGORY_STUDENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
+import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
@@ -84,7 +87,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_editWithCategories() throws Exception {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withTags(VALID_CATEGORY_STUDENT, VALID_CATEGORY_PARENT).build();
+                .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + ID_FIRST.getValue() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor),
                 currentMaxId);
@@ -107,7 +110,18 @@ public class AddressBookParserTest {
                         + PREFIX_NAME + String.join(" " + PREFIX_NAME, keywords),
                 currentMaxId);
         assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
-                keywords, true, false, false, false)), command);
+                keywords, Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), MatchMode.OR)), command);
+    }
+
+    @Test
+    public void parseCommand_findTag() throws Exception {
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + PREFIX_TAG + "Student",
+                currentMaxId);
+        assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.singletonList("Student"), MatchMode.OR)), command);
     }
 
     @Test

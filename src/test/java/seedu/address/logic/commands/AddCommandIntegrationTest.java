@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -37,9 +38,47 @@ public class AddCommandIntegrationTest {
     }
 
     @Test
-    public void execute_duplicatePerson_throwsCommandException() {
+    public void execute_newPersonWithoutPhoneAndAddress_success() {
+        Person validPerson = new PersonBuilder()
+                .withId(8)
+                .withName("No Phone")
+                .withoutPhone()
+                .withAddress("")
+                .build();
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.addPerson(validPerson);
+
+        assertCommandSuccess(new AddCommand(validPerson), model,
+                AddCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
+    @Test
+    public void execute_duplicatePersonAllFieldsSame_throwsCommandException() {
         Person personInList = model.getAddressBook().getPersonList().get(0);
         assertCommandFailure(new AddCommand(personInList), model,
+                AddCommand.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentId_throwsCommandException() {
+        Person personInList = model.getAddressBook().getPersonList().get(0);
+
+        // different id, but still considered as a duplicate
+        // since the two sets of identity fields are identical
+        Person duplicatedPerson = new PersonBuilder(personInList).withId(2).build();
+        assertCommandFailure(new AddCommand(duplicatedPerson), model,
+                AddCommand.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentTags_throwsCommandException() {
+        Person personInList = model.getAddressBook().getPersonList().get(0);
+
+        // different tags, but still considered as a duplicate
+        // since the two sets of identity fields are identical
+        Person duplicatedPerson = new PersonBuilder(personInList).withTags(VALID_TAG_PARENT).build();
+        assertCommandFailure(new AddCommand(duplicatedPerson), model,
                 AddCommand.MESSAGE_DUPLICATE_PERSON);
     }
 

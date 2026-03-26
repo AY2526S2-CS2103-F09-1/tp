@@ -51,12 +51,17 @@ public class AddCommandParser implements Parser<AddCommand> {
         // based on the maximum id that is saved in the address book currently
         Id id = Id.fromCurrentMaxId(currentMaxId);
 
-        // parse other details
-        Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
+        Optional<String> nameToBeParsed = argMultimap.getValue(PREFIX_NAME);
+        assert nameToBeParsed.isPresent() : "The name to be parsed is still empty,"
+                + "even after checking for whether the name prefix was present in the input.";
+        Name name = ParserUtil.parseName(nameToBeParsed.get());
+
         Optional<Phone> phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE));
+
         Address address = ParserUtil.parseAddress(
             argMultimap.getValue(PREFIX_ADDRESS).orElse(Parser.DEFAULT_EMPTY_STRING)
         );
+
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
         Person person = new Person(id, name, phone, address, tagList);

@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,24 +41,28 @@ public class FindCommandParser implements Parser<FindCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        List<String> keywords = new ArrayList<>();
-        keywords.addAll(argMultimap.getAllValues(PREFIX_NAME));
-        keywords.addAll(argMultimap.getAllValues(PREFIX_ADDRESS));
-        keywords.addAll(argMultimap.getAllValues(PREFIX_PHONE));
-        keywords.addAll(argMultimap.getAllValues(PREFIX_TAG));
+        List<String> nameKeywords = argMultimap.getAllValues(PREFIX_NAME);
+        List<String> addressKeywords = argMultimap.getAllValues(PREFIX_ADDRESS);
+        List<String> phoneKeywords = argMultimap.getAllValues(PREFIX_PHONE);
+        List<String> tagKeywords = argMultimap.getAllValues(PREFIX_TAG);
 
-        keywords.removeIf(String::isBlank);
+        nameKeywords.removeIf(String::isBlank);
+        addressKeywords.removeIf(String::isBlank);
+        phoneKeywords.removeIf(String::isBlank);
+        tagKeywords.removeIf(String::isBlank);
 
-        if (keywords.isEmpty()) {
+        if (nameKeywords.isEmpty() && addressKeywords.isEmpty()
+                && phoneKeywords.isEmpty() && tagKeywords.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
         return new FindCommand(new PersonContainsKeywordsPredicate(
-                keywords,
-                arePrefixesPresent(argMultimap, PREFIX_NAME),
-                arePrefixesPresent(argMultimap, PREFIX_ADDRESS),
-                arePrefixesPresent(argMultimap, PREFIX_PHONE),
-                arePrefixesPresent(argMultimap, PREFIX_TAG)));
+                nameKeywords,
+                addressKeywords,
+                phoneKeywords,
+                tagKeywords,
+                PersonContainsKeywordsPredicate.MatchMode.OR
+        ));
     }
 
     /**

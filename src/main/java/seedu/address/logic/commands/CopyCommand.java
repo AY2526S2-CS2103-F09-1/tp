@@ -1,6 +1,9 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -18,25 +21,23 @@ public class CopyCommand extends Command {
 
     public static final String COMMAND_WORD = "copy";
 
-    public static final String FIELD_NAME = "n/";
-    public static final String FIELD_PHONE = "p/";
-    public static final String FIELD_ADDRESS = "a/";
-
     public static final String EMPTY_STRING = "";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Copies a field of the person identified by their ID to the clipboard.\n"
             + "Parameters: ID (must be a positive integer) FIELD ("
-            + FIELD_NAME + ", " + FIELD_PHONE + ", " + FIELD_ADDRESS + ")\n"
-            + "Example: " + COMMAND_WORD + " 1 " + FIELD_PHONE;
+
+            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS + ")\n"
+            + "Example:\n"
+            + "\t" + COMMAND_WORD + " 1 " + PREFIX_PHONE + "\n";
 
     public static final String MESSAGE_COPY_SUCCESS = "Copied %s's %s to clipboard!";
 
     public static final String MESSAGE_INVALID_FIELD = "Invalid field. The valid fields include: "
-            + FIELD_NAME + ", " + FIELD_PHONE + ", " + FIELD_ADDRESS;
+            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS;
 
     public static final String MESSAGE_MISSING_FIELD = "Please specify a field to copy. Valid fields: "
-            + FIELD_NAME + ", " + FIELD_PHONE + ", " + FIELD_ADDRESS;
+            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS;
 
     public static final String MESSAGE_EMPTY_FIELD_VALUE = "There is no %s to copy for this contact.";
 
@@ -78,31 +79,31 @@ public class CopyCommand extends Command {
     }
 
     private String getFieldValue(Person person) {
-        switch (field) {
-        case FIELD_NAME:
+        if (PREFIX_NAME.getPrefix().equals(field)) {
             return person.getName().fullName;
-        case FIELD_PHONE:
-            return person.getPhone().map(p -> p.value).orElse(EMPTY_STRING);
-        case FIELD_ADDRESS:
-            return person.getAddress().value;
-        default:
-            assert false : "Invalid field: " + field;
-            return EMPTY_STRING;
         }
+        if (PREFIX_PHONE.getPrefix().equals(field)) {
+            return person.getPhone().map(p -> p.value).orElse(EMPTY_STRING);
+        }
+        if (PREFIX_ADDRESS.getPrefix().equals(field)) {
+            return person.getAddress().value;
+        }
+        assert false : "Invalid field: " + field;
+        return EMPTY_STRING;
     }
 
     private String getFieldLabel() {
-        switch (field) {
-        case FIELD_NAME:
+        if (PREFIX_NAME.getPrefix().equals(field)) {
             return "name";
-        case FIELD_PHONE:
-            return "phone number";
-        case FIELD_ADDRESS:
-            return "address";
-        default:
-            assert false : "Invalid field: " + field;
-            return EMPTY_STRING;
         }
+        if (PREFIX_PHONE.getPrefix().equals(field)) {
+            return "phone number";
+        }
+        if (PREFIX_ADDRESS.getPrefix().equals(field)) {
+            return "address";
+        }
+        assert false : "Invalid field: " + field;
+        return EMPTY_STRING;
     }
 
     @Override

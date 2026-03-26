@@ -1,6 +1,9 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
 import java.util.Set;
 
@@ -14,7 +17,7 @@ import seedu.address.model.person.Id;
 public class CopyCommandParser implements Parser<CopyCommand> {
 
     private static final Set<String> VALID_FIELDS = Set.of(
-            CopyCommand.FIELD_NAME, CopyCommand.FIELD_PHONE, CopyCommand.FIELD_ADDRESS);
+            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix());
 
     /**
      * Parses the given {@code String} of arguments in the context of the CopyCommand

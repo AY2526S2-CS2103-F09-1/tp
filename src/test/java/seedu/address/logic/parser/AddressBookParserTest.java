@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
@@ -53,9 +54,9 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_copy() throws Exception {
         CopyCommand command = (CopyCommand) parser.parseCommand(
-                CopyCommand.COMMAND_WORD + " " + ID_FIRST.getValue() + " " + CopyCommand.FIELD_PHONE,
+                CopyCommand.COMMAND_WORD + " " + ID_FIRST.getValue() + " " + PREFIX_PHONE,
                 currentMaxId);
-        assertEquals(new CopyCommand(ID_FIRST, CopyCommand.FIELD_PHONE), command);
+        assertEquals(new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix()), command);
     }
 
     @Test

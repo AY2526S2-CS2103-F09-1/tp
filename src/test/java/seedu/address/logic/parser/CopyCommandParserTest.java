@@ -3,6 +3,9 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
 
 import org.junit.jupiter.api.Test;
@@ -16,10 +19,10 @@ public class CopyCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsCopyCommand() {
-        assertParseSuccess(parser, "1 " + CopyCommand.FIELD_PHONE, new CopyCommand(ID_FIRST, CopyCommand.FIELD_PHONE));
-        assertParseSuccess(parser, "1 " + CopyCommand.FIELD_NAME, new CopyCommand(ID_FIRST, CopyCommand.FIELD_NAME));
-        assertParseSuccess(parser, "1 " + CopyCommand.FIELD_ADDRESS,
-                new CopyCommand(ID_FIRST, CopyCommand.FIELD_ADDRESS));
+        assertParseSuccess(parser, "1 " + PREFIX_PHONE, new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix()));
+        assertParseSuccess(parser, "1 " + PREFIX_NAME, new CopyCommand(ID_FIRST, PREFIX_NAME.getPrefix()));
+        assertParseSuccess(parser, "1 " + PREFIX_ADDRESS,
+                new CopyCommand(ID_FIRST, PREFIX_ADDRESS.getPrefix()));
     }
 
     @Test
@@ -38,15 +41,15 @@ public class CopyCommandParserTest {
 
     @Test
     public void parse_tooManyArgs_throwsParseException() {
-        assertParseFailure(parser, "1 " + CopyCommand.FIELD_PHONE + " extra",
+        assertParseFailure(parser, "1 " + PREFIX_PHONE + " extra",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, CopyCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_invalidId_throwsParseException() {
-        assertParseFailure(parser, "abc " + CopyCommand.FIELD_PHONE, Id.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, "-1 " + CopyCommand.FIELD_PHONE, Id.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, "0 " + CopyCommand.FIELD_PHONE, Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "abc " + PREFIX_PHONE, Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "-1 " + PREFIX_PHONE, Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "0 " + PREFIX_PHONE, Id.MESSAGE_CONSTRAINTS);
     }
 
     @Test

@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_ID;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
 import static seedu.address.testutil.TypicalIds.ID_SECOND;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -30,7 +33,7 @@ public class CopyCommandTest {
     @Test
     public void execute_idNotInAddressBook_throwsCommandException() {
         Id notInAddressBookId = Id.fromCurrentMaxId(model.findMaxId());
-        CopyCommand copyCommand = new CopyCommand(notInAddressBookId, CopyCommand.FIELD_PHONE);
+        CopyCommand copyCommand = new CopyCommand(notInAddressBookId, PREFIX_PHONE.getPrefix());
 
         String expectedMessage = String.format(MESSAGE_INVALID_PERSON_ID,
                 notInAddressBookId.getValue());
@@ -42,7 +45,7 @@ public class CopyCommandTest {
     public void execute_idNotInEmptyAddressBook_throwsCommandException() {
         Model emptyModel = new ModelManager();
         Id anyId = ID_FIRST;
-        CopyCommand copyCommand = new CopyCommand(anyId, CopyCommand.FIELD_PHONE);
+        CopyCommand copyCommand = new CopyCommand(anyId, PREFIX_PHONE.getPrefix());
 
         String expectedMessage = String.format(MESSAGE_INVALID_PERSON_ID, anyId.getValue());
 
@@ -56,7 +59,7 @@ public class CopyCommandTest {
         ab.addPerson(personWithEmptyPhone);
         Model modelWithEmptyPhone = new ModelManager(ab, new UserPrefs());
         Id id = Id.of(67);
-        CopyCommand copyCommand = new CopyCommand(id, CopyCommand.FIELD_PHONE);
+        CopyCommand copyCommand = new CopyCommand(id, PREFIX_PHONE.getPrefix());
 
         String expectedMessage = String.format(CopyCommand.MESSAGE_EMPTY_FIELD_VALUE, "phone number");
 
@@ -70,7 +73,7 @@ public class CopyCommandTest {
         ab.addPerson(personWithEmptyAddress);
         Model modelWithEmptyAddress = new ModelManager(ab, new UserPrefs());
         Id id = Id.of(67);
-        CopyCommand copyCommand = new CopyCommand(id, CopyCommand.FIELD_ADDRESS);
+        CopyCommand copyCommand = new CopyCommand(id, PREFIX_ADDRESS.getPrefix());
 
         String expectedMessage = String.format(CopyCommand.MESSAGE_EMPTY_FIELD_VALUE, "address");
 
@@ -79,13 +82,13 @@ public class CopyCommandTest {
 
     @Test
     public void equals() {
-        CopyCommand copyFirstPhone = new CopyCommand(ID_FIRST, CopyCommand.FIELD_PHONE);
-        CopyCommand copySecondPhone = new CopyCommand(ID_SECOND, CopyCommand.FIELD_PHONE);
-        CopyCommand copyFirstName = new CopyCommand(ID_FIRST, CopyCommand.FIELD_NAME);
+        CopyCommand copyFirstPhone = new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix());
+        CopyCommand copySecondPhone = new CopyCommand(ID_SECOND, PREFIX_PHONE.getPrefix());
+        CopyCommand copyFirstName = new CopyCommand(ID_FIRST, PREFIX_NAME.getPrefix());
 
         assertTrue(copyFirstPhone.equals(copyFirstPhone));
 
-        CopyCommand copyFirstPhoneCopy = new CopyCommand(ID_FIRST, CopyCommand.FIELD_PHONE);
+        CopyCommand copyFirstPhoneCopy = new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix());
         assertTrue(copyFirstPhone.equals(copyFirstPhoneCopy));
         assertFalse(copyFirstPhone.equals(copySecondPhone));
         assertFalse(copyFirstPhone.equals(copyFirstName));
@@ -95,9 +98,9 @@ public class CopyCommandTest {
 
     @Test
     public void toStringMethod() {
-        CopyCommand copyCommand = new CopyCommand(ID_FIRST, CopyCommand.FIELD_PHONE);
+        CopyCommand copyCommand = new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix());
         String expected = CopyCommand.class.getCanonicalName()
-                + "{targetId=" + ID_FIRST + ", field=" + CopyCommand.FIELD_PHONE + "}";
+                + "{targetId=" + ID_FIRST + ", field=" + PREFIX_PHONE.getPrefix() + "}";
         assertEquals(expected, copyCommand.toString());
     }
 }

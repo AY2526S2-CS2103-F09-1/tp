@@ -4,6 +4,10 @@ import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_TUTOR;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 
@@ -45,18 +49,49 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_duplicatePerson_throwsCommandException() {
-        Person validPerson = new PersonBuilder().withId(2).build();
+    public void execute_duplicatePersonAllFieldsSame_throwsCommandException() {
+        Person validPerson = new PersonBuilder().build();
         AddCommand addCommand = new AddCommand(validPerson);
         ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentId_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withId(1).build();
+        AddCommand addCommand = new AddCommand(validPerson);
+
+        // different id, but still considered as a duplicate
+        // since the two sets of identity fields are identical
+        Person existingDuplicatedPerson = new PersonBuilder().withId(2).build();
+        ModelStub modelStub = new ModelStubWithPerson(existingDuplicatedPerson);
+
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentTags_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withTags(VALID_TAG_TUTOR).build();
+        AddCommand addCommand = new AddCommand(validPerson);
+
+        // different tags, but still considered as a duplicate
+        // since the two sets of identity fields are identical
+        Person existingDuplicatedPerson = new PersonBuilder()
+                .withTags(VALID_TAG_STUDENT, VALID_TAG_TUTOR)
+                .build();
+        ModelStub modelStub = new ModelStubWithPerson(existingDuplicatedPerson);
+
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
     }
 
     @Test
     public void equals() {
-        Person alice = new PersonBuilder().withName("Alice").build();
-        Person bob = new PersonBuilder().withName("Bob").build();
+        Person alice = new PersonBuilder().withName(VALID_NAME_AMY).build();
+        Person bob = new PersonBuilder().withName(VALID_NAME_BOB).build();
         AddCommand addAliceCommand = new AddCommand(alice);
         AddCommand addBobCommand = new AddCommand(bob);
 

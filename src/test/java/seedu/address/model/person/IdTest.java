@@ -1,16 +1,52 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.model.person.Id.OVERFLOW_MESSAGE;
 import static seedu.address.testutil.Assert.assertThrows;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
 public class IdTest {
     @Test
+    public void of_validId_success() {
+        int smallestValidId = 1;
+        assertEquals(smallestValidId, Id.of(smallestValidId).getValue());
+
+        int largestValidId = Integer.MAX_VALUE;
+        assertEquals(largestValidId, Id.of(largestValidId).getValue());
+    }
+
+    @Test
     public void of_invalidId_throwsIllegalArgumentException() {
         int invalidId = -1;
         assertThrows(IllegalArgumentException.class, () -> Id.of(invalidId));
+    }
+
+    @Test
+    public void fromCurrentMaxId_emptyCurrentMaxId_returnsSmallestPossibleId() {
+        Optional<Id> currentMaxId = Optional.empty();
+        Id expectedId = Id.of(1);
+
+        assertEquals(expectedId, Id.fromCurrentMaxId(currentMaxId));
+    }
+
+    @Test
+    public void fromCurrentMaxId_nonEmptyCurrentMaxId_success() {
+        Optional<Id> currentMaxId = Optional.of(Id.of(5));
+        Id expectedId = Id.of(6);
+
+        assertEquals(expectedId, Id.fromCurrentMaxId(currentMaxId));
+    }
+
+    @Test
+    public void fromCurrentMaxId_largestPossibleCurrentMaxId_throwsIllegalArgumentException() {
+        Optional<Id> currentMaxId = Optional.of(Id.of(Integer.MAX_VALUE));
+        assertThrows(IllegalArgumentException.class,
+                OVERFLOW_MESSAGE, () -> Id.fromCurrentMaxId(currentMaxId));
     }
 
     @Test
@@ -22,7 +58,7 @@ public class IdTest {
         // valid id
         assertTrue(Id.isValidId(1)); // smallest possible value
         assertTrue(Id.isValidId(23)); // positive value
-        assertTrue(Id.isValidId(839082238)); // large positive value
+        assertTrue(Id.isValidId(Integer.MAX_VALUE)); // largest positive value
     }
 
     @Test

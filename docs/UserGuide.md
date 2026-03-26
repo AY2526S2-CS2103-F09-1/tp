@@ -175,7 +175,7 @@ Format: `copy ID field`
 Examples:
 * `copy 6 n/` copy the name of the person with `ID` 6 to the clipboard.
 * `copy 7 p/` copy the phone number of the person with `ID` 7 to the clipboard.
-* `copy 9 a/` copy the address of the person with `ID` 9 to the clipboard .
+* `copy 9 a/` copy the address of the person with `ID` 9 to the clipboard.
 * `copy 1 p/` will fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
 
 ### Clearing all entries : `clear`

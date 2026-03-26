@@ -23,7 +23,6 @@ import seedu.address.model.tag.Tag;
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
-    private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_TAG = "#friend";
     private static final String UNSUPPORTED_TAG = "friend";
 
@@ -141,7 +140,7 @@ public class ParserUtilTest {
 
     @Test
     public void parseTag_unsupportedCategory_throwsParseException() {
-        assertThrows(ParseException.class, Tag.MESSAGE_CATEGORY_CONSTRAINTS, () ->
+        assertThrows(ParseException.class, Tag.MESSAGE_TAG_CONSTRAINTS, () ->
                 ParserUtil.parseTag(UNSUPPORTED_TAG));
     }
 

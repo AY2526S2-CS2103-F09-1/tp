@@ -29,7 +29,7 @@ public class AddCommand extends Command {
             + PREFIX_NAME + "John Doe "
             + PREFIX_PHONE + "98765432 "
             + PREFIX_ADDRESS + "1A Kent Ridge Rd, 119224 "
-            + PREFIX_TAG + "friends\n"
+            + PREFIX_TAG + "Student\n"
             + "\t" + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe\n";
 

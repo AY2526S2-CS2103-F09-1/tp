@@ -441,26 +441,71 @@ Extensions:
   * 2c1. EduConnect displays all matching contacts distinctly so the user can differentiate them.
   * Use case resumes from step 2.
 
-#### Use case: UC05 - Search Contacts by Name
+#### Use case: UC05 - Edit Contact
 Actor: User
 
 Guarantees:
-* On successful completion, EduConnect shows the filtered contacts whose names match the provided keyword(s), together with the number of matches.
+* On successful completion, the specified contact is updated with the provided values.
+* Name, phone, and address replace their previous values when provided.
+* Provided tags are added cumulatively to the contact's existing tags, unless the user explicitly requests to clear all tags.
+* If the operation fails, the stored contacts remain unchanged.
+
+MSS:
+1. User requests to edit a contact by specifying the contact ID and one or more fields to update.
+2. EduConnect validates the contact ID and edited field values.
+3. EduConnect updates the selected contact.
+4. EduConnect shows a success message with the updated contact details.
+Use case ends.
+
+Extensions:
+* 1a. User omits the contact ID or all editable fields.
+  * 1a1. EduConnect shows an error message and input guidance.
+  * 1a2. User re-submits the edit request.
+  * Steps 1a1-1a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 1b. User repeats a non-tag field.
+  * 1b1. EduConnect shows an error message.
+  * 1b2. User re-submits the edit request.
+  * Use case resumes from step 2.
+* 2a. The contact ID is invalid or not found in the address book.
+  * 2a1. EduConnect shows an error message.
+  * 2a2. User re-submits the edit request.
+  * Use case resumes from step 2.
+* 2b. The user provides an invalid field value.
+  * 2b1. EduConnect shows an error message.
+  * 2b2. User re-submits the edit request.
+  * Use case resumes from step 2.
+* 3a. The user provides one or more tags.
+  * 3a1. EduConnect adds those tags to the contact's existing tags.
+  * Use case resumes from step 4.
+* 3b. The user requests to clear all tags.
+  * 3b1. EduConnect clears all tags from the contact.
+  * Use case resumes from step 4.
+
+#### Use case: UC06 - Search Contacts by Specified Fields
+Actor: User
+
+Guarantees:
+* On successful completion, EduConnect shows the filtered contacts whose names, addresses, phone numbers, or tags match at least one provided prefixed keyword, together with the number of matches.
 * Each matching contact appears at most once in the filtered results.
 * If no contacts match, EduConnect shows an empty filtered result.
 * If the operation fails, the currently displayed contacts remain unchanged.
 
 MSS:
-1. User requests to search contacts by entering one or more keywords.
-2. EduConnect finds contacts whose names match any of the keywords.
+1. User requests to search contacts by entering one or more prefixed keywords.
+2. EduConnect finds contacts whose specified fields match at least one of the keywords.
 3. EduConnect shows the filtered results and match count.
 Use case ends.
 
 Extensions:
 * 1a. User provides no keyword.
-  * 1a1. EduConnect shows an error message and requests at least one keyword.
+  * 1a1. EduConnect shows an error message and requests at least one prefixed keyword.
   * 1a2. User re-enters the search input.
   * Steps 1a1-1a2 are repeated until at least one keyword is provided.
+  * Use case resumes from step 2.
+* 1b. User provides unprefixed input or mixes prefixed and unprefixed input.
+  * 1b1. EduConnect shows an error message explaining the required prefixed format.
+  * 1b2. User re-enters the search input.
   * Use case resumes from step 2.
 * 2a. No contacts match the keywords.
   * 2a1. EduConnect shows empty filtered results and a count of zero.

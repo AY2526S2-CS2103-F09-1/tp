@@ -201,14 +201,14 @@ public class PersonContainsKeywordsPredicateTest {
         predicate = tagPredicate(Collections.singletonList("enemy"));
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
-                .withTags("Student", "colleague")
+                .withTags("Student", "Parent")
                 .build()));
 
         // Tag search enabled, one of multiple tags matches
-        predicate = tagPredicate(Collections.singletonList("col"));
+        predicate = tagPredicate(Collections.singletonList("stu"));
         assertTrue(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
-                .withTags("Student", "colleague")
+                .withTags("Student", "Parent")
                 .build()));
 
         // Tag search enabled, but person has no tags

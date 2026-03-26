@@ -43,12 +43,12 @@ public class MessagesTest {
                 .withName("Alice")
                 .withPhone("91234567")
                 .withAddress("123, Jurong West Ave 6")
-                .withTags("friend")
+                .withTags("Student")
                 .build();
 
         String formatted = Messages.format(person);
 
-        assertEquals("Alice; Phone: 91234567; Address: 123, Jurong West Ave 6; Tags: [friend]", formatted);
+        assertEquals("Alice; Phone: 91234567; Address: 123, Jurong West Ave 6; Tags: [Student]", formatted);
     }
 
     @Test

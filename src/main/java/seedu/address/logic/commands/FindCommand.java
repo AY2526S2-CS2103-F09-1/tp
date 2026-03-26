@@ -1,6 +1,10 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -15,13 +19,18 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds persons whose specified fields "
-            + "contain any of the given keywords.\n"
-            + "Format: " + COMMAND_WORD + ": [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...\n"
-            + "Examples: " + COMMAND_WORD + " n/Ali n/August\n"
-            + "          " + COMMAND_WORD + " a/119224\n"
-            + "          " + COMMAND_WORD + " n/Clement p/9234\n"
-            + "          " + COMMAND_WORD + " t/student\n";
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Finds persons whose specified fields contain any of the given keywords.\n"
+            + "Parameters: "
+            + "[" + PREFIX_NAME + "NAME]... "
+            + "[" + PREFIX_ADDRESS + "ADDRESS]... "
+            + "[" + PREFIX_PHONE + "PHONE]... "
+            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "Example:\n"
+            + "\t" + COMMAND_WORD + " " + PREFIX_NAME + "Ali " + PREFIX_NAME + "August\n"
+            + "\t" + COMMAND_WORD + " " + PREFIX_ADDRESS + "119224\n"
+            + "\t" + COMMAND_WORD + " " + PREFIX_NAME + "Clement " + PREFIX_PHONE + "9234\n"
+            + "\t" + COMMAND_WORD + " " + PREFIX_TAG + "Student\n";
 
     private final PersonContainsKeywordsPredicate predicate;
 

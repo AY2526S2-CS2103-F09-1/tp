@@ -102,20 +102,17 @@ public class EditCommand extends Command {
     }
 
     private static Set<Tag> createUpdatedTags(Set<Tag> existingTags, EditPersonDescriptor editPersonDescriptor) {
-        Optional<Set<Tag>> editedTags = editPersonDescriptor.getTags();
+        return editPersonDescriptor.getTags()
+                .map(tagsToApply -> {
+                    if (tagsToApply.isEmpty()) {
+                        return Collections.<Tag>emptySet();
+                    }
 
-        if (editedTags.isEmpty()) {
-            return existingTags;
-        }
-
-        Set<Tag> tagsToApply = editedTags.get();
-        if (tagsToApply.isEmpty()) {
-            return Collections.emptySet();
-        }
-
-        Set<Tag> combinedTags = new HashSet<>(existingTags);
-        combinedTags.addAll(tagsToApply);
-        return combinedTags;
+                    Set<Tag> combinedTags = new HashSet<>(existingTags);
+                    combinedTags.addAll(tagsToApply);
+                    return combinedTags;
+                })
+                .orElse(existingTags);
     }
 
     @Override

@@ -24,16 +24,41 @@ public class Person {
 
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
+    private final Optional<Remark> remark;
 
     /**
      * Creates a Person object with an overload constructor.
      */
-    public Person(Id id, Name name, Optional<Phone> phone, Address address, Set<Tag> tags) {
+    public Person(
+        Id id,
+        Name name,
+        Optional<Phone> phone,
+        Address address,
+        Set<Tag> tags,
+        Optional<Remark> remark
+    ) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.tags.addAll(tags);
+        this.remark = remark;
+    }
+
+    // TODO: remove this constructor in the future
+    public Person(
+        Id id,
+        Name name,
+        Optional<Phone> phone,
+        Address address,
+        Set<Tag> tags
+    ) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.tags.addAll(tags);
+        this.remark = Optional.empty();
     }
 
     public Id getId() {
@@ -58,6 +83,10 @@ public class Person {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    public Optional<Remark> getRemark() {
+        return remark;
     }
 
     /**
@@ -111,13 +140,14 @@ public class Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && address.equals(otherPerson.address)
-                && tags.equals(otherPerson.tags);
+                && tags.equals(otherPerson.tags)
+                && remark.equals(otherPerson.remark);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, address, tags);
+        return Objects.hash(name, phone, address, tags, remark);
     }
 
     @Override
@@ -128,6 +158,7 @@ public class Person {
                 .add("phone", phone)
                 .add("address", address)
                 .add("tags", tags)
+                .add("remark", remark)
                 .toString();
     }
 }

@@ -16,6 +16,46 @@ import seedu.address.testutil.PersonBuilder;
 public class PersonContainsKeywordsPredicateTest {
 
     @Test
+    public void test_fieldMatchesAndCombinedAndNone() {
+        Person person = new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("123 Clementi Road")
+                .withPhone("94351253")
+                .withTags("Student")
+                .withRemark("friendly student")
+                .build();
+
+        // name match
+        assertTrue(namePredicate(Collections.singletonList("Alice")).test(person));
+
+        // address match
+        assertTrue(addressPredicate(Collections.singletonList("Clementi")).test(person));
+
+        // phone match
+        assertTrue(phonePredicate(Collections.singletonList("9435")).test(person));
+
+        // tag match
+        assertTrue(tagPredicate(Collections.singletonList("Student")).test(person));
+
+        // remark match
+        assertTrue(remarkPredicate(Collections.singletonList("friendly")).test(person));
+
+        // all match
+        assertTrue(predicate(Collections.singletonList("Alice"),
+                Collections.singletonList("Clementi"),
+                Collections.singletonList("9435"),
+                Collections.singletonList("Student"),
+                Collections.singletonList("friendly")).test(person));
+
+        // none match
+        assertFalse(predicate(Collections.singletonList("zzz"),
+                Collections.singletonList("zzz"),
+                Collections.singletonList("zzz"),
+                Collections.singletonList("zzz"),
+                Collections.singletonList("zzz")).test(person));
+    }
+
+    @Test
     public void equals() {
         List<String> firstPredicateKeywordList = Collections.singletonList("first");
         List<String> secondPredicateKeywordList = Arrays.asList("first", "second");

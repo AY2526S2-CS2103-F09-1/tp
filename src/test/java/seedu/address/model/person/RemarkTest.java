@@ -54,6 +54,27 @@ public class RemarkTest {
     }
 
     @Test
+    public void isValidRemarkOrEmptyString() {
+        // null remark
+        assertThrows(NullPointerException.class, () -> Remark.isValidRemarkOrEmptyString(null));
+
+        // empty string is allowed for storage loading
+        assertTrue(Remark.isValidRemarkOrEmptyString(""));
+
+        // invalid remark
+        assertFalse(Remark.isValidRemarkOrEmptyString(" ")); // spaces only
+        assertFalse(Remark.isValidRemarkOrEmptyString("\n")); // newline only
+        assertFalse(Remark.isValidRemarkOrEmptyString("\t")); // tab only
+        assertFalse(Remark.isValidRemarkOrEmptyString("Hello \n John!")); // contains newline
+        assertFalse(Remark.isValidRemarkOrEmptyString("Hello \t John!")); // contains tab
+
+        // valid remark
+        assertTrue(Remark.isValidRemarkOrEmptyString("owes tuition fees"));
+        assertTrue(Remark.isValidRemarkOrEmptyString("peter the 2nd"));
+        assertTrue(Remark.isValidRemarkOrEmptyString("This sentence has a fullstop."));
+    }
+
+    @Test
     public void equals() {
         String remarkString = "Valid Remark";
         Remark remark = new Remark(remarkString);

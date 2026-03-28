@@ -17,8 +17,10 @@ Class "<<interface>>\nLogic" as Logic
 Class LogicManager
 }
 
+package AddressBookParser {
+}
+
 package Model {
-Class HiddenModel #FFFFFF
 }
 
 package Storage {
@@ -27,16 +29,20 @@ package Storage {
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> Logic
 
+LogicManager -[hidden]right-> AddressBookParser
+AddressBookParser -[hidden]right-> ParserClasses
+
 LogicManager .right.|> Logic
-LogicManager -right->"1" ParserClasses
+LogicManager -right-> AddressBookParser
+AddressBookParser -right..> ParserClasses : <<uses>>
 ParserClasses ..> XYZCommand : <<create>>
-note right of ParserClasses: Parser Classes = AddCommandParser, \nEditCommandParser, etc
+note right of ParserClasses: ParserClasses = AddCommandParser, \nEditCommandParser, etc
 
 XYZCommand -up-|> Command
 LogicManager .left.> Command : <<call>>
 
-LogicManager "1" -up-> "0..1" HiddenModel
-LogicManager "1" -right-> "0..1" Storage
+LogicManager -up-> Model
+LogicManager -right-> Storage
 Storage --[hidden] Model
 Command .[hidden]up.> Storage
 Command .right.> Model

@@ -11,13 +11,15 @@ public class Remark {
 
     public static final String MESSAGE_CONSTRAINTS =
         "Remark cannot be empty or only spaces, and cannot contain tabs or newlines.";
-    
+
     /*
      * Requires at least one non-whitespace character, and allows only printable ASCII characters.
      * This rejects empty strings, strings containing only spaces, and control characters
      * such as tabs and newlines.
      */
     public static final String VALIDATION_REGEX = "^(?=.*\\S)[\\x20-\\x7E]+$";
+
+    private static final String EMPTY_STRING = "";
 
     public final String value;
 
@@ -34,10 +36,21 @@ public class Remark {
     }
 
     /**
-     * Returns true if a given string is a valid name.
+     * Returns true if a given string is a valid remark.
      */
     public static boolean isValidRemark(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns true if given string is a valid remark or is empty.
+     * Used for loading from the JSON storage file.
+     *
+     * @param remark remark given to check for validity.
+     * @return true if valid remark or empty, else false.
+     */
+    public static boolean isValidRemarkOrEmptyString(String remark) {
+        return remark.matches(VALIDATION_REGEX) || remark.equals(EMPTY_STRING);
     }
 
     @Override

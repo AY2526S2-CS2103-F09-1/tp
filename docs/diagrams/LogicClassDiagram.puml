@@ -34,7 +34,7 @@ AddressBookParser -[hidden]right-> ParserClasses
 
 LogicManager .right.|> Logic
 LogicManager -right-> AddressBookParser
-AddressBookParser -right..> ParserClasses : <<uses>>
+AddressBookParser -right..> ParserClasses
 ParserClasses ..> XYZCommand : <<create>>
 note right of ParserClasses: ParserClasses = AddCommandParser, \nEditCommandParser, etc
 

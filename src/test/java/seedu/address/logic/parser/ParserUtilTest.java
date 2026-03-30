@@ -112,20 +112,35 @@ public class ParserUtilTest {
 
     @Test
     public void parseAddress_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress((String) null));
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseAddress(null));
+    }
+
+    @Test
+    public void parseAddress_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(Optional.of(" ")));
     }
 
     @Test
     public void parseAddress_validValueWithoutWhitespace_returnsAddress() throws Exception {
-        Address expectedAddress = new Address(VALID_ADDRESS);
-        assertEquals(expectedAddress, ParserUtil.parseAddress(VALID_ADDRESS));
+        Optional<Address> expectedAddress = Optional.of(new Address(VALID_ADDRESS));
+        assertEquals(expectedAddress, ParserUtil.parseAddress(Optional.of(VALID_ADDRESS)));
     }
 
     @Test
     public void parseAddress_validValueWithWhitespace_returnsTrimmedAddress() throws Exception {
         String addressWithWhitespace = WHITESPACE + VALID_ADDRESS + WHITESPACE;
-        Address expectedAddress = new Address(VALID_ADDRESS);
-        assertEquals(expectedAddress, ParserUtil.parseAddress(addressWithWhitespace));
+        Optional<Address> expectedAddress = Optional.of(new Address(VALID_ADDRESS));
+        assertEquals(expectedAddress, ParserUtil.parseAddress(Optional.of(addressWithWhitespace)));
+    }
+
+    @Test
+    public void parseAddress_emptyOptional_returnsEmptyOptional() throws Exception {
+        assertEquals(Optional.empty(), ParserUtil.parseAddress(Optional.empty()));
+    }
+
+    @Test
+    public void parseAddress_emptyStringInOptional_returnsOptionalEmpty() throws Exception {
+        assertEquals(Optional.empty(), ParserUtil.parseAddress(Optional.of("")));
     }
 
     @Test

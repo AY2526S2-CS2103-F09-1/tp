@@ -90,14 +90,12 @@ public class PersonCard extends UiPart<Region> {
     }
 
     private void renderAddress(Person person, Label addressLabel) {
-        String address = person.getAddress().value;
-
-        if (address.isEmpty()) {
+        person.getAddress().ifPresentOrElse(address -> {
+            addressLabel.setText(ADDRESS_ICON + " " + address.value);
+        }, () -> {
             addressLabel.setText(ADDRESS_ICON + " " + MESSAGE_MISSING_ADDRESS);
             addCssClass(addressLabel, CSS_CLASS_MISSING_FIELD);
-        } else {
-            addressLabel.setText(ADDRESS_ICON + " " + address);
-        }
+        });
     }
 
     /**

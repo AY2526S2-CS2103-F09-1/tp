@@ -15,6 +15,7 @@ import java.util.Set;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Address;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
@@ -55,7 +56,8 @@ public class EditCommandParser implements Parser<EditCommand> {
             editPersonDescriptor.setPhone(optionalPhone);
         }
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
-            editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
+            Optional<Address> optionalAddress = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS));
+            editPersonDescriptor.setAddress(optionalAddress);
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 

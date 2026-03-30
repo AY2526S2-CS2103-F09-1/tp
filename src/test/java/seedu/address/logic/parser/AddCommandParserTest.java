@@ -93,7 +93,7 @@ public class AddCommandParserTest {
     public void parse_optionalFieldsMissing_success() {
         Person expectedPersonNoOptionalFields = new PersonBuilder(AMY)
                 .withoutPhone()
-                .withAddress("")
+                .withoutAddress()
                 .withTags()
                 .build();
         assertParseSuccess(parser, NAME_DESC_AMY,
@@ -114,7 +114,7 @@ public class AddCommandParserTest {
                 new AddCommand(expectedPersonNoOptionalFields));
 
         Person expectedPersonNoAddressOnly = new PersonBuilder(AMY)
-                .withAddress("")
+                .withoutAddress()
                 .build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
                 new AddCommand(expectedPersonNoAddressOnly));
@@ -134,7 +134,7 @@ public class AddCommandParserTest {
                 .withId(6)
                 .withName("Amy Bee")
                 .withoutPhone()
-                .withAddress("")
+                .withoutAddress()
                 .build();
 
         assertParseSuccess(parserWithCurrentMaxId, NAME_DESC_AMY,

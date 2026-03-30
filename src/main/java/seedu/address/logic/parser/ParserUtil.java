@@ -84,18 +84,26 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String address} into an {@code Address}.
+     * Parses an optional {@code String address} into an optional {@code Address}.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code address} is invalid.
      */
-    public static Address parseAddress(String address) throws ParseException {
+    public static Optional<Address> parseAddress(Optional<String> address) throws ParseException {
         requireNonNull(address);
-        String trimmedAddress = address.trim();
-        if (!Address.isValidAddress(trimmedAddress)) {
-            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
+
+        address = address.filter(addressString -> !addressString.isEmpty());
+        if (address.isEmpty()) {
+            return Optional.empty();
         }
-        return new Address(trimmedAddress);
+
+        Address parsedAddress = address.map(addressString -> requireNonNull(addressString))
+                .map(addressString -> addressString.trim())
+                .filter(Address::isValidAddress)
+                .map(Address::new)
+                .orElseThrow(() -> new ParseException(Address.MESSAGE_CONSTRAINTS));
+
+        return Optional.of(parsedAddress);
     }
 
     /**

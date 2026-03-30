@@ -43,7 +43,7 @@ public class AddCommandIntegrationTest {
                 .withId(8)
                 .withName("No Phone")
                 .withoutPhone()
-                .withAddress("")
+                .withoutAddress()
                 .build();
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());

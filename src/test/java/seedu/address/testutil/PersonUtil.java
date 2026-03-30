@@ -31,10 +31,8 @@ public class PersonUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + person.getName().fullName + " ");
 
-        assert (person.getPhone() != null) && (person.getPhone().isPresent());
-
-        sb.append(PREFIX_PHONE + person.getPhone().get().value + " ");
-        sb.append(PREFIX_ADDRESS + person.getAddress().value + " ");
+        person.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
+        person.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "));
         person.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
@@ -47,8 +45,16 @@ public class PersonUtil {
     public static String getEditPersonDescriptorDetails(EditPersonDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
         descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name.fullName).append(" "));
-        descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
-        descriptor.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "));
+        if (descriptor.isPhoneChanged()) {
+            descriptor.getPhone().ifPresentOrElse(
+                    phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "),
+                    () -> sb.append(PREFIX_PHONE).append(" "));
+        }
+        if (descriptor.isAddressChanged()) {
+            descriptor.getAddress().ifPresentOrElse(
+                    address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "),
+                    () -> sb.append(PREFIX_ADDRESS).append(" "));
+        }
         if (descriptor.getTags().isPresent()) {
             Set<Tag> tags = descriptor.getTags().get();
             if (tags.isEmpty()) {

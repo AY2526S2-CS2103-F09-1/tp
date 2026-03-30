@@ -57,11 +57,12 @@ public class MessagesTest {
                 Id.of(1),
                 new Name("Bob"),
                 Optional.<Phone>empty(),
-                new Address("311, Clementi Ave 2"),
+                Optional.of(new Address("311, Clementi Ave 2")),
                 new HashSet<Tag>());
 
         String formatted = Messages.format(person);
 
         assertEquals("Bob; Phone: ; Address: 311, Clementi Ave 2; Tags: ", formatted);
     }
+
 }

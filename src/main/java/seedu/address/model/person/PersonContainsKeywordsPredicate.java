@@ -51,7 +51,9 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         String name = person.getName().fullName.toLowerCase();
-        String address = person.getAddress().value.toLowerCase();
+        String address = person.getAddress()
+                .map(addressObject -> addressObject.value.toLowerCase())
+                .orElse("");
         String phone = person.getPhone().map(phoneObj -> phoneObj.value).orElse("");
 
         boolean matchesName = nameKeywords.stream()

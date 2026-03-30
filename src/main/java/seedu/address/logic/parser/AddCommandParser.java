@@ -58,9 +58,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Optional<Phone> phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE));
 
-        Address address = ParserUtil.parseAddress(
-            argMultimap.getValue(PREFIX_ADDRESS).orElse(Parser.DEFAULT_EMPTY_STRING)
-        );
+        Optional<Address> address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS));
 
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 

@@ -102,7 +102,9 @@ public class EditCommand extends Command {
         Optional<Phone> updatedPhone = editPersonDescriptor.isPhoneChanged()
             ? editPersonDescriptor.getPhone()
             : personToEdit.getPhone();
-        Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        Optional<Address> updatedAddress = editPersonDescriptor.isAddressChanged()
+                ? editPersonDescriptor.getAddress()
+                : personToEdit.getAddress();
         Set<Tag> updatedTags = createUpdatedTags(personToEdit.getTags(), editPersonDescriptor);
 
         return new Person(personId, updatedName, updatedPhone, updatedAddress, updatedTags);
@@ -162,7 +164,8 @@ public class EditCommand extends Command {
         private Name name;
         private Optional<Phone> phone;
         private boolean phoneChanged;
-        private Address address;
+        private Optional<Address> address;
+        private boolean addressChanged;
         private Set<Tag> tags;
 
         /**
@@ -171,6 +174,8 @@ public class EditCommand extends Command {
         public EditPersonDescriptor() {
             this.phoneChanged = false;
             this.phone = Optional.empty();
+            this.addressChanged = false;
+            this.address = Optional.empty();
         }
 
         /**
@@ -182,7 +187,7 @@ public class EditCommand extends Command {
 
             setName(toCopy.name);
             setPhone(toCopy.phone, toCopy.phoneChanged);
-            setAddress(toCopy.address);
+            setAddress(toCopy.address, toCopy.addressChanged);
             setTags(toCopy.tags);
         }
 
@@ -190,8 +195,8 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, address, tags)
-                    || phoneChanged;
+            return CollectionUtil.isAnyNonNull(name, tags)
+                    || phoneChanged || addressChanged;
         }
 
         /**
@@ -248,15 +253,35 @@ public class EditCommand extends Command {
         /**
          * Sets the edited address.
          */
-        public void setAddress(Address address) {
+        public void setAddress(Optional<Address> address) {
+            Optional.ofNullable(address)
+                    .ifPresentOrElse(a -> setAddress(a, true), () ->
+                            setAddress(Optional.empty(), false));
+        }
+
+        /**
+         * Sets edited address value and explicit edit state.
+         * For private use.
+         */
+        private void setAddress(Optional<Address> address, boolean addressChanged) {
+            requireNonNull(address);
             this.address = address;
+            this.addressChanged = addressChanged;
+        }
+
+        /**
+         * Returns true if address field was explicitly edited by the user.
+         */
+        public boolean isAddressChanged() {
+            return addressChanged;
         }
 
         /**
          * Returns the edited address if it was provided.
          */
         public Optional<Address> getAddress() {
-            return Optional.ofNullable(address);
+            return Optional.ofNullable(address)
+                    .flatMap(address -> address);
         }
 
         /**
@@ -292,6 +317,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && phoneChanged == otherEditPersonDescriptor.phoneChanged
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && addressChanged == otherEditPersonDescriptor.addressChanged
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 

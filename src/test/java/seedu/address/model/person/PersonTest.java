@@ -65,6 +65,10 @@ public class PersonTest {
         editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
+        // address removed, all other attributes same -> returns false
+        editedAlice = new PersonBuilder(ALICE).withoutAddress().build();
+        assertFalse(ALICE.isSamePerson(editedAlice));
+
         // name differs in case, all other attributes same -> returns false
         Person editedBob = new PersonBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();
         assertFalse(BOB.isSamePerson(editedBob));
@@ -126,6 +130,10 @@ public class PersonTest {
 
         // different address -> returns false
         editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
+        assertFalse(ALICE.equals(editedAlice));
+
+        // missing address -> returns false
+        editedAlice = new PersonBuilder(ALICE).withoutAddress().build();
         assertFalse(ALICE.equals(editedAlice));
 
         // different tags -> returns false

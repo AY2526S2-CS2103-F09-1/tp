@@ -58,7 +58,8 @@ class JsonAdaptedPerson {
         name = source.getName().fullName;
         phone = source.getPhone().map(x -> x.value)
             .orElse(EMPTY_STRING);
-        address = source.getAddress().value;
+        address = source.getAddress().map(x -> x.value)
+                .orElse(EMPTY_STRING);
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -102,10 +103,12 @@ class JsonAdaptedPerson {
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
         }
-        if (!Address.isValidAddress(address)) {
+        if (!Address.isValidAddressOrEmptyString(address)) {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         }
-        final Address modelAddress = new Address(address);
+        final Optional<Address> modelAddress = address.isEmpty()
+                ? Optional.empty()
+                : Optional.of(new Address(address));
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelId, modelName, modelPhone, modelAddress, modelTags);

@@ -88,7 +88,7 @@ public class CopyCommand extends Command {
         case FIELD_PHONE:
             return person.getPhone().map(p -> p.value).orElse(EMPTY_STRING);
         case FIELD_ADDRESS:
-            return person.getAddress().value;
+            return person.getAddress().map(address -> address.value).orElse(EMPTY_STRING);
         default:
             assert false : "Invalid field: " + field;
             return EMPTY_STRING;

@@ -24,7 +24,7 @@ public class PersonBuilder {
     private Id id;
     private Name name;
     private Optional<Phone> phone;
-    private Address address;
+    private Optional<Address> address;
     private Set<Tag> tags;
 
     /**
@@ -34,7 +34,7 @@ public class PersonBuilder {
         id = Id.of(DEFAULT_ID);
         name = new Name(DEFAULT_NAME);
         phone = Optional.of(new Phone(DEFAULT_PHONE));
-        address = new Address(DEFAULT_ADDRESS);
+        address = Optional.of(new Address(DEFAULT_ADDRESS));
         tags = new HashSet<>();
     }
 
@@ -77,7 +77,7 @@ public class PersonBuilder {
      * Sets the {@code Address} of the {@code Person} that we are building.
      */
     public PersonBuilder withAddress(String address) {
-        this.address = new Address(address);
+        this.address = Optional.of(new Address(address));
         return this;
     }
 
@@ -94,6 +94,14 @@ public class PersonBuilder {
      */
     public PersonBuilder withoutPhone() {
         this.phone = Optional.empty();
+        return this;
+    }
+
+    /**
+     * Sets the {@code Address} of the {@code Person} that we are building as empty.
+     */
+    public PersonBuilder withoutAddress() {
+        this.address = Optional.empty();
         return this;
     }
 

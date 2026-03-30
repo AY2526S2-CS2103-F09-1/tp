@@ -20,7 +20,7 @@ public class Person {
     // Identity fields
     private final Name name;
     private final Optional<Phone> phone;
-    private final Address address;
+    private final Optional<Address> address;
 
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
@@ -28,7 +28,7 @@ public class Person {
     /**
      * Creates a Person object with an overload constructor.
      */
-    public Person(Id id, Name name, Optional<Phone> phone, Address address, Set<Tag> tags) {
+    public Person(Id id, Name name, Optional<Phone> phone, Optional<Address> address, Set<Tag> tags) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -48,7 +48,7 @@ public class Person {
         return phone;
     }
 
-    public Address getAddress() {
+    public Optional<Address> getAddress() {
         return address;
     }
 

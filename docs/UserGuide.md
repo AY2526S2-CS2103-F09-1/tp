@@ -172,7 +172,7 @@ Examples:
 * `del 2`: Delete the person with `ID` 2 from the address book.
 * `find n/Betsy` followed by `del 1`: Delete the person with `ID` 1 from the address book. Note that it does not delete the first person in the results of the `find` command.
 * `add n/Andrew` followed by `del 1`: Delete the person with `ID` 1 from the address book. Note that it does not delete the contact that was just added.
-* `add n/Andrew` followed by `del 1`: Fails if there is no person with `ID` 1 in the address book.
+* `add n/Andrew` followed by `del 1`: Fail if there is no person with `ID` 1 in the address book.
 
 ### Copying a person information: `copy`
 
@@ -187,7 +187,7 @@ Examples:
 * `copy 6 n/`: Copy the name of the person with `ID` 6 to the clipboard.
 * `copy 7 p/`: Copy the phone number of the person with `ID` 7 to the clipboard.
 * `copy 9 a/`: Copy the address of the person with `ID` 9 to the clipboard.
-* `copy 1 p/`: Fails if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
+* `copy 1 p/`: Fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
 
 ### Clearing all entries : `clear`
 

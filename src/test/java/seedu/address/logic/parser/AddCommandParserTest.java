@@ -12,6 +12,8 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
+import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_TUTOR;
@@ -51,13 +53,14 @@ public class AddCommandParserTest {
         Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_TUTOR).build();
 
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB
-                + ADDRESS_DESC_BOB + TAG_DESC_TUTOR, new AddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + TAG_DESC_TUTOR + REMARK_DESC_BOB, new AddCommand(expectedPerson));
 
         Person expectedPersonMultipleTags = new PersonBuilder(BOB)
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
 
         assertParseSuccess(parser,
-                NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB + TAG_DESC_PARENT + TAG_DESC_STUDENT,
+                NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB + TAG_DESC_PARENT
+                        + TAG_DESC_STUDENT + REMARK_DESC_BOB,
                 new AddCommand(expectedPersonMultipleTags));
     }
 
@@ -95,20 +98,26 @@ public class AddCommandParserTest {
                 .withoutPhone()
                 .withoutAddress()
                 .withTags()
+                .withoutRemark()
                 .build();
         assertParseSuccess(parser, NAME_DESC_AMY,
                 new AddCommand(expectedPersonNoOptionalFields));
 
         Person expectedPersonNoTagsOnly = new PersonBuilder(AMY).withTags().build();
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY,
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY + REMARK_DESC_AMY,
                 new AddCommand(expectedPersonNoTagsOnly));
 
         Person expectedPersonNoPhoneOnly = new PersonBuilder(AMY).withoutPhone().build();
-        assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY + TAG_DESC_STUDENT,
+        assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY + TAG_DESC_STUDENT + REMARK_DESC_AMY,
                 new AddCommand(expectedPersonNoPhoneOnly));
 
-        assertParseSuccess(parser, NAME_DESC_AMY + " " + PREFIX_PHONE + ADDRESS_DESC_AMY + TAG_DESC_STUDENT,
-                new AddCommand(expectedPersonNoPhoneOnly));
+        Person expectedPersonNoRemarkOnly = new PersonBuilder(AMY).withoutRemark().build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY + TAG_DESC_STUDENT,
+                new AddCommand(expectedPersonNoRemarkOnly));
+
+        assertParseSuccess(parser,
+                NAME_DESC_AMY + " " + PREFIX_PHONE + ADDRESS_DESC_AMY + TAG_DESC_STUDENT + REMARK_DESC_AMY,
+                        new AddCommand(expectedPersonNoPhoneOnly));
 
         assertParseSuccess(parser, NAME_DESC_AMY + " " + PREFIX_PHONE,
                 new AddCommand(expectedPersonNoOptionalFields));
@@ -116,11 +125,11 @@ public class AddCommandParserTest {
         Person expectedPersonNoAddressOnly = new PersonBuilder(AMY)
                 .withoutAddress()
                 .build();
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT + REMARK_DESC_AMY,
                 new AddCommand(expectedPersonNoAddressOnly));
 
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + " "
-                        + PREFIX_ADDRESS + TAG_DESC_STUDENT,
+                        + PREFIX_ADDRESS + TAG_DESC_STUDENT + REMARK_DESC_AMY,
                 new AddCommand(expectedPersonNoAddressOnly));
 
         assertParseSuccess(parser, NAME_DESC_AMY + " " + PREFIX_ADDRESS,
@@ -135,6 +144,7 @@ public class AddCommandParserTest {
                 .withName("Amy Bee")
                 .withoutPhone()
                 .withoutAddress()
+                .withoutRemark()
                 .build();
 
         assertParseSuccess(parserWithCurrentMaxId, NAME_DESC_AMY,

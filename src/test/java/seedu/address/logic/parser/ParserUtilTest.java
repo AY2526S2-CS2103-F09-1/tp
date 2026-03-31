@@ -18,6 +18,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 public class ParserUtilTest {
@@ -33,6 +34,9 @@ public class ParserUtilTest {
     private static final String VALID_TAG_2 = "Parent";
 
     private static final String WHITESPACE = " \t\r\n";
+
+    private static final String VALID_REMARK = "my 1st student - graduating soon";
+    private static final String INVALID_REMARK = " ";
 
     @Test
     public void parseId_invalidInput_throwsParseException() {
@@ -207,5 +211,38 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag("Student"), new Tag("Parent")));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseRemark_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseRemark(null));
+    }
+
+    @Test
+    public void parseRemark_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseRemark(Optional.of(INVALID_REMARK)));
+    }
+
+    @Test
+    public void parseRemark_validValueWithoutWhitespace_returnsPhone() throws Exception {
+        Optional<Remark> expectedRemark = Optional.of(new Remark(VALID_REMARK));
+        assertEquals(expectedRemark, ParserUtil.parseRemark(Optional.of(VALID_REMARK)));
+    }
+
+    @Test
+    public void parseRemark_validValueWithWhitespace_returnsTrimmedPhone() throws Exception {
+        String remarkWithWhitespace = WHITESPACE + VALID_REMARK + WHITESPACE;
+        Optional<Remark> expectedPhone = Optional.of(new Remark(VALID_REMARK));
+        assertEquals(expectedPhone, ParserUtil.parseRemark(Optional.of(remarkWithWhitespace)));
+    }
+
+    @Test
+    public void parseRemark_emptyOptional_returnsEmptyOptional() throws Exception {
+        assertEquals(Optional.empty(), ParserUtil.parseRemark(Optional.empty()));
+    }
+
+    @Test
+    public void parseRemark_emptyStringInOptional_returnsOptionalEmpty() throws Exception {
+        assertEquals(Optional.empty(), ParserUtil.parseRemark(Optional.of("")));
     }
 }

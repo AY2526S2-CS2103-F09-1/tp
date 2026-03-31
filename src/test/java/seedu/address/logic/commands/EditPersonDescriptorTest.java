@@ -99,7 +99,8 @@ public class EditPersonDescriptorTest {
                 + editPersonDescriptor.getName().orElse(null) + ", phone="
                 + editPersonDescriptor.getPhone() + ", address="
                 + editPersonDescriptor.getAddress() + ", tags="
-                + editPersonDescriptor.getTags().orElse(null) + "}";
+                + editPersonDescriptor.getTags().orElse(null) + ", remark="
+                + editPersonDescriptor.getRemark() + "}";
         assertEquals(expected, editPersonDescriptor.toString());
     }
 }

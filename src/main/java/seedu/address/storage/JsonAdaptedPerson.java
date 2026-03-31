@@ -16,6 +16,7 @@ import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -31,6 +32,7 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String address;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
+    private final String remark;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -40,7 +42,8 @@ class JsonAdaptedPerson {
             @JsonProperty("name") String name,
             @JsonProperty("phone") String phone,
             @JsonProperty("address") String address,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+            @JsonProperty("tags") List<JsonAdaptedTag> tags,
+            @JsonProperty("remark") String remark) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -48,6 +51,7 @@ class JsonAdaptedPerson {
         if (tags != null) {
             this.tags.addAll(tags);
         }
+        this.remark = remark;
     }
 
     /**
@@ -63,6 +67,8 @@ class JsonAdaptedPerson {
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
+        remark = source.getRemark().map(x -> x.value)
+            .orElse(EMPTY_STRING);
     }
 
     /**
@@ -71,47 +77,106 @@ class JsonAdaptedPerson {
      * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
-        final List<Tag> personTags = new ArrayList<>();
-        for (JsonAdaptedTag tag : tags) {
-            personTags.add(tag.toModelType());
-        }
+        final Id modelId = getModelId();
 
-        if (!Id.isValidId(id)) {
-            throw new IllegalValueException(Id.MESSAGE_CONSTRAINTS);
-        }
-        final Id modelId = Id.of(id);
+        final Name modelName = getModelName();
 
-        if (name == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
-        }
-        if (!Name.isValidName(name)) {
-            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
-        }
-        final Name modelName = new Name(name);
+        final Optional<Phone> modelPhone = getModelPhone();
 
-        if (phone == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
-        }
-        if (!Phone.isValidPhoneOrEmptyString(phone)) {
-            throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
-        }
-        // if empty phone string in JSON, make it optional empty
-        final Optional<Phone> modelPhone = phone.isEmpty()
+        final Optional<Address> modelAddress = getModelAddress();
+
+        final Set<Tag> modelTags = getModelTags();
+
+        final Optional<Remark> modelRemark = getModelRemark();
+
+        return new Person(modelId, modelName, modelPhone, modelAddress, modelTags, modelRemark);
+    }
+
+    private Optional<Remark> getModelRemark() throws IllegalValueException {
+        validateRemark();
+        final Optional<Remark> modelRemark = this.remark.isEmpty()
             ? Optional.empty()
-            : Optional.of(new Phone(phone));
+            : Optional.of(new Remark(this.remark));
+        return modelRemark;
+    }
 
-        if (address == null) {
+    private void validateRemark() throws IllegalValueException {
+        if (this.remark == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Remark.class.getSimpleName()));
+        }
+        if (!Remark.isValidRemarkOrEmptyString(this.remark)) {
+            throw new IllegalValueException(Remark.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    private Optional<Address> getModelAddress() throws IllegalValueException {
+        validateAddress();
+        final Optional<Address> modelAddress = this.address.isEmpty()
+                ? Optional.empty()
+                : Optional.of(new Address(this.address));
+        return modelAddress;
+    }
+
+    private void validateAddress() throws IllegalValueException {
+        if (this.address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
         }
         if (!Address.isValidAddressOrEmptyString(address)) {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         }
-        final Optional<Address> modelAddress = address.isEmpty()
-                ? Optional.empty()
-                : Optional.of(new Address(address));
+    }
 
-        final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelId, modelName, modelPhone, modelAddress, modelTags);
+    private Optional<Phone> getModelPhone() throws IllegalValueException {
+        validatePhone();
+        // if empty phone string in JSON, make it optional empty
+        final Optional<Phone> modelPhone = this.phone.isEmpty()
+            ? Optional.empty()
+            : Optional.of(new Phone(this.phone));
+        return modelPhone;
+    }
+
+    private void validatePhone() throws IllegalValueException {
+        if (this.phone == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
+        }
+        if (!Phone.isValidPhoneOrEmptyString(this.phone)) {
+            throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    private Name getModelName() throws IllegalValueException {
+        validateName();
+        final Name modelName = new Name(this.name);
+        return modelName;
+    }
+
+    private void validateName() throws IllegalValueException {
+        if (this.name == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
+        }
+        if (!Name.isValidName(this.name)) {
+            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    private Id getModelId() throws IllegalValueException {
+        validateId();
+        final Id modelId = Id.of(this.id);
+        return modelId;
+    }
+
+    private void validateId() throws IllegalValueException {
+        if (!Id.isValidId(this.id)) {
+            throw new IllegalValueException(Id.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    private Set<Tag> getModelTags() throws IllegalValueException {
+        final List<Tag> personTags = new ArrayList<>();
+        for (JsonAdaptedTag tag : this.tags) {
+            personTags.add(tag.toModelType());
+        }
+        return new HashSet<>(personTags);
     }
 
 }

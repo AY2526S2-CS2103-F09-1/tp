@@ -5,6 +5,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
+import java.util.Set;
+
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import seedu.address.commons.util.ToStringBuilder;
@@ -40,9 +42,9 @@ public class CopyCommand extends Command {
             + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS;
 
     public static final String MESSAGE_EMPTY_FIELD_VALUE = "There is no %s to copy for this contact.";
-    private static final String FIELD_NAME = "n/";
-    private static final String FIELD_PHONE = "p/";
-    private static final String FIELD_ADDRESS = "a/";
+
+    private static final Set<String> VALID_FIELDS = Set.of(
+            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix());
 
     private final Id targetId;
     private final String field;
@@ -51,6 +53,12 @@ public class CopyCommand extends Command {
      * @param field the field to copy
      */
     public CopyCommand(Id targetId, String field) {
+        // Defensive Programming
+        requireNonNull(targetId);
+        requireNonNull(field);
+        if (!VALID_FIELDS.contains(field)) {
+            throw new IllegalArgumentException("Invalid field: " + field);
+        }
         this.targetId = targetId;
         this.field = field;
     }
@@ -82,30 +90,26 @@ public class CopyCommand extends Command {
     }
 
     private String getFieldValue(Person person) {
-        switch (field) {
-        case FIELD_NAME:
+        if (field.equals(PREFIX_NAME.getPrefix())) {
             return person.getName().fullName;
-        case FIELD_PHONE:
+        } else if (field.equals(PREFIX_PHONE.getPrefix())) {
             return person.getPhone().map(p -> p.value).orElse(EMPTY_STRING);
-        case FIELD_ADDRESS:
+        } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return person.getAddress().map(address -> address.value).orElse(EMPTY_STRING);
-        default:
-            assert false : "Invalid field: " + field;
-            return EMPTY_STRING;
+        } else {
+            throw new IllegalStateException("Unexpected invalid field: " + field);
         }
     }
 
     private String getFieldLabel() {
-        switch (field) {
-        case FIELD_NAME:
+        if (field.equals(PREFIX_NAME.getPrefix())) {
             return "name";
-        case FIELD_PHONE:
+        } else if (field.equals(PREFIX_PHONE.getPrefix())) {
             return "phone number";
-        case FIELD_ADDRESS:
+        } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return "address";
-        default:
-            assert false : "Invalid field: " + field;
-            return EMPTY_STRING;
+        } else {
+            throw new IllegalStateException("Unexpected invalid field: " + field);
         }
     }
 

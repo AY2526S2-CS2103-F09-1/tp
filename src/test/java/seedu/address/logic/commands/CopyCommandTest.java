@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_ID;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -92,6 +93,11 @@ public class CopyCommandTest {
         String fieldValue = (String) getFieldValueMethod.invoke(copyCommand, personWithAddress);
 
         assertEquals("123 Clementi Road", fieldValue);
+    }
+
+    @Test
+    public void constructor_invalidField_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new CopyCommand(ID_FIRST, "email"));
     }
 
     @Test

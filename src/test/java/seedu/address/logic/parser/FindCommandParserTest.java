@@ -5,17 +5,21 @@ import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -41,7 +45,8 @@ public class FindCommandParserTest {
     public void parse_multipleNamePrefixes_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Arrays.asList(VALID_NAME_AMY, VALID_NAME_BOB),
-                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB, expectedFindCommand);
 
         assertParseSuccess(parser, " " + PREFIX_NAME + "  " + VALID_NAME_AMY + NAME_DESC_BOB + "  \t",
@@ -52,7 +57,8 @@ public class FindCommandParserTest {
     public void parse_phonePrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
-                        Collections.singletonList(VALID_PHONE_AMY), Collections.emptyList(), MatchMode.OR));
+                        Collections.singletonList(VALID_PHONE_AMY), Collections.emptyList(),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, PHONE_DESC_AMY, expectedFindCommand);
     }
 
@@ -60,7 +66,8 @@ public class FindCommandParserTest {
     public void parse_namePrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Arrays.asList(VALID_NAME_AMY),
-                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY, expectedFindCommand);
     }
 
@@ -69,7 +76,8 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(),
                         Collections.singletonList(VALID_ADDRESS_AMY),
-                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+                                Collections.emptyList(), Collections.emptyList(),
+                                        Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, ADDRESS_DESC_AMY, expectedFindCommand);
     }
 
@@ -77,7 +85,8 @@ public class FindCommandParserTest {
     public void parse_tagPrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
-                        Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT), MatchMode.OR));
+                        Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, TAG_DESC_STUDENT, expectedFindCommand);
     }
 
@@ -86,7 +95,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.emptyList(),
-                        Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY,
                 expectedFindCommand);
     }
@@ -96,7 +105,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
-                        Collections.emptyList(), MatchMode.OR));
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, PHONE_DESC_AMY + ADDRESS_DESC_AMY,
                 expectedFindCommand);
     }
@@ -105,7 +114,8 @@ public class FindCommandParserTest {
     public void parse_nameAndTagPrefix_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY), Collections.emptyList(),
-                        Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT), MatchMode.OR));
+                        Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT),
+                                Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + TAG_DESC_STUDENT,
                 expectedFindCommand);
     }
@@ -114,7 +124,8 @@ public class FindCommandParserTest {
     public void parse_multipleTagPrefixes_returnsFindCommand() {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
-                        Collections.emptyList(), Arrays.asList(VALID_TAG_STUDENT, VALID_TAG_PARENT), MatchMode.OR));
+                        Collections.emptyList(), Arrays.asList(VALID_TAG_STUDENT, VALID_TAG_PARENT),
+                        Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, TAG_DESC_STUDENT + TAG_DESC_PARENT,
                 expectedFindCommand);
     }
@@ -124,7 +135,7 @@ public class FindCommandParserTest {
         FindCommand expectedFindCommand = new FindCommand(
                 new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
                         Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
-                        Collections.singletonList(VALID_TAG_STUDENT), MatchMode.OR));
+                                Collections.singletonList(VALID_TAG_STUDENT), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, NAME_DESC_AMY + ADDRESS_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
                 expectedFindCommand);
     }
@@ -150,6 +161,53 @@ public class FindCommandParserTest {
     @Test
     public void parse_emptyAddressPrefix_throwsParseException() {
         assertParseFailure(parser, " " + PREFIX_ADDRESS,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_emptyRemarkPrefix_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_REMARK,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_validRemarkPrefix_returnsFindCommand() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.singletonList(VALID_REMARK_AMY),
+                MatchMode.OR
+        );
+        FindCommand expectedFindCommand = new FindCommand(predicate);
+        assertParseSuccess(parser, REMARK_DESC_AMY,
+                expectedFindCommand);
+    }
+
+    @Test
+    public void parse_remarkAndPhonePrefix_returnsFindCommand() {
+        PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.singletonList(VALID_PHONE_AMY),
+                Collections.emptyList(),
+                Collections.singletonList(VALID_REMARK_AMY),
+                MatchMode.OR
+        );
+        FindCommand expectedFindCommand = new FindCommand(predicate);
+        assertParseSuccess(parser, REMARK_DESC_AMY + PHONE_DESC_AMY,
+                expectedFindCommand);
+    }
+
+    @Test
+    public void parse_allPrefixesWithBlankValues_throwsParseException() {
+        String args = " " + PREFIX_NAME + "   "
+                + PREFIX_ADDRESS + "   "
+                + PREFIX_PHONE + "   "
+                + PREFIX_TAG + "   "
+                + PREFIX_REMARK + "   ";
+        assertParseFailure(parser, args,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 

@@ -2,8 +2,8 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.Messages.MESSAGE_MORE_THAN_ONE_MODE;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_MODE;
+import static seedu.address.logic.Messages.MESSAGE_MORE_THAN_ONE_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -61,7 +61,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         List<String> phoneKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_PHONE));
         List<String> tagKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_TAG));
         List<String> modeKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_MODE));
-        
+
         MatchMode modeKeyword;
         // By default, modeKeyword is OR
         if (modeKeywords.size() > 1) {

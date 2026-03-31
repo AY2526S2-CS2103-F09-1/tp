@@ -2,10 +2,12 @@ package seedu.address.logic.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.Messages.MESSAGE_CANNOT_USE_MODE;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -126,6 +128,17 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_findAndMode() throws Exception {
+        FindCommand command = (FindCommand) parser.parseCommand(
+                FindCommand.COMMAND_WORD + " " + PREFIX_MODE + "and "
+                        + PREFIX_NAME + "Benson " + PREFIX_TAG + "Parent",
+                currentMaxId);
+        assertEquals(new FindCommand(new PersonContainsKeywordsPredicate(
+                Collections.singletonList("Benson"), Collections.emptyList(), Collections.emptyList(),
+                Collections.singletonList("Parent"), MatchMode.AND)), command);
+    }
+
+    @Test
     public void parseCommand_help() throws Exception {
         assertTrue(parser.parseCommand(HelpCommand.COMMAND_WORD,
                 currentMaxId) instanceof HelpCommand);
@@ -139,6 +152,19 @@ public class AddressBookParserTest {
                 currentMaxId) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3",
                 currentMaxId) instanceof ListCommand);
+    }
+
+    @Test
+    public void parseCommand_nonFindCommandWithModePrefix_throwsParseException() {
+        assertThrows(ParseException.class,
+                MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
+                    AddCommand.COMMAND_WORD + " " + PREFIX_MODE + "and " + PREFIX_NAME + "Amy",
+                        currentMaxId));
+
+        assertThrows(ParseException.class,
+                MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
+                    ListCommand.COMMAND_WORD + " " + PREFIX_MODE + "or",
+                        currentMaxId));
     }
 
     @Test

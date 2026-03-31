@@ -1,6 +1,8 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_MODE;
+import static seedu.address.logic.Messages.MESSAGE_MORE_THAN_ONE_MODE;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
@@ -139,6 +141,32 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_andModeWithMultipleEnabledFields_returnsFindCommand() {
+        FindCommand expectedFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
+                        Collections.singletonList(VALID_ADDRESS_AMY), Collections.singletonList(VALID_PHONE_AMY),
+                        Collections.singletonList(VALID_TAG_STUDENT), MatchMode.AND));
+        assertParseSuccess(parser,
+                " " + PREFIX_MODE + "and" + NAME_DESC_AMY + ADDRESS_DESC_AMY + PHONE_DESC_AMY + TAG_DESC_STUDENT,
+                expectedFindCommand);
+    }
+
+    @Test
+    public void parse_modeVariants_returnsFindCommand() {
+        // Blank mode falls back to the default OR behavior, while explicit OR and AND are accepted.
+        FindCommand expectedOrFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+        FindCommand expectedAndFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Collections.singletonList(VALID_NAME_AMY),
+                        Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.AND));
+
+        assertParseSuccess(parser, " " + PREFIX_MODE + NAME_DESC_AMY, expectedOrFindCommand);
+        assertParseSuccess(parser, " " + PREFIX_MODE + "  oR " + NAME_DESC_AMY, expectedOrFindCommand);
+        assertParseSuccess(parser, " " + PREFIX_MODE + "   aNd " + NAME_DESC_AMY, expectedAndFindCommand);
+    }
+
+    @Test
     public void parse_preambleBeforePrefix_throwsParseException() {
         assertParseFailure(parser, VALID_NAME_AMY + PHONE_DESC_AMY,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
@@ -160,6 +188,18 @@ public class FindCommandParserTest {
     public void parse_emptyAddressPrefix_throwsParseException() {
         assertParseFailure(parser, " " + PREFIX_ADDRESS,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_invalidMode_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_MODE + "xor" + NAME_DESC_AMY,
+                String.format(MESSAGE_INVALID_MODE, FindCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_multipleModes_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_MODE + "and " + PREFIX_MODE + "or" + NAME_DESC_AMY,
+                String.format(MESSAGE_MORE_THAN_ONE_MODE, FindCommand.MESSAGE_USAGE));
     }
 
     @Test

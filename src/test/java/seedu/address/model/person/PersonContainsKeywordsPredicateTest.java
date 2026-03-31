@@ -277,6 +277,27 @@ public class PersonContainsKeywordsPredicateTest {
     }
 
     @Test
+    public void test_andMode_requiresAllEnabledFieldsIncludingTags() {
+        PersonContainsKeywordsPredicate predicate = predicate(Collections.singletonList("Alice"),
+                Collections.singletonList("Clementi"), Collections.singletonList("9435"),
+                Collections.singletonList("Student"), MatchMode.AND);
+
+        assertTrue(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("123 Clementi Road")
+                .withPhone("94351253")
+                .withTags("Student")
+                .build()));
+
+        assertFalse(predicate.test(new PersonBuilder()
+                .withName("Alice Bob")
+                .withAddress("123 Clementi Road")
+                .withPhone("94351253")
+                .withTags("Parent")
+                .build()));
+    }
+
+    @Test
     public void toStringMethod() {
         List<String> keywords = List.of("keyword1", "keyword2");
         PersonContainsKeywordsPredicate predicate = namePredicate(keywords);

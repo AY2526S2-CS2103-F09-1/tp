@@ -1,7 +1,9 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_CANNOT_USE_MODE;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -31,6 +33,8 @@ public class AddressBookParser {
      * Used for initial separation of command word and args.
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+    private static final Pattern MODE_PREFIX_PATTERN =
+            Pattern.compile("(^|\\s)" + Pattern.quote(PREFIX_MODE.getPrefix()));
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
 
     /**
@@ -49,6 +53,10 @@ public class AddressBookParser {
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
+
+        if (!commandWord.equals(FindCommand.COMMAND_WORD) && containsModePrefix(arguments)) {
+            throw new ParseException(MESSAGE_CANNOT_USE_MODE);
+        }
 
         // Note to developers: Change the log level in config.json to enable lower level (i.e., FINE, FINER and lower)
         // log messages such as the one below.
@@ -88,6 +96,10 @@ public class AddressBookParser {
             logger.finer("This user input caused a ParseException: " + userInput);
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
+    }
+
+    private static boolean containsModePrefix(String arguments) {
+        return MODE_PREFIX_PATTERN.matcher(arguments).find();
     }
 
 }

@@ -20,7 +20,8 @@ public class Messages {
                 "Multiple values specified for the following single-valued field(s): ";
     public static final String MESSAGE_MORE_THAN_ONE_MODE = "Cannot use more than one m/ prefix in the find command.";
     public static final String MESSAGE_CANNOT_USE_MODE = "The m/ prefix is not allowed in this command.";
-    public static final String MESSAGE_INVALID_MODE = "Mode must be 'and' or 'or'. Use m/and or m/or. If omitted, the default is m/or.";
+    public static final String MESSAGE_INVALID_MODE =
+            "Mode must be 'and' or 'or'. Use m/and or m/or. If omitted, the default is m/or.";
     private static final String EMPTY_STRING = "";
 
     /**

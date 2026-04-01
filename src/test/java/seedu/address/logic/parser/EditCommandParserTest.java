@@ -17,7 +17,6 @@ import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.UNSUPPORTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_DATE_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_DATE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;

@@ -53,9 +53,7 @@ public class PersonUtil {
         descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
         descriptor.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "));
         if (descriptor.isDateChanged()) {
-            descriptor.getDate().ifPresentOrElse(
-                    date -> sb.append(PREFIX_DATE).append(date.value).append(" "),
-                    () -> sb.append(PREFIX_DATE).append(" "));
+            appendDateEditDetail(sb, descriptor);
         }
         if (descriptor.getTags().isPresent()) {
             Set<Tag> tags = descriptor.getTags().get();
@@ -67,5 +65,13 @@ public class PersonUtil {
         }
         descriptor.getRemark().ifPresent(remark -> sb.append(PREFIX_REMARK).append(remark.value));
         return sb.toString();
+    }
+
+    private static void appendDateEditDetail(StringBuilder sb, EditPersonDescriptor descriptor) {
+        if (descriptor.getDate().isPresent()) {
+            sb.append(PREFIX_DATE).append(descriptor.getDate().get().value).append(" ");
+        } else {
+            sb.append(PREFIX_DATE).append(" ");
+        }
     }
 }

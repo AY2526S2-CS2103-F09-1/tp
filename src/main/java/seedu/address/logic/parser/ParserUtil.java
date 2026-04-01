@@ -12,6 +12,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -113,6 +114,31 @@ public class ParserUtil {
         }
 
         return new Tag(normalizedCategoryTagName);
+    }
+
+    /**
+     * Parses a {@code String remark} into a {@code Remark}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code remark} is invalid.
+     */
+    public static Optional<Remark> parseRemark(Optional<String> remark) throws ParseException {
+        requireNonNull(remark);
+
+        // need another check here to see if inside is empty string, if so then give
+        // optional empty
+        remark = remark.filter(remarkString -> !remarkString.isEmpty());
+        if (remark.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Remark parsedRemark = remark.map(remarkString -> requireNonNull(remarkString))
+                .map(remarkString -> remarkString.trim())
+                .filter(trimmedRemarkString -> Remark.isValidRemark(trimmedRemarkString))
+                .map(trimmedRemarkString -> new Remark(trimmedRemarkString))
+                .orElseThrow(() -> new ParseException(Remark.MESSAGE_CONSTRAINTS));
+
+        return Optional.of(parsedRemark);
     }
 
     /**

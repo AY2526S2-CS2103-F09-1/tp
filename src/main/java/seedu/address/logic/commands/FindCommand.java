@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -28,12 +29,14 @@ public class FindCommand extends Command {
             + "[" + PREFIX_NAME + "NAME]... "
             + "[" + PREFIX_ADDRESS + "ADDRESS]... "
             + "[" + PREFIX_PHONE + "PHONE]... "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_TAG + "TAG]..."
+            + "[" + PREFIX_REMARK + "REMARK]...\n"
             + "Example:\n"
             + "\t" + COMMAND_WORD + " " + PREFIX_NAME + "Ali " + PREFIX_NAME + "August "
             + PREFIX_ADDRESS + "119224\n"
             + "\t" + COMMAND_WORD + " " + PREFIX_MODE + "and " + PREFIX_TAG + "Student "
-            + PREFIX_NAME + "Clement " + PREFIX_PHONE + "9234\n";
+            + PREFIX_NAME + "Clement " + PREFIX_PHONE + "9234\n"
+            + "\t" + COMMAND_WORD + " " + PREFIX_REMARK + "new student\n";
 
     private final PersonContainsKeywordsPredicate predicate;
 

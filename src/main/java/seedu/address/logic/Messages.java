@@ -43,11 +43,13 @@ public class Messages {
         final StringBuilder builder = new StringBuilder();
         builder.append(person.getName())
                 .append("; Phone: ")
-                .append(person.getPhone().isEmpty() ? EMPTY_STRING : person.getPhone().get())
+                .append(person.getPhone().map(x -> x.toString()).orElse(EMPTY_STRING))
                 .append("; Address: ")
                 .append(person.getAddress())
                 .append("; Tags: ");
         person.getTags().forEach(builder::append);
+        builder.append("; Remark: ")
+            .append(person.getRemark().map(x -> x.toString()).orElse(EMPTY_STRING));
         return builder.toString();
     }
 

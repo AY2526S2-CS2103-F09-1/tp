@@ -37,9 +37,11 @@ public class FindCommandTest {
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
+                Collections.emptyList(),
                 MatchMode.OR);
         PersonContainsKeywordsPredicate secondPredicate = new PersonContainsKeywordsPredicate(
                 Collections.singletonList("second"),
+                Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
@@ -103,7 +105,8 @@ public class FindCommandTest {
     @Test
     public void toStringMethod() {
         PersonContainsKeywordsPredicate predicate = new PersonContainsKeywordsPredicate(Arrays.asList("keyword"),
-                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), MatchMode.OR);
+                Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), MatchMode.OR);
         FindCommand findCommand = new FindCommand(predicate);
         String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
         assertEquals(expected, findCommand.toString());
@@ -115,6 +118,7 @@ public class FindCommandTest {
     private PersonContainsKeywordsPredicate preparePredicate(String userInput) {
         return new PersonContainsKeywordsPredicate(
                 Arrays.asList(userInput.split("\\s+")),
+                Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),
                 Collections.emptyList(),

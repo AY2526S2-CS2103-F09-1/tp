@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.ArrayList;
@@ -47,9 +48,10 @@ public class FindCommandParser implements Parser<FindCommand> {
         }
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS,
-                PREFIX_TAG, PREFIX_MODE);
+            PREFIX_TAG, PREFIX_REMARK, PREFIX_MODE);
 
-        boolean hasPrefixes = arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_TAG);
+        boolean hasPrefixes = arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE,
+            PREFIX_TAG, PREFIX_REMARK);
 
         // Reject unprefixed input and any unexpected preamble before the first prefix.
         if (!hasPrefixes || !argMultimap.getPreamble().isEmpty()) {
@@ -60,6 +62,7 @@ public class FindCommandParser implements Parser<FindCommand> {
         List<String> addressKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_ADDRESS));
         List<String> phoneKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_PHONE));
         List<String> tagKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_TAG));
+        List<String> remarkKeywords = getSanitizedKeywords(argMultimap.getAllValues(PREFIX_REMARK));
         List<String> rawModeKeywords = argMultimap.getAllValues(PREFIX_MODE);
         List<String> modeKeywords = getSanitizedKeywords(rawModeKeywords);
 
@@ -82,9 +85,10 @@ public class FindCommandParser implements Parser<FindCommand> {
         assert addressKeywords.stream().noneMatch(String::isBlank);
         assert phoneKeywords.stream().noneMatch(String::isBlank);
         assert tagKeywords.stream().noneMatch(String::isBlank);
+        assert remarkKeywords.stream().noneMatch(String::isBlank);
 
         if (nameKeywords.isEmpty() && addressKeywords.isEmpty()
-                && phoneKeywords.isEmpty() && tagKeywords.isEmpty()) {
+                && phoneKeywords.isEmpty() && tagKeywords.isEmpty() && remarkKeywords.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
@@ -93,6 +97,7 @@ public class FindCommandParser implements Parser<FindCommand> {
                 addressKeywords,
                 phoneKeywords,
                 tagKeywords,
+                remarkKeywords,
                 modeKeyword
         ));
     }

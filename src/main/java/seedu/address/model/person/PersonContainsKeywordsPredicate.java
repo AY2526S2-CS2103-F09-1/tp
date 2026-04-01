@@ -11,10 +11,13 @@ import seedu.address.commons.util.ToStringBuilder;
  * Tests whether a {@code Person} matches any keyword in the enabled fields.
  */
 public class PersonContainsKeywordsPredicate implements Predicate<Person> {
+    private static final String EMPTY_STRING = "";
+
     private final List<String> nameKeywords;
     private final List<String> addressKeywords;
     private final List<String> phoneKeywords;
     private final List<String> tagKeywords;
+    private final List<String> remarkKeywords;
     private final MatchMode matchWord;
 
     /**
@@ -33,11 +36,13 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
             List<String> addressKeywords,
             List<String> phoneKeywords,
             List<String> tagKeywords,
+            List<String> remarkKeywords,
             MatchMode matchWord) {
         this.nameKeywords = nameKeywords;
         this.addressKeywords = addressKeywords;
         this.phoneKeywords = phoneKeywords;
         this.tagKeywords = tagKeywords;
+        this.remarkKeywords = remarkKeywords;
         this.matchWord = matchWord;
 
         // Defensive Programming
@@ -45,6 +50,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         requireNonNull(addressKeywords);
         requireNonNull(phoneKeywords);
         requireNonNull(tagKeywords);
+        requireNonNull(remarkKeywords);
         requireNonNull(matchWord);
     }
 
@@ -52,7 +58,11 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
     public boolean test(Person person) {
         String name = person.getName().fullName.toLowerCase();
         String address = person.getAddress().value.toLowerCase();
-        String phone = person.getPhone().map(phoneObj -> phoneObj.value).orElse("");
+        String phone = person.getPhone().map(phoneObj -> phoneObj.value).orElse(EMPTY_STRING);
+        String remark = person.getRemark()
+            .map(remarkString -> remarkString.value)
+            .map(remarkString -> remarkString.toLowerCase())
+            .orElse(EMPTY_STRING);
         boolean isAndMode = matchWord == MatchMode.AND;
 
         boolean matchesName = isAndMode
@@ -73,8 +83,11 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 : tagKeywords.stream().anyMatch(keyword -> person.getTags().stream()
                         .anyMatch(tag -> tag.tagName.toLowerCase().contains(keyword.toLowerCase())));
 
+        boolean matchesRemark = remarkKeywords.stream()
+                .anyMatch(remark::contains);
+
         if (matchWord == MatchMode.OR) {
-            return matchesName || matchesAddress || matchesPhone || matchesTag;
+            return matchesName || matchesAddress || matchesPhone || matchesTag || matchesRemark;
         } else if (matchWord == MatchMode.AND) {
             boolean nameOk = nameKeywords.isEmpty() || matchesName;
             boolean addressOk = addressKeywords.isEmpty() || matchesAddress;
@@ -101,6 +114,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 && addressKeywords.equals(otherPredicate.addressKeywords)
                 && phoneKeywords.equals(otherPredicate.phoneKeywords)
                 && tagKeywords.equals(otherPredicate.tagKeywords)
+                && remarkKeywords.equals(otherPredicate.remarkKeywords)
                 && matchWord == otherPredicate.matchWord;
     }
 
@@ -111,6 +125,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 .add("addressKeywords", addressKeywords)
                 .add("phoneKeywords", phoneKeywords)
                 .add("tagKeywords", tagKeywords)
+                .add("remarkKeywords", remarkKeywords)
                 .add("matchWord", matchWord)
                 .toString();
     }

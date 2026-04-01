@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Remark;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -20,11 +21,13 @@ public class PersonCard extends UiPart<Region> {
 
     private static final String MESSAGE_MISSING_PHONE_NUMBER = "No phone number provided";
     private static final String MESSAGE_MISSING_ADDRESS = "No address provided";
+    private static final String MESSAGE_MISSING_REMARK = "No remark provided";
 
     private static final String CSS_CLASS_MISSING_FIELD = "missing-field";
 
     private static final String PHONE_ICON = "\uD83D\uDCDE";
     private static final String ADDRESS_ICON = "\uD83C\uDFE0";
+    private static final String REMARK_ICON = "\uD83D\uDCDD";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -48,6 +51,8 @@ public class PersonCard extends UiPart<Region> {
     private Label address;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label remark;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -62,7 +67,22 @@ public class PersonCard extends UiPart<Region> {
         renderNameWithId(person, nameWithId);
         renderPhone(person, phone);
         renderAddress(person, address);
+        renderTags(person);
+        renderRemark(person, remark);
+    }
 
+    private void renderRemark(Person person, Label remarkLabel) {
+        Optional<Remark> remark = person.getRemark();
+
+        // if the Remark inside is not empty, set text
+        // else just show an empty string
+        remark.ifPresentOrElse(r -> remarkLabel.setText(REMARK_ICON + " " + r.value), () -> {
+            remarkLabel.setText(REMARK_ICON + " " + MESSAGE_MISSING_REMARK);
+            addCssClass(remarkLabel, CSS_CLASS_MISSING_FIELD);
+        });
+    }
+
+    private void renderTags(Person person) {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));

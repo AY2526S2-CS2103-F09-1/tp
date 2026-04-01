@@ -56,6 +56,11 @@ public class DateTest {
     }
 
     @Test
+    public void hashCode_sameDate_sameHashCode() {
+        assertEquals(new Date("2026-04-02").hashCode(), new Date("2/4/2026").hashCode());
+    }
+
+    @Test
     public void isValidDateOrEmptyString() {
         assertTrue(Date.isValidDateOrEmptyString(""));
         assertTrue(Date.isValidDateOrEmptyString("2026-04-02"));

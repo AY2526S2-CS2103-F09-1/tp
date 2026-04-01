@@ -104,7 +104,8 @@ Shows a list of all persons in the address book.
 
 Format: `list`
 
-* Since phone number and address fields are optional, the UI alerts the user if a particular person has no phone number or address:
+* Phone number, address, and date are optional fields.
+* If any of those fields is missing, the UI shows a missing-field indicator for that contact.
 
   ![result for 'list' with no phone number and address](images/missingPhoneNumberAndAddress.png)
 
@@ -112,11 +113,13 @@ Format: `list`
 
 Edits an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/CATEGORY]…​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DATE] [t/CATEGORY]…​`
 
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* `d/DATE` updates the stored date for that contact. The accepted format is `yyyy-MM-dd`.
+* You can remove the stored date by typing `d/` without specifying any value after it.
 * Use this command for all category updates. EduConnect does not provide a separate `tag` command.
 * When editing tags, the provided categories will be appended to the person’s existing tags.
 * Only the supported categories may be used as edit tags: `Student`, `Parent`, `Tutor`.
@@ -126,9 +129,11 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/CATEGORY]…​`
 
 Examples:
 *  `edit 1 p/91234567` Edits the phone number of the person with `ID` 1, changing it to `91234567`.
+*  `edit 1 d/2026-04-02` Updates the stored date of the person with `ID` 1 to `2026-04-02`.
 *  `edit 2 t/Parent` Appends the tag `Parent` to the person with `ID` 2.
 *  `edit 2 t/Parent t/Tutor` Appends both `Parent` and `Tutor` to the person with `ID` 2.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
+*  `edit 2 d/` Clears the stored date of the person with `ID` 2.
 
 ### Locating persons: `find`
 
@@ -240,7 +245,7 @@ Action | Format, Examples
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`<br> e.g.,`edit 2 t/Parent t/Tutor`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/DATE] [t/CATEGORY]…​`<br> e.g.,`edit 2 d/2026-04-02`, `edit 2 t/Parent t/Tutor`
 **Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`

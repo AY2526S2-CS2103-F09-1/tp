@@ -60,9 +60,9 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         String address = person.getAddress().value.toLowerCase();
         String phone = person.getPhone().map(phoneObj -> phoneObj.value).orElse(EMPTY_STRING);
         String remark = person.getRemark()
-            .map(remarkString -> remarkString.value)
-            .map(remarkString -> remarkString.toLowerCase())
-            .orElse(EMPTY_STRING);
+                .map(remarkString -> remarkString.value)
+                .map(remarkString -> remarkString.toLowerCase())
+                .orElse(EMPTY_STRING);
         boolean isAndMode = matchWord == MatchMode.AND;
 
         boolean matchesName = matchesKeywords(nameKeywords,
@@ -80,13 +80,10 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
 
         boolean matchesRemark = matchesKeywords(remarkKeywords, remark::contains, isAndMode);
 
-        if (matchWord == MatchMode.OR) {
-            return matchesName || matchesAddress || matchesPhone || matchesTag || matchesRemark;
-        } else if (matchWord == MatchMode.AND) {
-            return matchesName && matchesAddress && matchesPhone && matchesTag && matchesRemark;
-        } else {
-            throw new AssertionError("Unhandled match mode: " + matchWord);
-        }
+        return switch (matchWord) {
+            case OR -> matchesName || matchesAddress || matchesPhone || matchesTag || matchesRemark;
+            case AND -> matchesName && matchesAddress && matchesPhone && matchesTag && matchesRemark;
+        };
     }
 
     private boolean matchesKeywords(List<String> keywords, Predicate<String> matcher, boolean isAndMode) {

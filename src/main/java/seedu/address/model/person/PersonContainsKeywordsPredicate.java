@@ -62,8 +62,8 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
                 .orElse(EMPTY_STRING);
         String phone = person.getPhone().map(phoneObj -> phoneObj.value).orElse(EMPTY_STRING);
         String remark = person.getRemark()
-            .map(remarkValue -> remarkValue.value.toLowerCase())
-            .orElse(EMPTY_STRING);
+                .map(remarkValue -> remarkValue.value.toLowerCase())
+                .orElse(EMPTY_STRING);
 
         boolean isAndMode = matchWord == MatchMode.AND;
 
@@ -83,8 +83,8 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         boolean matchesRemark = matchesKeywords(remarkKeywords, remark::contains, isAndMode);
 
         return switch (matchWord) {
-            case OR -> matchesName || matchesAddress || matchesPhone || matchesTag || matchesRemark;
-            case AND -> matchesName && matchesAddress && matchesPhone && matchesTag && matchesRemark;
+        case OR -> matchesName || matchesAddress || matchesPhone || matchesTag || matchesRemark;
+        case AND -> matchesName && matchesAddress && matchesPhone && matchesTag && matchesRemark;
         };
     }
 

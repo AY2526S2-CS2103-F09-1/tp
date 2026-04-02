@@ -421,20 +421,20 @@ Extensions:
 Actor: User
 
 Guarantees:
-* On successful completion, EduConnect displays the stored contacts with their names, phone numbers, addresses, and dates.
-* If a stored phone number, address, or date is missing, EduConnect indicates that the field is missing.
+* On successful completion, EduConnect displays the stored contacts with their names, phone numbers, addresses, and meeting times.
+* If a stored phone number, address, or time is missing, EduConnect indicates that the field is missing.
 * This use case does not modify stored contact data.
 
 MSS:
 1. User requests to view contact information.
-2. EduConnect displays each contact's name, phone number, address, and date.
+2. EduConnect displays each contact's name, phone number, address, and time.
 Use case ends.
 
 Extensions:
 * 2a. There are no contacts.
   * 2a1. EduConnect displays that no contacts are currently available.
   * Use case ends.
-* 2b. A contact is missing a phone number, address, or date.
+* 2b. A contact is missing a phone number, address, or time.
   * 2b1. EduConnect displays a missing-field indicator for that field.
   * Use case resumes from step 2.
 * 2c. Multiple contacts share the same name and category tag.
@@ -446,8 +446,8 @@ Actor: User
 
 Guarantees:
 * On successful completion, the specified contact is updated with the provided values.
-* Name, phone, address, and date replace their previous values when provided.
-* Date inputs are accepted in `yyyy-MM-dd` or `d/M/yyyy` format and displayed in a normalized form.
+* Name, phone, address, and time replace their previous values when provided.
+* Time inputs are accepted in `HH:mm` or `HHmm` format and displayed in normalized `HH:mm` form.
 * Provided tags are added cumulatively to the contact's existing tags, unless the user explicitly requests to clear all tags.
 * If the operation fails, the stored contacts remain unchanged.
 
@@ -482,8 +482,8 @@ Extensions:
 * 3b. The user requests to clear all tags.
   * 3b1. EduConnect clears all tags from the contact.
   * Use case resumes from step 4.
-* 3c. The user requests to clear the stored date.
-  * 3c1. EduConnect removes the stored date from the contact.
+* 3c. The user requests to clear the stored time.
+  * 3c1. EduConnect removes the stored time from the contact.
   * Use case resumes from step 4.
 
 #### Use case: UC06 - Search Contacts by Specified Fields

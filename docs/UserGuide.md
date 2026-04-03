@@ -114,18 +114,19 @@ Format: `list`
 
 Edit an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [h/TIME] [t/TAG]…​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [t/TAG]…​`
 
 * `ID` specifies the person to be edited.
 * `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * You can remove the stored address by typing `a/` without specifying any value after it.
-* `h/TIME` updates the stored meeting time for that contact. You can store either a single time or a duration.
-* The accepted input formats are `HH:mm`, `HHmm`, `HH:mm - HH:mm`, and `HHmm - HHmm`.
-* You can remove the stored time by typing `h/` without specifying any value after it.
-* Times are displayed in EduConnect in normalized form. For example, `1800` is shown as `18:00`, while
-  `1800 - 1930` is shown as `18:00 - 19:30`.
+* `d/DAY_TIME` updates the stored meeting schedule for that contact. You can store either a single time or a duration, both with a weekday.
+* The accepted input formats are `Day HH:mm`, `Day HHmm`, `Day HH:mm - HH:mm`, and `Day HHmm - HHmm`.
+* The accepted weekday values are `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, and `Sunday`.
+* You can remove the stored time by typing `d/` without specifying any value after it.
+* Schedules are displayed in EduConnect in normalized form. For example, `monday 1800` is shown as `Monday 18:00`, while
+  `wednesday 1800 - 1930` is shown as `Wednesday 18:00 - 19:30`.
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
 * When editing tags, the provided tags will be appended to the person’s existing tags.
 * Only valid tags may be used: `Student`, `Parent`, `Tutor`.
@@ -135,12 +136,12 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [h/TIME] [t/TAG]…​`
 
 Examples:
 *  `edit 1 p/91234567`: Edit the phone number of the person with `ID` 1, changing it to `91234567`.
-*  `edit 1 h/18:00`: Update the stored meeting time of the person with `ID` 1 to `18:00`.
-*  `edit 1 h/1800 - 1930`: Update the stored meeting time of the person with `ID` 1 to `18:00 - 19:30`.
+*  `edit 1 d/Monday 18:00`: Update the stored meeting time of the person with `ID` 1 to `Monday 18:00`.
+*  `edit 1 d/Wednesday 1800 - 1930`: Update the stored meeting time of the person with `ID` 1 to `Wednesday 18:00 - 19:30`.
 *  `edit 2 t/Parent`: Append the tag `Parent` to the person with `ID` 2.
 *  `edit 2 t/Parent t/Tutor`: Append both `Parent` and `Tutor` to the person with `ID` 2.
 *  `edit 2 n/Betsy Crower t/`: Edit the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
-*  `edit 2 h/`: Clear the stored time of the person with `ID` 2.
+*  `edit 2 d/`: Clear the stored time of the person with `ID` 2.
 
 ### Locating persons: `find`
 
@@ -252,7 +253,7 @@ Action | Format, Examples
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [h/TIME] [t/TAG]…​`<br> e.g.,`edit 2 h/18:00`, `edit 2 t/Parent t/Tutor`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/DAY_TIME] [t/TAG]…​`<br> e.g.,`edit 2 d/Monday 18:00`, `edit 2 t/Parent t/Tutor`
 **Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`

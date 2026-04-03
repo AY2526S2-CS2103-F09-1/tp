@@ -421,20 +421,20 @@ Extensions:
 Actor: User
 
 Guarantees:
-* On successful completion, EduConnect displays the stored contacts with their names, phone numbers, addresses, and meeting times.
-* If a stored phone number, address, or time is missing, EduConnect indicates that the field is missing.
+* On successful completion, EduConnect displays the stored contacts with their names, phone numbers, addresses, and meeting schedules.
+* If a stored phone number, address, or meeting schedule is missing, EduConnect indicates that the field is missing.
 * This use case does not modify stored contact data.
 
 MSS:
 1. User requests to view contact information.
-2. EduConnect displays each contact's name, phone number, address, and time.
+2. EduConnect displays each contact's name, phone number, address, and meeting schedule.
 Use case ends.
 
 Extensions:
 * 2a. There are no contacts.
   * 2a1. EduConnect displays that no contacts are currently available.
   * Use case ends.
-* 2b. A contact is missing a phone number, address, or time.
+* 2b. A contact is missing a phone number, address, or meeting schedule.
   * 2b1. EduConnect displays a missing-field indicator for that field.
   * Use case resumes from step 2.
 * 2c. Multiple contacts share the same name and tag.
@@ -474,6 +474,7 @@ Extensions:
   * 2a2. User re-submits the edit request.
   * Use case resumes from step 2.
 * 2b. The user provides an invalid field value.
+  * Example: `d/18:00` without a weekday, or `d/Funday 18:00`.
   * 2b1. EduConnect shows an error message.
   * 2b2. User re-submits the edit request.
   * Use case resumes from step 2.
@@ -483,7 +484,7 @@ Extensions:
 * 3b. The user requests to clear all tags.
   * 3b1. EduConnect clears all tags from the contact.
   * Use case resumes from step 4.
-* 3c. The user requests to clear the stored time.
+* 3c. The user requests to clear the stored meeting schedule.
   * 3c1. EduConnect removes the stored time from the contact.
   * Use case resumes from step 4.
 

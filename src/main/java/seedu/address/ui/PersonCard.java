@@ -25,10 +25,9 @@ public class PersonCard extends UiPart<Region> {
 
     private static final String CSS_CLASS_MISSING_FIELD = "missing-field";
 
-    private static final String PHONE_ICON = "\uD83D\uDCDE";
-    private static final String ADDRESS_ICON = "\uD83C\uDFE0";
-    private static final String REMARK_ICON = "\uD83D\uDCDD";
-
+    private static final String PHONE_ICON = "\u260E";
+    private static final String ADDRESS_ICON = "\u2302";
+    private static final String REMARK_ICON = "\u270E";
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords

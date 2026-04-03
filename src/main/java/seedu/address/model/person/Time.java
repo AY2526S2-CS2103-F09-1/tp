@@ -3,26 +3,23 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.List;
-import java.util.Locale;
 
 /**
- * Represents a Person's scheduled day and time in the address book.
+ * Represents a Person's time in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidTime(String)}
  */
 public class Time {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Time slots should be in the format Day HH:mm or Day HHmm. Durations should be in the format "
-                    + "Day HH:mm - HH:mm or Day HHmm - HHmm. Day must be Monday to Sunday, all values must be "
-                    + "valid 24-hour times, and a duration must not end before it starts";
+            "Times should be in the format HH:mm or HHmm. Durations should be in the format "
+                    + "HH:mm - HH:mm or HHmm - HHmm. All values must be valid 24-hour times, "
+                    + "and a duration must not end before it starts";
     private static final String EMPTY_STRING = "";
-    private static final String DAY_TIME_SEPARATOR = " ";
     private static final String DURATION_SEPARATOR = " - ";
     private static final String DURATION_SPLIT_REGEX = "\\s*-\\s*";
     private static final DateTimeFormatter STORAGE_TIME_FORMATTER = formatter("HH:mm");
@@ -32,11 +29,6 @@ public class Time {
 
     public final String value;
 
-    private enum ValidationMode {
-        USER_INPUT,
-        STORAGE
-    }
-
     /**
      * Constructs a {@code Time}.
      *
@@ -44,13 +36,8 @@ public class Time {
      */
     public Time(String time) {
         requireNonNull(time);
-        String canonicalValue = getCanonicalValue(time, ValidationMode.USER_INPUT);
+        String canonicalValue = getCanonicalValue(time);
         checkArgument(canonicalValue != null, MESSAGE_CONSTRAINTS);
-        value = canonicalValue;
-    }
-
-    private Time(String canonicalValue, boolean isCanonicalValue) {
-        assert isCanonicalValue : "This constructor should only be used with canonical values.";
         value = canonicalValue;
     }
 
@@ -59,78 +46,19 @@ public class Time {
     }
 
     /**
-     * Returns true if a given string is a valid weekday time slot for user input.
+     * Returns true if a given string is a valid time.
      */
     public static boolean isValidTime(String test) {
         requireNonNull(test);
-        return getCanonicalValue(test, ValidationMode.USER_INPUT) != null;
+        return getCanonicalValue(test) != null;
     }
 
-    /**
-     * Returns a {@code Time} built from the stored value in the data file.
-     * Legacy time-only values remain supported for backward compatibility.
-     */
-    public static Time fromStoredValue(String storedTime) {
-        requireNonNull(storedTime);
-        String canonicalValue = getCanonicalValue(storedTime, ValidationMode.STORAGE);
-        checkArgument(canonicalValue != null, MESSAGE_CONSTRAINTS);
-        return new Time(canonicalValue, true);
-    }
-
-    private static String getCanonicalValue(String time, ValidationMode validationMode) {
+    private static String getCanonicalValue(String time) {
         String trimmedTime = time.trim();
         if (trimmedTime.isEmpty()) {
             return null;
         }
 
-        String canonicalDayTime = getCanonicalDayTime(trimmedTime);
-        if (canonicalDayTime != null) {
-            return canonicalDayTime;
-        }
-
-        if (validationMode == ValidationMode.STORAGE) {
-            return getCanonicalLegacyTime(trimmedTime);
-        }
-
-        return null;
-    }
-
-    private static String getCanonicalDayTime(String rawValue) {
-        String[] dayAndTimeParts = rawValue.split("\\s+", 2);
-        if (dayAndTimeParts.length != 2) {
-            return null;
-        }
-
-        DayOfWeek dayOfWeek = parseDayOfWeek(dayAndTimeParts[0]);
-        if (dayOfWeek == null) {
-            return null;
-        }
-
-        String canonicalTime = getCanonicalLegacyTime(dayAndTimeParts[1]);
-        if (canonicalTime == null) {
-            return null;
-        }
-
-        return formatDayOfWeek(dayOfWeek) + DAY_TIME_SEPARATOR + canonicalTime;
-    }
-
-    private static DayOfWeek parseDayOfWeek(String dayToken) {
-        for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
-            if (dayOfWeek.name().equalsIgnoreCase(dayToken)) {
-                return dayOfWeek;
-            }
-        }
-
-        return null;
-    }
-
-    private static String formatDayOfWeek(DayOfWeek dayOfWeek) {
-        String lowerCaseDay = dayOfWeek.name().toLowerCase(Locale.ROOT);
-        return Character.toUpperCase(lowerCaseDay.charAt(0)) + lowerCaseDay.substring(1);
-    }
-
-    private static String getCanonicalLegacyTime(String time) {
-        String trimmedTime = time.trim();
         if (!trimmedTime.contains("-")) {
             return getCanonicalSingleTime(trimmedTime);
         }
@@ -208,7 +136,7 @@ public class Time {
      */
     public static boolean isValidTimeOrEmptyString(String time) {
         requireNonNull(time);
-        return time.equals(EMPTY_STRING) || getCanonicalValue(time, ValidationMode.STORAGE) != null;
+        return time.equals(EMPTY_STRING) || isValidTime(time);
     }
 
     @Override

@@ -26,7 +26,6 @@ public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_TIME = "25:00";
-    private static final String INVALID_TIME_NO_DAY = "18:00";
     private static final String INVALID_TIME_DURATION = "18:00 - 17:30";
     private static final String INVALID_TAG = "#friend";
     private static final String INVALID_UNLISTED_TAG = "friend";
@@ -34,10 +33,10 @@ public class ParserUtilTest {
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "12345678";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
-    private static final String VALID_TIME = "Monday 18:00";
-    private static final String VALID_TIME_ALTERNATE = "monday 1800";
-    private static final String VALID_TIME_DURATION = "Wednesday 18:00 - 19:30";
-    private static final String VALID_TIME_DURATION_ALTERNATE = "wednesday 1800 - 1930";
+    private static final String VALID_TIME = "18:00";
+    private static final String VALID_TIME_ALTERNATE = "1800";
+    private static final String VALID_TIME_DURATION = "18:00 - 19:30";
+    private static final String VALID_TIME_DURATION_ALTERNATE = "1800 - 1930";
     private static final String VALID_TAG_1 = "Student";
     private static final String VALID_TAG_2 = "Parent";
 
@@ -163,7 +162,6 @@ public class ParserUtilTest {
     @Test
     public void parseTime_invalidValue_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parseTime(Optional.of(INVALID_TIME)));
-        assertThrows(ParseException.class, () -> ParserUtil.parseTime(Optional.of(INVALID_TIME_NO_DAY)));
         assertThrows(ParseException.class, () -> ParserUtil.parseTime(Optional.of(INVALID_TIME_DURATION)));
     }
 

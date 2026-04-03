@@ -42,7 +42,7 @@ public class PersonCardTest {
                 .withName("Bart Bass")
                 .withPhone("91234567")
                 .withAddress("1 Upper East Side")
-                .withTime("18:00")
+                .withTime("Monday 18:00")
                 .withTags("Student", "Tutor")
                 .withRemark("Bring notes")
                 .build();
@@ -53,7 +53,7 @@ public class PersonCardTest {
         assertEquals("Bart Bass (ID: 2)", getLabelText(personCard, "nameWithId"));
         assertEquals("\uD83D\uDCDE 91234567", getLabelText(personCard, "phone"));
         assertEquals("\uD83C\uDFE0 1 Upper East Side", getLabelText(personCard, "address"));
-        assertEquals("\u23F0 18:00", getLabelText(personCard, "time"));
+        assertEquals("\u23F0 Monday 18:00", getLabelText(personCard, "time"));
         assertEquals("\uD83D\uDCDD Bring notes", getLabelText(personCard, "remark"));
         assertFalse(hasCssClass(personCard, "time", CSS_CLASS_MISSING_FIELD));
         assertEquals(2, getTagsPane(personCard).getChildren().size());
@@ -66,13 +66,13 @@ public class PersonCardTest {
                 .withName("Blair Waldorf")
                 .withPhone("98765432")
                 .withAddress("3 Upper East Side")
-                .withTime("1800 - 1930")
+                .withTime("sunday 1800 - 1930")
                 .withRemark("Confirm venue")
                 .build();
 
         PersonCard personCard = createPersonCard(person, 2);
 
-        assertEquals("\u23F0 18:00 - 19:30", getLabelText(personCard, "time"));
+        assertEquals("\u23F0 Sunday 18:00 - 19:30", getLabelText(personCard, "time"));
         assertFalse(hasCssClass(personCard, "time", CSS_CLASS_MISSING_FIELD));
     }
 

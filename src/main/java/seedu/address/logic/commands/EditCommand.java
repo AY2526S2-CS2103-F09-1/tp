@@ -43,16 +43,16 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_TIME + "TIME] "
+            + "[" + PREFIX_TIME + "DAY TIME] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "[" + PREFIX_REMARK + "REMARK]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_TIME + "18:00 "
+            + PREFIX_TIME + "Monday 18:00 "
             + PREFIX_TAG + "Student " + PREFIX_REMARK + "needs additional practices\n"
             + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG + "\n"
             + "To clear the stored time, use " + COMMAND_WORD + " 1 " + PREFIX_TIME + "\n"
-            + "Accepted time formats: HH:mm, HHmm, HH:mm - HH:mm, or HHmm - HHmm";
+            + "Accepted time formats: Day HH:mm, Day HHmm, Day HH:mm - HH:mm, or Day HHmm - HHmm";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";

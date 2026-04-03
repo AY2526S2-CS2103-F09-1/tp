@@ -8,6 +8,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DURATION_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_NO_DAY_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
@@ -79,6 +80,7 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_TIME_DESC, Time.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_TIME_DURATION_DESC, Time.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1" + INVALID_TIME_NO_DAY_DESC, Time.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_UNLISTED_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
 
@@ -273,9 +275,9 @@ public class EditCommandParserTest {
     @Test
     public void parse_alternateTimeFormat_success() {
         Id targetId = ID_SECOND;
-        String userInput = targetId.getValue() + " " + PREFIX_TIME + "1800";
+        String userInput = targetId.getValue() + " " + PREFIX_TIME + "monday 1800";
 
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTime("18:00").build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTime("Monday 18:00").build();
         EditCommand expectedCommand = new EditCommand(targetId, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);

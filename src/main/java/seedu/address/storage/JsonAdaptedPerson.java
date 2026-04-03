@@ -112,7 +112,7 @@ class JsonAdaptedPerson {
             return Optional.empty();
         }
 
-        return Optional.of(new Time(time));
+        return Optional.of(Time.fromStoredValue(time));
     }
 
     private void validateTime() throws IllegalValueException {

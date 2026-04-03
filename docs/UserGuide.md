@@ -77,26 +77,28 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​`
+Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​ [r/REMARK]`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 * Only `n/NAME` is required.
-* `p/PHONE_NUMBER`, `a/ADDRESS`, and `t/TAG` are optional.
+* `p/PHONE_NUMBER`, `a/ADDRESS`, `t/TAG`, `r/REMARK` are optional.
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
 * Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
+* This behaviour is similar for remark. `add n/John Doe` and `add n/John Doe r/` are both valid. Both create a contact without a remark.
 
 Examples:
-* `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01`
+* `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student`
 * `add n/John Doe a/John street, block 123, #01-01 t/Parent t/Tutor`
 * `add n/Jane Doe p/98765432`
 * `add n/Jane Doe p/`
 * `add n/Jane Doe a/`
 
 The first example gives the following expected output:
-  ![result for 'add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01'](images/AddCommandResult.png)
+<!-- TODO: change the .png file to the one where it shows the remark -->
+  ![result for 'add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student'](images/AddCommandResult.png)
 
 ### Listing all persons : `list`
 
@@ -104,15 +106,15 @@ Shows a list of all persons in the address book.
 
 Format: `list`
 
-* Since phone number and address fields are optional, the UI alerts the user if a particular person has no phone number or address:
-
-  ![result for 'list' with no phone number and address](images/missingPhoneNumberAndAddress.png)
+* Since phone number, address and remark fields are optional, the UI alerts the user if a particular person has no phone number or address:
+<!-- TODO: edit the image -->
+  ![result for 'list' with no phone number, address and remark](images/missingPhoneNumberAndAddress.png)
 
 ### Editing a person : `edit`
 
 Edits an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/CATEGORY]…​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/CATEGORY]… [r/REMARK]​`
 
 * Edits the person with the specified `ID`. `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
@@ -134,11 +136,11 @@ Examples:
 
 Finds persons whose specified fields contain any of the given keywords.
 
-Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`
+Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`
 
 * At least one prefixed keyword must be provided.
 * Unprefixed input is not allowed. e.g. `find Ali` is invalid.
-* `n/` searches names, `a/` searches addresses, `p/` searches phone numbers, and `t/` searches tags.
+* `n/` searches names, `a/` searches addresses, `p/` searches phone numbers, `t/` searches tags and `r/` searches remarks.
 * The search is case-insensitive for names, addresses, and tags. e.g. `n/hans` will match `Hans` and `t/student` will match `Student`
 * Phone matching is digit-based substring matching. e.g. `p/9435` will match a phone number containing `9435`
 * Partial matches are supported. e.g. `n/Han` will match `Hans`
@@ -152,6 +154,7 @@ Examples:
 * `find n/aleX a/seran` returns persons whose name contains `aleX` or whose address contains `seran`
 * `find t/student` returns persons whose tags contain `student`
 * `find n/Ali n/August` returns persons whose names contain `Ali` or `August`
+* `find r/first` returns persons whose remarks contain `first` or `First` (note that the search in case-insensitive)
 
 Notes:
 - Every search term must be attached to a prefix.
@@ -180,6 +183,7 @@ Format: `copy ID FIELD`
 
 * Copies the `FIELD` data for the person with the specified `ID` to the user clipboard.
 * Possible fields include `n/` for name, `p/` for phone number, and `a/` for address
+* Copy is not supported for the remark field.
 * If the person's field is empty, then nothing will be copy to the clipboard.
 
 Examples:
@@ -237,10 +241,10 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]… [r/REMARK]​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​`<br> e.g.,`edit 2 t/Parent t/Tutor`
-**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]...`<br> e.g., `find n/James t/Student`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/CATEGORY]…​ [r/REMARK]`<br> e.g.,`edit 2 t/Parent t/Tutor`
+**Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`

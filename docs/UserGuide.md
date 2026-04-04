@@ -126,7 +126,8 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]…​ [tdel/TAG]…​`
 * Repeating an existing tag has no effect because duplicate tags are not stored.
 * Deleting a tag that the person does not currently have has no effect.
 * You can remove all the person’s tags by typing `t/` without specifying any tag after it.
-* `t/` must be used on its own. Do not combine `t/` with tag values or `tdel/` values in the same command.
+* When used to clear tags, bare `t/` must not be combined with tag values or `tdel/` values in the same command.
+  It may still be combined with non-tag edits such as `n/`, `p/`, or `a/`.
 * The same tag cannot be added and deleted in the same command.
 
 Examples:

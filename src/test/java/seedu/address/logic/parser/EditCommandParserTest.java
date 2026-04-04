@@ -58,7 +58,7 @@ public class EditCommandParserTest {
     @Test
     public void parse_missingParts_failure() {
         assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_FORMAT);
-        assertParseFailure(parser, "1", EditCommand.MESSAGE_NOT_EDITED);
+        assertParseFailure(parser, "1", Messages.MESSAGE_NOT_EDITED);
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
     }
 
@@ -81,15 +81,15 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + TAG_DELETE_EMPTY, Tag.MESSAGE_TAG_CONSTRAINTS);
 
         assertParseFailure(parser, "1" + TAG_DESC_STUDENT + TAG_DESC_PARENT + TAG_EMPTY,
-                EditCommand.MESSAGE_INVALID_TAG_RESET);
+                Messages.MESSAGE_INVALID_TAG_RESET);
         assertParseFailure(parser, "1" + TAG_DESC_STUDENT + TAG_EMPTY + TAG_DESC_PARENT,
-                EditCommand.MESSAGE_INVALID_TAG_RESET);
+                Messages.MESSAGE_INVALID_TAG_RESET);
         assertParseFailure(parser, "1" + TAG_EMPTY + TAG_DESC_STUDENT + TAG_DESC_PARENT,
-                EditCommand.MESSAGE_INVALID_TAG_RESET);
+                Messages.MESSAGE_INVALID_TAG_RESET);
         assertParseFailure(parser, "1" + TAG_EMPTY + TAG_DELETE_DESC_STUDENT,
-                EditCommand.MESSAGE_INVALID_TAG_RESET);
+                Messages.MESSAGE_INVALID_TAG_RESET);
         assertParseFailure(parser, "1" + TAG_DESC_STUDENT + TAG_DELETE_DESC_STUDENT,
-                EditCommand.MESSAGE_CONFLICTING_TAG_EDITS);
+                Messages.MESSAGE_CONFLICTING_TAG_EDITS);
 
         assertParseFailure(parser, "1" + INVALID_NAME_DESC + VALID_ADDRESS_AMY + VALID_PHONE_AMY,
                 Name.MESSAGE_CONSTRAINTS);

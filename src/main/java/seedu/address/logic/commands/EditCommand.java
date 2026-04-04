@@ -53,14 +53,6 @@ public class EditCommand extends Command {
             + PREFIX_REMARK + "needs additional practices\n"
             + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG;
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
-    public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
-    public static final String MESSAGE_INVALID_TAG_RESET =
-            "The tag reset prefix t/ cannot be combined with tag values or tdel/ values.";
-    public static final String MESSAGE_CONFLICTING_TAG_EDITS =
-            "A tag cannot be both added and deleted in the same command.";
-
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;
 
@@ -80,7 +72,7 @@ public class EditCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new CommandException(MESSAGE_NOT_EDITED);
+            throw new CommandException(Messages.MESSAGE_NOT_EDITED);
         }
 
         Person personToEdit = model.findPersonById(id)
@@ -90,12 +82,12 @@ public class EditCommand extends Command {
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            throw new CommandException(Messages.MESSAGE_DUPLICATE_PERSON);
         }
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+        return new CommandResult(String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
     }
 
     /**

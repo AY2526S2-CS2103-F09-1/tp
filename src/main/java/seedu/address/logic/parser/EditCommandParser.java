@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -60,7 +61,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         populateRemarkIfExists(argMultimap, editPersonDescriptor);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+            throw new ParseException(Messages.MESSAGE_NOT_EDITED);
         }
 
         return new EditCommand(id, editPersonDescriptor);
@@ -125,7 +126,7 @@ public class EditCommandParser implements Parser<EditCommand> {
             return Optional.of(Collections.emptySet());
         }
         if (containsTagResetValue(tags)) {
-            throw new ParseException(EditCommand.MESSAGE_INVALID_TAG_RESET);
+            throw new ParseException(Messages.MESSAGE_INVALID_TAG_RESET);
         }
 
         return Optional.of(ParserUtil.parseTags(tags));
@@ -147,11 +148,11 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(tagsToDelete);
 
         if (isTagResetRequested(tagsToAdd) && tagsToDelete.isPresent()) {
-            throw new ParseException(EditCommand.MESSAGE_INVALID_TAG_RESET);
+            throw new ParseException(Messages.MESSAGE_INVALID_TAG_RESET);
         }
 
         if (hasOverlappingTags(tagsToAdd, tagsToDelete)) {
-            throw new ParseException(EditCommand.MESSAGE_CONFLICTING_TAG_EDITS);
+            throw new ParseException(Messages.MESSAGE_CONFLICTING_TAG_EDITS);
         }
     }
 

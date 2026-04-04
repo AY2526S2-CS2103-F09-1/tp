@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -35,7 +36,15 @@
         </MenuBar>
 
         <HBox fx:id="appHeader" styleClass="app-header" VBox.vgrow="NEVER" minHeight="80" alignment="CENTER_LEFT" spacing="10">
-          <Label text="EduConnect 📖" styleClass="app-header-label"/>
+          <Label text="EduConnect" styleClass="app-header-label" contentDisplay="RIGHT">
+            <graphic>
+                <ImageView fitHeight="56" fitWidth="56" preserveRatio="true">
+                    <image>
+                        <Image url="@/images/EduConnect_logo.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+          </Label>
         </HBox>
 
         <StackPane VBox.vgrow="NEVER" fx:id="commandBoxPlaceholder" styleClass="pane-with-border">

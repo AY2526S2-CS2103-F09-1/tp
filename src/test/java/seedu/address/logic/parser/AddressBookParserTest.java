@@ -161,20 +161,39 @@ public class AddressBookParserTest {
     public void parseCommand_nonFindCommandWithModePrefix_throwsParseException() {
         assertThrows(ParseException.class,
                 MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
-                    AddCommand.COMMAND_WORD + " " + PREFIX_MODE + "and " + PREFIX_NAME + "Amy",
+                    ClearCommand.COMMAND_WORD + " " + PREFIX_MODE + "and",
                         currentMaxId));
 
         assertThrows(ParseException.class,
                 MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
-                    ListCommand.COMMAND_WORD + " " + PREFIX_MODE + "or",
+                    ListCommand.COMMAND_WORD + " " + PREFIX_MODE + "xor",
+                        currentMaxId));
+
+        assertThrows(ParseException.class,
+                MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
+                    HelpCommand.COMMAND_WORD + " " + PREFIX_MODE + "foo",
+                        currentMaxId));
+
+        assertThrows(ParseException.class,
+                MESSAGE_CANNOT_USE_MODE, () -> parser.parseCommand(
+                    ExitCommand.COMMAND_WORD + " " + PREFIX_MODE + "or",
                         currentMaxId));
     }
 
     @Test
-    public void parseCommand_addWithAddressContainingModeLikeText_returnsAddCommand() throws Exception {
-        Person person = new PersonBuilder().withAddress("Block m/11, 1A Kent Ridge Rd").build();
-        AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(person), currentMaxId);
-        assertEquals(new AddCommand(person), command);
+    public void parseCommand_addEndingWithModePrefix_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parseCommand(
+                    AddCommand.COMMAND_WORD + " " + PREFIX_NAME + "Ali "
+                            + "a/1A Kent Ridge Rd " + PREFIX_MODE + "and",
+                    currentMaxId));
+    }
+
+    @Test
+    public void parseCommand_editWithModePrefix_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parseCommand(
+                    EditCommand.COMMAND_WORD + " " + PREFIX_TAG + "student "
+                            + PREFIX_MODE + "and",
+                    currentMaxId));
     }
 
     @Test
@@ -188,6 +207,17 @@ public class AddressBookParserTest {
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class,
                 MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand", currentMaxId));
+    }
+
+    @Test
+    public void parseCommand_unknownCommandWithModePrefix_throwsUnknownCommand() {
+        assertThrows(ParseException.class,
+                MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand(
+                    "fin " + PREFIX_MODE + "and " + PREFIX_NAME + "Amy", currentMaxId));
+
+        assertThrows(ParseException.class,
+                MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand(
+                    "helpme " + PREFIX_MODE + "foo", currentMaxId));
     }
 
     @Test

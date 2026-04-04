@@ -1,16 +1,19 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_MODE;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Id;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
 import seedu.address.model.tag.Tag;
@@ -161,4 +164,22 @@ public class ParserUtil {
         return tagSet;
     }
 
+    /**
+     * Parses a {@code String} mode keyword into a {@code MatchMode}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given mode keyword is not {@code "and"} or {@code "or"}
+     */
+    public static MatchMode parseMatchMode(String stringModeKeyword) throws ParseException {
+        String normalizedModeKeyword = stringModeKeyword.trim().toLowerCase();
+
+        switch (normalizedModeKeyword) {
+        case "and":
+            return MatchMode.AND;
+        case "or":
+            return MatchMode.OR;
+        default:
+            throw new ParseException(String.format(MESSAGE_INVALID_MODE, FindCommand.MESSAGE_USAGE));
+        }
+    }
 }

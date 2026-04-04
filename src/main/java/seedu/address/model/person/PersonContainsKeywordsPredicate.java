@@ -85,6 +85,8 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
         return switch (matchWord) {
         case OR -> matchesName || matchesAddress || matchesPhone || matchesTag || matchesRemark;
         case AND -> matchesName && matchesAddress && matchesPhone && matchesTag && matchesRemark;
+        // defensive programming
+        default -> throw new AssertionError("Unhandled match mode: " + matchWord);
         };
     }
 

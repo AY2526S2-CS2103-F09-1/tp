@@ -2,7 +2,7 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_MODE;
-import static seedu.address.logic.Messages.MESSAGE_MORE_THAN_ONE_MODE;
+import static seedu.address.logic.Messages.getErrorMessageForDuplicatePrefixes;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
@@ -219,10 +219,10 @@ public class FindCommandParserTest {
     @Test
     public void parse_multipleModes_throwsParseException() {
         assertParseFailure(parser, " " + PREFIX_MODE + "and " + PREFIX_MODE + "or" + NAME_DESC_AMY,
-                String.format(MESSAGE_MORE_THAN_ONE_MODE, FindCommand.MESSAGE_USAGE));
+                getErrorMessageForDuplicatePrefixes(PREFIX_MODE));
 
         assertParseFailure(parser, " " + PREFIX_MODE + "and " + PREFIX_MODE + NAME_DESC_AMY,
-                String.format(MESSAGE_MORE_THAN_ONE_MODE, FindCommand.MESSAGE_USAGE));
+                getErrorMessageForDuplicatePrefixes(PREFIX_MODE));
     }
 
     @Test

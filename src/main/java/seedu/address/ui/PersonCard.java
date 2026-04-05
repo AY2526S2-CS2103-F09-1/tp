@@ -23,6 +23,7 @@ public class PersonCard extends UiPart<Region> {
     private static final String MESSAGE_MISSING_PHONE_NUMBER = "No phone number provided";
     private static final String MESSAGE_MISSING_ADDRESS = "No address provided";
     private static final String MESSAGE_MISSING_REMARK = "No remark provided";
+    private static final String MESSAGE_MISSING_MEETING_LINK = "No meeting link provided";
 
     private static final String CSS_CLASS_MISSING_FIELD = "missing-field";
 
@@ -77,9 +78,12 @@ public class PersonCard extends UiPart<Region> {
 
     private void renderMeetingLink(Person person, Label meetingLinkLabel) {
         Optional<MeetingLink> link = person.getMeetingLink();
+
+        // if the Meeting Link inside not empty, set text
+        // else inform the user the Meeting Link is missing
         link.ifPresentOrElse(l -> meetingLinkLabel.setText(MEETING_LINK_ICON + " " + l.value), () -> {
-            meetingLinkLabel.setVisible(false);
-            meetingLinkLabel.setManaged(false);
+            meetingLinkLabel.setText(MEETING_LINK_ICON + " " + MESSAGE_MISSING_MEETING_LINK);
+            addCssClass(meetingLinkLabel, CSS_CLASS_MISSING_FIELD);
         });
     }
 

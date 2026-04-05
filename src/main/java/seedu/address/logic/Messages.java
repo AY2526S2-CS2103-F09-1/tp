@@ -1,5 +1,8 @@
 package seedu.address.logic;
 
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,7 +25,8 @@ public class Messages {
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
     public static final String MESSAGE_INVALID_TAG_RESET =
-            "The tag reset prefix t/ cannot be combined with tag values or tdel/ values.";
+            "The tag reset prefix " + PREFIX_TAG + " cannot be combined with tag values or "
+                    + PREFIX_TAG_DELETE + " values.";
     public static final String MESSAGE_CONFLICTING_TAG_EDITS =
             "A tag cannot be both added and deleted in the same command.";
     public static final String MESSAGE_CANNOT_USE_MODE = "The m/ prefix is not allowed in this command.";

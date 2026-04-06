@@ -115,7 +115,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String time} into a {@code Time}.
+     * Parses an optional {@code String time} into an optional {@code Time}.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code time} is invalid.
@@ -138,24 +138,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a valid {@code Tag}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code tag} is invalid.
-     */
-    public static Tag parseTag(String tag) throws ParseException {
-        requireNonNull(tag);
-        String trimmedTag = tag.trim();
-        String normalizedTagName = Tag.getNormalizedTagName(trimmedTag);
-        if (normalizedTagName == null) {
-            throw new ParseException(Tag.MESSAGE_TAG_CONSTRAINTS);
-        }
-
-        return new Tag(normalizedTagName);
-    }
-
-    /**
-     * Parses a {@code String remark} into a {@code Remark}.
+     * Parses an optional {@code String remark} into an optional {@code Remark}.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code remark} is invalid.
@@ -177,6 +160,23 @@ public class ParserUtil {
                 .orElseThrow(() -> new ParseException(Remark.MESSAGE_CONSTRAINTS));
 
         return Optional.of(parsedRemark);
+    }
+
+    /**
+     * Parses a {@code String tag} into a valid {@code Tag}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code tag} is invalid.
+     */
+    public static Tag parseTag(String tag) throws ParseException {
+        requireNonNull(tag);
+        String trimmedTag = tag.trim();
+        String normalizedTagName = Tag.getNormalizedTagName(trimmedTag);
+        if (normalizedTagName == null) {
+            throw new ParseException(Tag.MESSAGE_TAG_CONSTRAINTS);
+        }
+
+        return new Tag(normalizedTagName);
     }
 
     /**

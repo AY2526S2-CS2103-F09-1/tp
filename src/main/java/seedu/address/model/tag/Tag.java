@@ -42,7 +42,7 @@ public class Tag {
     }
 
     /**
-     * Returns the normalized tag name for a valid tag, or {@code null} if invalid.
+     * Returns the normalized tag name for a valid tag.
      */
     public static String getNormalizedTagName(String test) {
         requireNonNull(test);

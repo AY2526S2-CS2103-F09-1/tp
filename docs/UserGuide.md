@@ -77,17 +77,18 @@ Format: `help`
 
 Add a person to the address book.
 
-Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​ [r/REMARK]`
+Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 * Only `n/NAME` is required.
-* `p/PHONE_NUMBER`, `a/ADDRESS`, `t/TAG`, `r/REMARK` are optional.
+* `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `l/MEETING_LINK`, and `t/TAG` are optional.
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
 * Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
-* This behaviour is similar for remark. `add n/John Doe` and `add n/John Doe r/` are both valid. Both create a contact without a remark.
+* This behaviour is similar for remark and meeting link. `add n/John Doe r/` and `add n/John Doe l/` are both valid.
+  They create a contact without a remark and meeting link respectively.
 * If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
 
 Examples:
@@ -107,7 +108,7 @@ Show a list of all persons in the address book.
 
 Format: `list`
 
-* Phone number, address, meeting schedule, and remark are optional fields.
+* Phone number, address, meeting schedule, remark, and meeting link are optional fields.
 * If any of those fields is missing, the UI shows a missing-field indicator for that contact.
 
   ![result for 'list' with missing optional fields](images/missingPhoneNumberAddressAndRemark.png)
@@ -116,7 +117,7 @@ Format: `list`
 
 Edit an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [t/TAG]… [tdel/TAG]… [r/REMARK]​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETING_LINK] [t/TAG]… [tdel/TAG]…​`
 
 * `ID` specifies the person to be edited.
 * `ID` **must be a positive integer** 1, 2, 3, …​
@@ -134,6 +135,11 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [t/TAG]… [tdel/TA
 * You can remove the stored meeting schedule by typing `d/` without specifying any value after it.
 * Schedules are displayed in EduConnect in normalized form. For example, `monday 1800` is shown as `Monday 18:00`, while
   `wednesday 1800 - 1930` is shown as `Wednesday 18:00 - 19:30`.
+* `r/REMARK` updates the stored remark. You can remove the stored remark by typing `r/` without
+  specifying any value after it.
+* `l/MEETING_LINK` updates the stored meeting link. The value must be a valid URL starting with
+  `http://` or `https://`. You can remove the stored meeting link by typing `l/` without specifying
+  any value after it.
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
 * `t/TAG` appends the provided tags to the person’s existing tags.
 * `tdel/TAG` removes the provided tags from the person’s existing tags.
@@ -142,20 +148,23 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [t/TAG]… [tdel/TA
 * Deleting a tag that the person does not currently have has no effect.
 * You can remove all the person’s tags by typing `t/` without specifying any tag after it.
 * When used to clear tags, bare `t/` must not be combined with tag values or `tdel/` values in the same command.
-  It may still be combined with non-tag edits such as `n/`, `p/`, `a/`, or `d/`.
+  It may still be combined with non-tag edits such as `n/`, `p/`, `a/`, `d/`, `r/`, or `l/`.
 * The same tag cannot be added and deleted in the same command.
 
 Examples:
 *  `edit 1 p/91234567`: Edit the phone number of the person with `ID` 1, changing it to `91234567`.
 *  `edit 1 d/Monday 18:00`: Update the stored meeting time of the person with `ID` 1 to `Monday 18:00`.
 *  `edit 1 d/Wednesday 1800 - 1930`: Update the stored meeting time of the person with `ID` 1 to `Wednesday 18:00 - 19:30`.
+*  `edit 1 l/https://zoom.us/j/123456789`: Update the stored meeting link of the person with `ID` 1.
 *  `edit 1 t/Parent`: Append the tag `Parent` to the person with `ID` 1.
 *  `edit 1 t/Parent t/Tutor`: Append both `Parent` and `Tutor` to the person with `ID` 1.
 *  `edit 1 tdel/Student`: Delete the tag `Student` from the person with `ID` 1.
-*  `edit 1 d/Monday 18:00 t/Tutor tdel/Student`: Update the stored meeting time, append the tag `Tutor`,
-   and delete the tag `Student` for the person with `ID` 1.
+*  `edit 1 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Tutor tdel/Student`: Update the stored meeting
+   time, update the stored meeting link, append the tag `Tutor`, and delete the tag `Student` for the
+   person with `ID` 1.
 *  `edit 2 n/Betsy Crower t/`: Edit the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 *  `edit 2 d/`: Clear the stored time of the person with `ID` 2.
+*  `edit 2 l/`: Clear the stored meeting link of the person with `ID` 2.
 
 ### Locating persons: `find`
 
@@ -166,7 +175,7 @@ Format: `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`
 * At least one prefixed keyword must be provided.
 * Unprefixed input is not allowed. e.g. `find Ali` is invalid.
 * `n/` searches names, `a/` searches addresses, `p/` searches phone numbers, `t/` searches tags and `r/` searches remarks.
-* The search is case-insensitive for names, addresses, and tags. e.g. `n/hans` will match `Hans` and `t/student` will match `Student`
+* The search is case-insensitive for names, addresses, tags and remarks. e.g. `n/hans` will match `Hans` and `t/student` will match `Student`
 * Phone matching is digit-based substring matching. e.g. `p/9435` will match a phone number containing `9435`
 * Partial matches are supported. e.g. `n/Han` will match `Hans`
 * Persons matching at least one prefixed keyword will be returned (i.e. `OR` search across all provided fields and keywords).
@@ -207,14 +216,16 @@ Copy a specified field of a person from the address book to the user clipboard.
 
 Format: `copy ID FIELD`
 
-* Possible fields include `n/` for name, `p/` for phone number, and `a/` for address
-* Copy is not supported for the remark field. The `r/` field is invalid for this command.
-* If the person's field is empty, then nothing will be copy to the clipboard.
+* Possible fields include `n/` for name, `p/` for phone number, `a/` for address, and `l/` for meeting link.
+* Copy is not supported for the meeting schedule, tags, or remark fields. The `d/`, `t/`, `tdel/`, and `r/`
+  fields are invalid for this command.
+* If the person's field is empty, then nothing will be copied to the clipboard.
 
 Examples:
 * `copy 6 n/`: Copy the name of the person with `ID` 6 to the clipboard.
 * `copy 7 p/`: Copy the phone number of the person with `ID` 7 to the clipboard.
 * `copy 9 a/`: Copy the address of the person with `ID` 9 to the clipboard.
+* `copy 1 l/`: Copy the meeting link of the person with `ID` 1 to the clipboard.
 * `copy 1 p/`: Fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty.
 
 ### Clearing all entries: `clear`
@@ -266,10 +277,12 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]… [r/REMARK]​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor r/new student`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 r/new student l/https://zoom.us/j/123456789 t/Parent t/Tutor`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/DAY_TIME] [t/TAG]…​ [tdel/TAG]…​ [r/REMARK]`<br> e.g., `edit 2 d/Monday 18:00 t/Parent tdel/Tutor`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
 **Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
+**Copy** | `copy ID FIELD`<br> e.g., `copy 1 l/`
+**Exit** | `exit`
 **Help** | `help`

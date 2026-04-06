@@ -8,6 +8,7 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.AMY;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -68,6 +70,37 @@ public class LogicManagerTest {
     public void execute_validCommand_success() throws Exception {
         String listCommand = ListCommand.COMMAND_WORD;
         assertCommandSuccess(listCommand, ListCommand.MESSAGE_SUCCESS, model);
+    }
+
+    @Test
+    public void execute_clearRequiresSecondConfirmation_success() throws Exception {
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        setUp();
+
+        Model expectedModelAfterFirstClear = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        assertCommandSuccess(
+                ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterFirstClear);
+
+        Model expectedModelAfterSecondClear = new ModelManager();
+        assertCommandSuccess(
+                ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, expectedModelAfterSecondClear);
+    }
+
+    @Test
+    public void execute_clearConfirmationCancelledByAnotherCommand_success() throws Exception {
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        setUp();
+
+        Model expectedModelAfterFirstClear = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        assertCommandSuccess(
+                ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterFirstClear);
+
+        Model expectedModelAfterList = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_SUCCESS, expectedModelAfterList);
+
+        Model expectedModelAfterCancelledClear = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        assertCommandSuccess(
+                ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterCancelledClear);
     }
 
     @Test

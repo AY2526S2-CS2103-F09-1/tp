@@ -105,18 +105,20 @@ public class Person {
     /**
      * Checks whether two persons have the same {@code Id}.
      *
-     * @param otherPerson other person to check Id for.
-     * @return true if two persons have the same Id, else false.
+     * @param otherPerson other person to check {@code Id} for.
+     * @return true if two persons have the same {@code Id}, else false.
      */
     public boolean isSameId(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
 
-        Id otherId = otherPerson.getId();
-        boolean sameId = otherId.equals(getId());
+        if (otherPerson == null) {
+            return false;
+        }
 
-        return sameId;
+        Id otherId = otherPerson.getId();
+        return otherId.equals(getId());
     }
 
     /**

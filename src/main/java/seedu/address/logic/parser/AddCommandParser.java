@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_LINK;
@@ -30,7 +31,16 @@ import seedu.address.model.tag.Tag;
 public class AddCommandParser implements Parser<AddCommand> {
     private final Optional<Id> currentMaxId;
 
+    /**
+     * Creates a new {@code AddCommandParser}.
+     *
+     * @param currentMaxId The maximum {@code Id} in the address book, at the time of
+     *                     {@code AddCommandParser} initialisation. If the address book
+     *                     is empty, this will be {@code Optional.empty}. Used to determine
+     *                     the {@code Id} of the new contact to be added.
+     */
     public AddCommandParser(Optional<Id> currentMaxId) {
+        assert currentMaxId != null;
         this.currentMaxId = currentMaxId;
     }
 
@@ -40,12 +50,13 @@ public class AddCommandParser implements Parser<AddCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS,
-                PREFIX_TAG, PREFIX_REMARK, PREFIX_MEETING_LINK);
+        requireNonNull(args);
 
-        // NOTE: removed PREFIX_PHONE and PREFIX_ADDRESS and PREFIX_REMARK from arePrefixesPresent() method so that
-        // user is able to not specify it
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME,
+                PREFIX_PHONE, PREFIX_ADDRESS,
+                PREFIX_TAG, PREFIX_REMARK,
+                PREFIX_MEETING_LINK);
+
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
@@ -73,7 +84,16 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Optional<MeetingLink> meetingLink = ParserUtil.parseMeetingLink(argMultimap.getValue(PREFIX_MEETING_LINK));
 
+        // none of the parsed fields should be null
+        assert name != null : "Parsed name should not be null";
+        assert phone != null : "Parsed phone should not be null";
+        assert address != null : "Parsed address should not be null";
+        assert tagList != null : "Parsed tags should not be null";
+        assert remark != null : "Parsed remark should not be null";
+        assert meetingLink != null : "Parsed meeting link should not be null";
+
         Person person = new Person(id, name, phone, address, Optional.<Time>empty(), tagList, remark, meetingLink);
+        assert person != null : "Parsed person should not be null";
 
         return new AddCommand(person);
     }

@@ -25,7 +25,7 @@ public class Id implements Comparable<Id> {
     }
 
     /**
-     * Creates a new {@code Id} with the specified value.
+     * Creates a new {@code Id} with the specified {@code value}.
      */
     public static Id of(int value) {
         return new Id(value);

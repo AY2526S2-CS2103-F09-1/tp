@@ -95,17 +95,22 @@ public class PersonTest {
     }
 
     @Test
-    public void iSameId_samePerson_success() {
+    public void isSameId_samePerson_success() {
         assertTrue(ALICE.isSameId(ALICE));
     }
 
     @Test
-    public void iSameId_differentId_success() {
+    public void isSameId_differentId_success() {
         Person editedAlice = new PersonBuilder(ALICE)
             .withId(2)
             .build();
 
         assertFalse(editedAlice.isSameId(ALICE));
+    }
+
+    @Test
+    public void isSameId_otherPersonNull_success() {
+        assertFalse(ALICE.isSameId(null));
     }
 
     @Test

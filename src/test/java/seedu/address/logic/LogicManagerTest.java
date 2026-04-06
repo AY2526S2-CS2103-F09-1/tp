@@ -78,10 +78,12 @@ public class LogicManagerTest {
         setUp();
 
         Model expectedModelAfterFirstClear = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterFirstClear);
+        assertCommandSuccess(
+                ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterFirstClear);
 
         Model expectedModelAfterSecondClear = new ModelManager();
-        assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, expectedModelAfterSecondClear);
+        assertCommandSuccess(
+                ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_SUCCESS, expectedModelAfterSecondClear);
     }
 
     @Test
@@ -90,13 +92,15 @@ public class LogicManagerTest {
         setUp();
 
         Model expectedModelAfterFirstClear = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterFirstClear);
+        assertCommandSuccess(
+                ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterFirstClear);
 
         Model expectedModelAfterList = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_SUCCESS, expectedModelAfterList);
 
         Model expectedModelAfterCancelledClear = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        assertCommandSuccess(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterCancelledClear);
+        assertCommandSuccess(
+                ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterCancelledClear);
     }
 
     @Test

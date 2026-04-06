@@ -28,8 +28,6 @@ import seedu.address.model.person.Id;
  * Parses user input.
  */
 public class AddressBookParser {
-    private boolean isAwaitingClearConfirmation;
-
     /**
      * Used for initial separation of command word and args.
      */
@@ -38,6 +36,8 @@ public class AddressBookParser {
     private static final Pattern MODE_PREFIX_PATTERN =
             Pattern.compile("(^|\\s)" + Pattern.quote(PREFIX_MODE.getPrefix()) + "\\S*");
     private static final Logger logger = LogsCenter.getLogger(AddressBookParser.class);
+
+    private boolean isAwaitingClearConfirmation;
 
     /**
      * Parses user input into command for execution.

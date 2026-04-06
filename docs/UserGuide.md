@@ -115,23 +115,29 @@ Format: `list`
 
 Edit an existing person in the address book.
 
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]… [r/REMARK]​`
+Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [t/TAG]… [tdel/TAG]… [r/REMARK]​`
 
 * `ID` specifies the person to be edited.
 * `ID` **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
-* When editing tags, the provided tags will be appended to the person’s existing tags.
+* When editing tags, `t/` appends the provided tags to the person’s existing tags.
+* `tdel/` removes the provided tags from the person’s existing tags.
 * Only valid tags may be used: `Student`, `Parent`, `Tutor`.
 * Repeating an existing tag has no effect because duplicate tags are not stored.
+* Deleting a tag that the person does not currently have has no effect.
 * You can remove all the person’s tags by typing `t/` without specifying any tag after it.
-* `t/` must be used on its own. Do not combine `t/` with tag values in the same command.
+* When used to clear tags, bare `t/` must not be combined with tag values or `tdel/` values in the same command.
+  It may still be combined with non-tag edits such as `n/`, `p/`, or `a/`.
+* The same tag cannot be added and deleted in the same command.
 
 Examples:
 *  `edit 1 p/91234567`: Edit the phone number of the person with `ID` 1, changing it to `91234567`.
-*  `edit 2 t/Parent`: Append the tag `Parent` to the person with `ID` 2.
-*  `edit 2 t/Parent t/Tutor`: Append both `Parent` and `Tutor` to the person with `ID` 2.
+*  `edit 1 t/Parent`: Append the tag `Parent` to the person with `ID` 1.
+*  `edit 1 t/Parent t/Tutor`: Append both `Parent` and `Tutor` to the person with `ID` 1.
+*  `edit 1 tdel/Student`: Delete the tag `Student` from the person with `ID` 1.
+*  `edit 1 t/Tutor tdel/Student`: Append the tag `Tutor` and delete the tag `Student` for the person with `ID` 1.
 *  `edit 2 n/Betsy Crower t/`: Edit the name of the person with `ID` 2, changing it to `Betsy Crower`, whilst clearing all existing tags.
 
 ### Locating persons: `find`
@@ -192,7 +198,7 @@ Examples:
 * `copy 6 n/`: Copy the name of the person with `ID` 6 to the clipboard.
 * `copy 7 p/`: Copy the phone number of the person with `ID` 7 to the clipboard.
 * `copy 9 a/`: Copy the address of the person with `ID` 9 to the clipboard.
-* `copy 1 p/`: Fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty. 
+* `copy 1 p/`: Fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty.
 
 ### Clearing all entries: `clear`
 
@@ -246,7 +252,7 @@ Action | Format, Examples
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]… [r/REMARK]​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 t/Parent t/Tutor r/new student`
 **Clear** | `clear`
 **Delete** | `del ID`<br> e.g., `del 3`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​ [r/REMARK]`<br> e.g.,`edit 2 t/Parent t/Tutor`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [t/TAG]…​ [tdel/TAG]…​ [r/REMARK]`<br> e.g., `edit 2 t/Parent tdel/Tutor`
 **Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`<br> e.g., `find n/James t/Student`
 **List** | `list`
 **Help** | `help`

@@ -2,6 +2,8 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
+import java.util.ArrayList;
+
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Id;
@@ -24,12 +26,11 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
 
-        if (trimmedArgs.split("\\s+").length > 1) {
-            throw new ParseException(
-                    String.format(DeleteCommand.MESSAGE_TOO_MANY_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+        String[] tokens = trimmedArgs.split("\\s+");
+        ArrayList<Id> ids = new ArrayList<Id>();
+        for (String token : tokens) {
+            ids.add(ParserUtil.parseId(token));
         }
-
-        Id id = ParserUtil.parseId(trimmedArgs);
-        return new DeleteCommand(id);
+        return new DeleteCommand(ids);
     }
 }

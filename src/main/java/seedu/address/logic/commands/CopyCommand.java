@@ -100,7 +100,8 @@ public class CopyCommand extends Command {
         } else if (field.equals(PREFIX_MEETING_LINK.getPrefix())) {
             return person.getMeetingLink().map(m -> m.value).orElse(EMPTY_STRING);
         } else {
-            throw new IllegalStateException("Unexpected invalid field: " + field);
+            assert false : "Unexpected invalid field: " + field;
+            return EMPTY_STRING;
         }
     }
 
@@ -114,7 +115,8 @@ public class CopyCommand extends Command {
         } else if (field.equals(PREFIX_MEETING_LINK.getPrefix())) {
             return "meeting link";
         } else {
-            throw new IllegalStateException("Unexpected invalid field: " + field);
+            assert false : "Unexpected invalid field: " + field;
+            return EMPTY_STRING;
         }
     }
 

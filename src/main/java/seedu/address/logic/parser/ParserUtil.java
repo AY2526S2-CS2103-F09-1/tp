@@ -1,6 +1,8 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MATCH_MODE_AND_KEYWORD;
+import static seedu.address.logic.Messages.MATCH_MODE_OR_KEYWORD;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_MODE;
 
 import java.util.Collection;
@@ -197,13 +199,13 @@ public class ParserUtil {
     public static MatchMode parseMatchMode(String stringModeKeyword) throws ParseException {
         String normalizedModeKeyword = stringModeKeyword.trim().toLowerCase();
 
-        switch (normalizedModeKeyword) {
-        case "and":
+        if (MATCH_MODE_AND_KEYWORD.equals(normalizedModeKeyword)) {
             return MatchMode.AND;
-        case "or":
-            return MatchMode.OR;
-        default:
-            throw new ParseException(String.format(MESSAGE_INVALID_MODE, FindCommand.MESSAGE_USAGE));
         }
+        if (MATCH_MODE_OR_KEYWORD.equals(normalizedModeKeyword)) {
+            return MatchMode.OR;
+        }
+
+        throw new ParseException(String.format(MESSAGE_INVALID_MODE, FindCommand.MESSAGE_USAGE));
     }
 }

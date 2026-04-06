@@ -6,12 +6,16 @@ import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_MEETING_LINK_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DELETE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DELETE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.MEETING_LINK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DELETE_DESC_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DELETE_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PARENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
@@ -26,6 +30,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_LINK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
@@ -48,6 +53,7 @@ public class EditCommandParserTest {
 
     private static final String PHONE_EMPTY = " " + PREFIX_PHONE;
     private static final String TAG_EMPTY = " " + PREFIX_TAG;
+    private static final String TAG_DELETE_EMPTY = " " + PREFIX_TAG_DELETE;
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
@@ -57,7 +63,7 @@ public class EditCommandParserTest {
     @Test
     public void parse_missingParts_failure() {
         assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_FORMAT);
-        assertParseFailure(parser, "1", EditCommand.MESSAGE_NOT_EDITED);
+        assertParseFailure(parser, "1", Messages.MESSAGE_NOT_EDITED);
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
     }
 
@@ -76,13 +82,20 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_UNLISTED_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_MEETING_LINK_DESC, MeetingLink.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1" + INVALID_TAG_DELETE_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
+        assertParseFailure(parser, "1" + INVALID_UNLISTED_TAG_DELETE_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
+        assertParseFailure(parser, "1" + TAG_DELETE_EMPTY, Tag.MESSAGE_TAG_CONSTRAINTS);
 
         assertParseFailure(parser, "1" + TAG_DESC_STUDENT + TAG_DESC_PARENT + TAG_EMPTY,
-                EditCommand.MESSAGE_INVALID_TAG_RESET);
+                Messages.MESSAGE_INVALID_TAG_RESET);
         assertParseFailure(parser, "1" + TAG_DESC_STUDENT + TAG_EMPTY + TAG_DESC_PARENT,
-                EditCommand.MESSAGE_INVALID_TAG_RESET);
+                Messages.MESSAGE_INVALID_TAG_RESET);
         assertParseFailure(parser, "1" + TAG_EMPTY + TAG_DESC_STUDENT + TAG_DESC_PARENT,
-                EditCommand.MESSAGE_INVALID_TAG_RESET);
+                Messages.MESSAGE_INVALID_TAG_RESET);
+        assertParseFailure(parser, "1" + TAG_EMPTY + TAG_DELETE_DESC_STUDENT,
+                Messages.MESSAGE_INVALID_TAG_RESET);
+        assertParseFailure(parser, "1" + TAG_DESC_STUDENT + TAG_DELETE_DESC_STUDENT,
+                Messages.MESSAGE_CONFLICTING_TAG_EDITS);
 
         assertParseFailure(parser, "1" + INVALID_NAME_DESC + VALID_ADDRESS_AMY + VALID_PHONE_AMY,
                 Name.MESSAGE_CONSTRAINTS);
@@ -141,6 +154,11 @@ public class EditCommandParserTest {
         descriptor = new EditPersonDescriptorBuilder().withMeetingLink(VALID_MEETING_LINK_AMY).build();
         expectedCommand = new EditCommand(targetId, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
+
+        userInput = targetId.getValue() + TAG_DELETE_DESC_STUDENT;
+        descriptor = new EditPersonDescriptorBuilder().withTagsToDelete(VALID_TAG_STUDENT).build();
+        expectedCommand = new EditCommand(targetId, descriptor);
+        assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
@@ -174,6 +192,43 @@ public class EditCommandParserTest {
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
+        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_repeatedSameTagSpecified_success() {
+        Id targetId = ID_THIRD;
+        String userInput = targetId.getValue() + TAG_DESC_STUDENT + TAG_DESC_STUDENT;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTags(VALID_TAG_STUDENT).build();
+        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_multipleCategoriesToDeleteSpecified_success() {
+        Id targetId = ID_THIRD;
+        String userInput = targetId.getValue() + TAG_DELETE_DESC_STUDENT + TAG_DELETE_DESC_PARENT;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTagsToDelete(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
+        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_addAndDeleteCategoriesSpecified_success() {
+        Id targetId = ID_SECOND;
+        String userInput = targetId.getValue() + TAG_DESC_PARENT + TAG_DELETE_DESC_STUDENT;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTags(VALID_TAG_PARENT)
+                .withTagsToDelete(VALID_TAG_STUDENT).build();
         EditCommand expectedCommand = new EditCommand(targetId, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);

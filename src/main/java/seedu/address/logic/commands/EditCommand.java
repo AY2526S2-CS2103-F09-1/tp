@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Collections;
@@ -38,25 +39,23 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person with "
             + "the specified ID. "
-            + "Existing values will be overwritten by the input values, except tags which are appended.\n"
+            + "Existing values will be overwritten by the input values, except tags which are appended "
+            + "with t/ and deleted with tdel/.\n"
             + "Parameters: ID (must be a positive integer) "
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            + "[" + PREFIX_TAG + "TAG]...\n"
+            + "[" + PREFIX_TAG + "TAG]... "
+            + "[" + PREFIX_TAG_DELETE + "TAG]...\n"
             + "[" + PREFIX_REMARK + "REMARK] "
             + "[" + PREFIX_MEETING_LINK + "MEETING_LINK]\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_TAG + "Student " + PREFIX_REMARK + "needs additional practices\n"
+            + PREFIX_TAG + "Student "
+            + PREFIX_TAG_DELETE + "Parent "
+            + PREFIX_REMARK + "needs additional practices\n"
             + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG + "\n"
             + "To clear meeting link, use " + COMMAND_WORD + " 1 " + PREFIX_MEETING_LINK;
-
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
-    public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
-    public static final String MESSAGE_INVALID_TAG_RESET =
-            "The tag reset prefix t/ cannot be combined with tag values.";
 
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -77,7 +76,7 @@ public class EditCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new CommandException(MESSAGE_NOT_EDITED);
+            throw new CommandException(Messages.MESSAGE_NOT_EDITED);
         }
 
         Person personToEdit = model.findPersonById(id)
@@ -87,18 +86,19 @@ public class EditCommand extends Command {
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            throw new CommandException(Messages.MESSAGE_DUPLICATE_PERSON);
         }
 
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+        return new CommandResult(String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
     }
 
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}. Provided tags are appended to the
-     * existing tags, unless the edited tag set is empty, which clears all tags.
+     * existing tags, specified deleted tags are removed, and an empty edited tag
+     * set clears all tags.
      */
     private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(personToEdit);
@@ -128,9 +128,13 @@ public class EditCommand extends Command {
         requireNonNull(existingTags);
         requireNonNull(editPersonDescriptor);
 
-        return editPersonDescriptor.getTags()
+        Set<Tag> tagsAfterAdditions = editPersonDescriptor.getTags()
                 .map(tagsToApply -> mergeTags(existingTags, tagsToApply))
                 .orElse(existingTags);
+
+        return editPersonDescriptor.getTagsToDelete()
+                .map(tagsToDelete -> removeTags(tagsAfterAdditions, tagsToDelete))
+                .orElse(tagsAfterAdditions);
     }
 
     private static Set<Tag> mergeTags(Set<Tag> existingTags, Set<Tag> tagsToApply) {
@@ -144,6 +148,15 @@ public class EditCommand extends Command {
         Set<Tag> combinedTags = new HashSet<>(existingTags);
         combinedTags.addAll(tagsToApply);
         return combinedTags;
+    }
+
+    private static Set<Tag> removeTags(Set<Tag> existingTags, Set<Tag> tagsToDelete) {
+        requireNonNull(existingTags);
+        requireNonNull(tagsToDelete);
+
+        Set<Tag> remainingTags = new HashSet<>(existingTags);
+        remainingTags.removeAll(tagsToDelete);
+        return remainingTags;
     }
 
     @Override
@@ -172,7 +185,7 @@ public class EditCommand extends Command {
 
     /**
      * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person, except tags which will be appended.
+     * corresponding field value of the person, except tags which may be appended or deleted.
      */
     public static class EditPersonDescriptor {
         private Name name;
@@ -181,6 +194,7 @@ public class EditCommand extends Command {
         private Optional<Address> address;
         private boolean addressChanged;
         private Set<Tag> tags;
+        private Set<Tag> tagsToDelete;
         private Optional<Remark> remark;
         private boolean remarkChanged;
         private Optional<MeetingLink> meetingLink;
@@ -211,6 +225,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone, toCopy.phoneChanged);
             setAddress(toCopy.address, toCopy.addressChanged);
             setTags(toCopy.tags);
+            setTagsToDelete(toCopy.tagsToDelete);
             setRemark(toCopy.remark, toCopy.remarkChanged);
             setMeetingLink(toCopy.meetingLink, toCopy.meetingLinkChanged);
         }
@@ -219,7 +234,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, tags)
+            return CollectionUtil.isAnyNonNull(name, tags, tagsToDelete)
                     || phoneChanged
                     || addressChanged
                     || remarkChanged
@@ -331,6 +346,25 @@ public class EditCommand extends Command {
         }
 
         /**
+         * Sets {@code tagsToDelete} to this object's {@code tagsToDelete}.
+         * A defensive copy of {@code tagsToDelete} is used internally.
+         */
+        public void setTagsToDelete(Set<Tag> tagsToDelete) {
+            this.tagsToDelete = (tagsToDelete != null) ? new HashSet<>(tagsToDelete) : null;
+        }
+
+        /**
+         * Returns an unmodifiable tag deletion set, which throws {@code UnsupportedOperationException}
+         * if modification is attempted.
+         * Returns {@code Optional#empty()} if {@code tagsToDelete} is null.
+         */
+        public Optional<Set<Tag>> getTagsToDelete() {
+            return (tagsToDelete != null)
+                    ? Optional.of(Collections.unmodifiableSet(tagsToDelete))
+                    : Optional.empty();
+        }
+
+        /**
          * Sets the edited remark value.
          * For public use.
          */
@@ -419,6 +453,7 @@ public class EditCommand extends Command {
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && addressChanged == otherEditPersonDescriptor.addressChanged
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
+                    && Objects.equals(tagsToDelete, otherEditPersonDescriptor.tagsToDelete)
                     && Objects.equals(remark, otherEditPersonDescriptor.remark)
                     && remarkChanged == otherEditPersonDescriptor.remarkChanged
                     && Objects.equals(meetingLink, otherEditPersonDescriptor.meetingLink)
@@ -432,6 +467,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("address", address)
                     .add("tags", tags)
+                    .add("tagsToDelete", tagsToDelete)
                     .add("remark", remark)
                     .toString();
         }

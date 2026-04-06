@@ -380,7 +380,7 @@ Guarantees:
 MSS:
 1. User requests to edit a contact's tags.
 2. EduConnect validates the contact reference and tag value.
-3. EduConnect appends the provided tags to the selected contact.
+3. EduConnect applies the requested tag additions and deletions to the selected contact.
 4. EduConnect shows a success message.
 Use case ends.
 
@@ -405,16 +405,24 @@ Extensions:
   * 2b2. User re-submits the edit request.
   * Steps 2b1-2b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2c. The user requests to clear all tags and also provides one or more tag values.
+* 2c. The user requests to clear all tags and also specifies one or more tags to add or remove.
   * 2c1. EduConnect shows an error message.
   * 2c2. User re-submits the edit request.
   * Steps 2c1-2c2 are repeated until valid input is provided.
   * Use case resumes from step 2.
+* 2d. The user tries to add and delete the same tag in one command.
+  * 2d1. EduConnect shows an error message.
+  * 2d2. User re-submits the edit request.
+  * Steps 2d1-2d2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
 * 3a. The selected contact already has one or more tags.
-  * 3a1. EduConnect appends any missing tags and keeps existing tags unchanged.
+  * 3a1. EduConnect appends any missing tags and removes any specified tags that are present.
   * Use case resumes from step 4.
 * 3b. The user requests to clear all existing tags.
   * 3b1. EduConnect clears all existing tags for the selected contact.
+  * Use case resumes from step 4.
+* 3c. The user specifies a tag to delete that the selected contact does not have.
+  * 3c1. EduConnect leaves the existing tags unchanged.
   * Use case resumes from step 4.
 
 #### Use case: UC04 - View Phone Number and Address

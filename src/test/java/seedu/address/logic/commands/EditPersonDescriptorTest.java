@@ -9,6 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 
 import org.junit.jupiter.api.Test;
 
@@ -90,6 +91,10 @@ public class EditPersonDescriptorTest {
         // different tags -> returns false
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_PARENT).build();
         assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different tags to delete -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTagsToDelete(VALID_TAG_STUDENT).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
     }
 
     @Test
@@ -99,7 +104,8 @@ public class EditPersonDescriptorTest {
                 + editPersonDescriptor.getName().orElse(null) + ", phone="
                 + editPersonDescriptor.getPhone() + ", address="
                 + editPersonDescriptor.getAddress() + ", tags="
-                + editPersonDescriptor.getTags().orElse(null) + ", remark="
+                + editPersonDescriptor.getTags().orElse(null) + ", tagsToDelete="
+                + editPersonDescriptor.getTagsToDelete().orElse(null) + ", remark="
                 + editPersonDescriptor.getRemark() + "}";
         assertEquals(expected, editPersonDescriptor.toString());
     }

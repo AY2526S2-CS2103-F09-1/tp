@@ -16,7 +16,8 @@ abp -> ecp ++: parse("1 t/Parent")
 create ec
 ecp -> ec ++: id, editPersonDescriptor
 note right of ec
-  Tags are appended.
+  Tags are appended with t/.
+  Tags are deleted with tdel/.
   A bare t/ clears all tags.
 end note
 ec --> ecp --

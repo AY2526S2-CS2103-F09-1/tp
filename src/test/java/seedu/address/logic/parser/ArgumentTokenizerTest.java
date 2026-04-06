@@ -12,6 +12,8 @@ public class ArgumentTokenizerTest {
     private final Prefix unknownPrefix = new Prefix("--u");
     private final Prefix pSlash = new Prefix("p/");
     private final Prefix dashT = new Prefix("-t");
+    private final Prefix tSlash = new Prefix("t/");
+    private final Prefix tDelSlash = new Prefix("tdel/");
     private final Prefix hatQ = new Prefix("^Q");
 
     @Test
@@ -134,6 +136,21 @@ public class ArgumentTokenizerTest {
         assertArgumentAbsent(argMultimap, pSlash);
         assertArgumentPresent(argMultimap, dashT, "not joined^Qjoined");
         assertArgumentAbsent(argMultimap, hatQ);
+    }
+
+    @Test
+    public void tokenize_overlappingPrefixes_tokenizesDistinctArguments() {
+        String argsString = "Preamble t/Student tdel/Parent";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, tSlash, tDelSlash);
+        assertPreamblePresent(argMultimap, "Preamble");
+        assertArgumentPresent(argMultimap, tSlash, "Student");
+        assertArgumentPresent(argMultimap, tDelSlash, "Parent");
+
+        argsString = "Preamble tdel/Tutor";
+        argMultimap = ArgumentTokenizer.tokenize(argsString, tSlash, tDelSlash);
+        assertPreamblePresent(argMultimap, "Preamble");
+        assertArgumentAbsent(argMultimap, tSlash);
+        assertArgumentPresent(argMultimap, tDelSlash, "Tutor");
     }
 
     @Test

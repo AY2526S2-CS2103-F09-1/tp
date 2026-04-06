@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.ArrayList;
@@ -54,12 +55,17 @@ public class CommandTestUtil {
     public static final String TAG_DESC_STUDENT = " " + PREFIX_TAG + VALID_TAG_STUDENT;
     public static final String TAG_DESC_PARENT = " " + PREFIX_TAG + VALID_TAG_PARENT;
     public static final String TAG_DESC_TUTOR = " " + PREFIX_TAG + VALID_TAG_TUTOR;
+    public static final String TAG_DELETE_DESC_STUDENT = " " + PREFIX_TAG_DELETE + VALID_TAG_STUDENT;
+    public static final String TAG_DELETE_DESC_PARENT = " " + PREFIX_TAG_DELETE + VALID_TAG_PARENT;
+    public static final String TAG_DELETE_DESC_TUTOR = " " + PREFIX_TAG_DELETE + VALID_TAG_TUTOR;
     public static final String INVALID_UNLISTED_TAG_DESC = " " + PREFIX_TAG + "Friend";
+    public static final String INVALID_UNLISTED_TAG_DELETE_DESC = " " + PREFIX_TAG_DELETE + "Friend";
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     // public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS;
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+    public static final String INVALID_TAG_DELETE_DESC = " " + PREFIX_TAG_DELETE + "hubby*";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

@@ -25,6 +25,7 @@ public class Person {
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
     private final Optional<Remark> remark;
+    private final Optional<MeetingLink> meetingLink;
 
     /**
      * Creates a {@code Person} with the provided fields.
@@ -35,7 +36,8 @@ public class Person {
         Optional<Phone> phone,
         Optional<Address> address,
         Set<Tag> tags,
-        Optional<Remark> remark
+        Optional<Remark> remark,
+        Optional<MeetingLink> meetingLink
     ) {
         this.id = id;
         this.name = name;
@@ -43,6 +45,7 @@ public class Person {
         this.address = address;
         this.tags.addAll(tags);
         this.remark = remark;
+        this.meetingLink = meetingLink;
     }
 
     public Id getId() {
@@ -71,6 +74,10 @@ public class Person {
 
     public Optional<Remark> getRemark() {
         return remark;
+    }
+
+    public Optional<MeetingLink> getMeetingLink() {
+        return meetingLink;
     }
 
     /**
@@ -125,13 +132,14 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && address.equals(otherPerson.address)
                 && tags.equals(otherPerson.tags)
-                && remark.equals(otherPerson.remark);
+                && remark.equals(otherPerson.remark)
+                && meetingLink.equals(otherPerson.meetingLink);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, address, tags, remark);
+        return Objects.hash(name, phone, address, tags, remark, meetingLink);
     }
 
     @Override
@@ -143,6 +151,7 @@ public class Person {
                 .add("address", address)
                 .add("tags", tags)
                 .add("remark", remark)
+                .add("meetingLink", meetingLink)
                 .toString();
     }
 }

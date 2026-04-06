@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_MEETING_LINK_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_MEETING_LINK_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
@@ -59,6 +61,26 @@ public class EditPersonDescriptorTest {
     }
 
     @Test
+    public void getMeetingLink_meetingLinkFieldIsNull_returnsEmptyOptional() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.setMeetingLink(null);
+
+        assertTrue(descriptor.getMeetingLink().isEmpty());
+    }
+
+    @Test
+    public void setMeetingLink_nullMeetingLink_resetsMeetingLinkAndEditState() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptor();
+
+        descriptor.setMeetingLink(null);
+
+        assertTrue(descriptor.getMeetingLink().isEmpty());
+        assertFalse(descriptor.isMeetingLinkChanged());
+        assertFalse(descriptor.isAnyFieldEdited());
+    }
+
+    @Test
     public void equals() {
         // same values -> returns true
         EditPersonDescriptor descriptorWithSameValues = new EditPersonDescriptor(DESC_AMY);
@@ -91,6 +113,17 @@ public class EditPersonDescriptorTest {
         // different tags -> returns false
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTags(VALID_TAG_PARENT).build();
         assertFalse(DESC_AMY.equals(editedAmy));
+
+        // different meeting link -> returns false
+        editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withMeetingLink(VALID_MEETING_LINK_AMY).build();
+        assertFalse(DESC_AMY.equals(editedAmy));
+
+        // one has meeting link, other does not -> returns false
+        EditPersonDescriptor withLink = new EditPersonDescriptorBuilder(DESC_AMY)
+                .withMeetingLink(VALID_MEETING_LINK_AMY).build();
+        EditPersonDescriptor withOtherLink = new EditPersonDescriptorBuilder(DESC_AMY)
+                .withMeetingLink(VALID_MEETING_LINK_BOB).build();
+        assertFalse(withLink.equals(withOtherLink));
 
         // different tags to delete -> returns false
         editedAmy = new EditPersonDescriptorBuilder(DESC_AMY).withTagsToDelete(VALID_TAG_STUDENT).build();

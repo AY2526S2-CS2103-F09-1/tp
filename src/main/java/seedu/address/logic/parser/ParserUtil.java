@@ -14,6 +14,7 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.MeetingLink;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
 import seedu.address.model.person.Phone;
@@ -152,6 +153,29 @@ public class ParserUtil {
                 .orElseThrow(() -> new ParseException(Remark.MESSAGE_CONSTRAINTS));
 
         return Optional.of(parsedRemark);
+    }
+
+    /**
+     * Parses an optional {@code String link} into an optional {@code MeetingLink}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code link} is invalid.
+     */
+    public static Optional<MeetingLink> parseMeetingLink(Optional<String> link) throws ParseException {
+        requireNonNull(link);
+
+        link = link.filter(linkString -> !linkString.isEmpty());
+        if (link.isEmpty()) {
+            return Optional.empty();
+        }
+
+        MeetingLink parsedLink = link.map(linkString -> requireNonNull(linkString))
+                .map(linkString -> linkString.trim())
+                .filter(MeetingLink::isValidMeetingLink)
+                .map(MeetingLink::new)
+                .orElseThrow(() -> new ParseException(MeetingLink.MESSAGE_CONSTRAINTS));
+
+        return Optional.of(parsedLink);
     }
 
     /**

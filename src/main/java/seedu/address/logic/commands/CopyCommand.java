@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_LINK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
@@ -28,23 +29,23 @@ public class CopyCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Copies a field of the person identified by their ID to the clipboard.\n"
             + "Parameters: ID (must be a positive integer) FIELD ("
-
-            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS + ")\n"
+            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS + ", " + PREFIX_MEETING_LINK + ")\n"
             + "Example:\n"
             + "\t" + COMMAND_WORD + " 1 " + PREFIX_PHONE + "\n";
 
     public static final String MESSAGE_COPY_SUCCESS = "Copied %s's %s to clipboard!";
 
     public static final String MESSAGE_INVALID_FIELD = "Invalid field. The valid fields include: "
-            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS;
+            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS + ", " + PREFIX_MEETING_LINK;
 
     public static final String MESSAGE_MISSING_FIELD = "Please specify a field to copy. Valid fields: "
-            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS;
+            + PREFIX_NAME + ", " + PREFIX_PHONE + ", " + PREFIX_ADDRESS + ", " + PREFIX_MEETING_LINK;
 
     public static final String MESSAGE_EMPTY_FIELD_VALUE = "There is no %s to copy for this contact.";
 
     private static final Set<String> VALID_FIELDS = Set.of(
-            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix());
+            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix(),
+            PREFIX_MEETING_LINK.getPrefix());
 
     private final Id targetId;
     private final String field;
@@ -95,7 +96,9 @@ public class CopyCommand extends Command {
         } else if (field.equals(PREFIX_PHONE.getPrefix())) {
             return person.getPhone().map(p -> p.value).orElse(EMPTY_STRING);
         } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
-            return person.getAddress().map(address -> address.value).orElse(EMPTY_STRING);
+            return person.getAddress().map(a -> a.value).orElse(EMPTY_STRING);
+        } else if (field.equals(PREFIX_MEETING_LINK.getPrefix())) {
+            return person.getMeetingLink().map(m -> m.value).orElse(EMPTY_STRING);
         } else {
             assert false : "Unexpected invalid field: " + field;
             return EMPTY_STRING;
@@ -109,6 +112,8 @@ public class CopyCommand extends Command {
             return "phone number";
         } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return "address";
+        } else if (field.equals(PREFIX_MEETING_LINK.getPrefix())) {
+            return "meeting link";
         } else {
             assert false : "Unexpected invalid field: " + field;
             return EMPTY_STRING;

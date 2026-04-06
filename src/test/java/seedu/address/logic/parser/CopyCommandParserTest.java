@@ -2,6 +2,7 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_LINK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -23,6 +24,8 @@ public class CopyCommandParserTest {
         assertParseSuccess(parser, "1 " + PREFIX_NAME, new CopyCommand(ID_FIRST, PREFIX_NAME.getPrefix()));
         assertParseSuccess(parser, "1 " + PREFIX_ADDRESS,
                 new CopyCommand(ID_FIRST, PREFIX_ADDRESS.getPrefix()));
+        assertParseSuccess(parser, "1 " + PREFIX_MEETING_LINK,
+                new CopyCommand(ID_FIRST, PREFIX_MEETING_LINK.getPrefix()));
     }
 
     @Test

@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_LINK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
@@ -43,6 +44,9 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_REMARK_AMY = "first student";
     public static final String VALID_REMARK_BOB = "2nd student";
+    public static final String VALID_MEETING_LINK_AMY = "https://zoom.us/j/amy123";
+    public static final String VALID_MEETING_LINK_BOB = "https://zoom.us/j/bob456";
+    public static final String INVALID_MEETING_LINK = "not-a-valid-url";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -52,6 +56,9 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String REMARK_DESC_AMY = " " + PREFIX_REMARK + VALID_REMARK_AMY;
     public static final String REMARK_DESC_BOB = " " + PREFIX_REMARK + VALID_REMARK_BOB;
+    public static final String MEETING_LINK_DESC_AMY = " " + PREFIX_MEETING_LINK + VALID_MEETING_LINK_AMY;
+    public static final String MEETING_LINK_DESC_BOB = " " + PREFIX_MEETING_LINK + VALID_MEETING_LINK_BOB;
+    public static final String INVALID_MEETING_LINK_DESC = " " + PREFIX_MEETING_LINK + INVALID_MEETING_LINK;
     public static final String TAG_DESC_STUDENT = " " + PREFIX_TAG + VALID_TAG_STUDENT;
     public static final String TAG_DESC_PARENT = " " + PREFIX_TAG + VALID_TAG_PARENT;
     public static final String TAG_DESC_TUTOR = " " + PREFIX_TAG + VALID_TAG_TUTOR;

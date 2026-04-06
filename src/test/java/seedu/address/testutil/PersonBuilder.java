@@ -6,6 +6,7 @@ import java.util.Set;
 
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.MeetingLink;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -22,6 +23,7 @@ public class PersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_REMARK = "first student";
+    public static final String DEFAULT_MEETING_LINK = "https://zoom.com/smt";
 
     private Id id;
     private Name name;
@@ -29,6 +31,7 @@ public class PersonBuilder {
     private Optional<Address> address;
     private Set<Tag> tags;
     private Optional<Remark> remark;
+    private Optional<MeetingLink> meetingLink;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -40,6 +43,7 @@ public class PersonBuilder {
         address = Optional.of(new Address(DEFAULT_ADDRESS));
         tags = new HashSet<>();
         remark = Optional.of(new Remark(DEFAULT_REMARK));
+        meetingLink = Optional.empty();
     }
 
     /**
@@ -52,6 +56,7 @@ public class PersonBuilder {
         address = personToCopy.getAddress();
         tags = new HashSet<>(personToCopy.getTags());
         remark = personToCopy.getRemark();
+        meetingLink = personToCopy.getMeetingLink();
     }
 
     /**
@@ -126,8 +131,24 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code MeetingLink} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withMeetingLink(String meetingLink) {
+        this.meetingLink = Optional.of(new MeetingLink(meetingLink));
+        return this;
+    }
+
+    /**
+     * Sets the {@code MeetingLink} of the {@code Person} that we are building as empty.
+     */
+    public PersonBuilder withoutMeetingLink() {
+        this.meetingLink = Optional.empty();
+        return this;
+    }
+
     public Person build() {
-        return new Person(id, name, phone, address, tags, remark);
+        return new Person(id, name, phone, address, tags, remark, meetingLink);
     }
 
 }

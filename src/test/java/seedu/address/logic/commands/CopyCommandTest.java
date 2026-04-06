@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_PERSON_ID;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_MEETING_LINK_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_LINK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
@@ -84,15 +86,57 @@ public class CopyCommandTest {
     }
 
     @Test
+    public void execute_emptyMeetingLinkField_throwsCommandException() {
+        Person personWithNoMeetingLink = new PersonBuilder().withId(67).withoutMeetingLink().build();
+        AddressBook ab = new AddressBook();
+        ab.addPerson(personWithNoMeetingLink);
+        Model modelWithNoMeetingLink = new ModelManager(ab, new UserPrefs());
+        Id id = Id.of(67);
+        CopyCommand copyCommand = new CopyCommand(id, PREFIX_MEETING_LINK.getPrefix());
+
+        String expectedMessage = String.format(CopyCommand.MESSAGE_EMPTY_FIELD_VALUE, "meeting link");
+
+        assertCommandFailure(copyCommand, modelWithNoMeetingLink, expectedMessage);
+    }
+
+    @Test
+    public void getFieldValue_meetingLinkPresent_returnsMeetingLink() throws Exception {
+        Person personWithMeetingLink = new PersonBuilder().withMeetingLink(VALID_MEETING_LINK_AMY).build();
+        CopyCommand copyCommand = new CopyCommand(ID_FIRST, PREFIX_MEETING_LINK.getPrefix());
+        Method getFieldValueMethod =
+                CopyCommand.class.getDeclaredMethod("getFieldValue", Person.class);
+        getFieldValueMethod.setAccessible(true);
+
+        String fieldValue = getFieldValueMethod.invoke(copyCommand, personWithMeetingLink).toString();
+
+        assertEquals(VALID_MEETING_LINK_AMY, fieldValue);
+    }
+
+    @Test
     public void getFieldValue_addressPresent_returnsAddress() throws Exception {
         Person personWithAddress = new PersonBuilder().withAddress("123 Clementi Road").build();
         CopyCommand copyCommand = new CopyCommand(ID_FIRST, PREFIX_ADDRESS.getPrefix());
         Method getFieldValueMethod = CopyCommand.class.getDeclaredMethod("getFieldValue", Person.class);
         getFieldValueMethod.setAccessible(true);
 
-        String fieldValue = (String) getFieldValueMethod.invoke(copyCommand, personWithAddress);
+        String fieldValue = getFieldValueMethod.invoke(copyCommand, personWithAddress).toString();
 
         assertEquals("123 Clementi Road", fieldValue);
+    }
+
+    @Test
+    public void getFieldLabel_allValidFields_returnsCorrectLabel() throws Exception {
+        Method getFieldLabelMethod = CopyCommand.class.getDeclaredMethod("getFieldLabel");
+        getFieldLabelMethod.setAccessible(true);
+
+        assertEquals("name",
+                getFieldLabelMethod.invoke(new CopyCommand(ID_FIRST, PREFIX_NAME.getPrefix())).toString());
+        assertEquals("phone number",
+                getFieldLabelMethod.invoke(new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix())).toString());
+        assertEquals("address",
+                getFieldLabelMethod.invoke(new CopyCommand(ID_FIRST, PREFIX_ADDRESS.getPrefix())).toString());
+        assertEquals("meeting link",
+                getFieldLabelMethod.invoke(new CopyCommand(ID_FIRST, PREFIX_MEETING_LINK.getPrefix())).toString());
     }
 
     @Test

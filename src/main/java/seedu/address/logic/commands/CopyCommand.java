@@ -97,7 +97,8 @@ public class CopyCommand extends Command {
         } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return person.getAddress().map(address -> address.value).orElse(EMPTY_STRING);
         } else {
-            throw new IllegalStateException("Unexpected invalid field: " + field);
+            assert false : "Unexpected invalid field: " + field;
+            return EMPTY_STRING;
         }
     }
 
@@ -109,7 +110,8 @@ public class CopyCommand extends Command {
         } else if (field.equals(PREFIX_ADDRESS.getPrefix())) {
             return "address";
         } else {
-            throw new IllegalStateException("Unexpected invalid field: " + field);
+            assert false : "Unexpected invalid field: " + field;
+            return EMPTY_STRING;
         }
     }
 

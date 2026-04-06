@@ -1,5 +1,6 @@
 package seedu.address.logic;
 
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 
@@ -9,6 +10,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.parser.Prefix;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonContainsKeywordsPredicate.MatchMode;
 
 /**
  * Container for user visible messages.
@@ -21,6 +23,10 @@ public class Messages {
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
+    public static final String MATCH_MODE_AND_KEYWORD = MatchMode.AND.name().toLowerCase();
+    public static final String MATCH_MODE_OR_KEYWORD = MatchMode.OR.name().toLowerCase();
+    public static final String MESSAGE_CANNOT_USE_MODE =
+            "The " + PREFIX_MODE + " prefix is not allowed in this command.";
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
@@ -29,9 +35,11 @@ public class Messages {
                     + PREFIX_TAG_DELETE + " values.";
     public static final String MESSAGE_CONFLICTING_TAG_EDITS =
             "A tag cannot be both added and deleted in the same command.";
-    public static final String MESSAGE_CANNOT_USE_MODE = "The m/ prefix is not allowed in this command.";
     public static final String MESSAGE_INVALID_MODE =
-            "Mode must be 'and' or 'or'. Use m/and or m/or. If omitted, the default is m/or.";
+            "Mode must be '" + MATCH_MODE_AND_KEYWORD + "' or '" + MATCH_MODE_OR_KEYWORD + "'. "
+                    + "Use " + PREFIX_MODE + MATCH_MODE_AND_KEYWORD + " or "
+                    + PREFIX_MODE + MATCH_MODE_OR_KEYWORD + ". If omitted, the default is "
+                    + PREFIX_MODE + MATCH_MODE_OR_KEYWORD + ".";
     private static final String EMPTY_STRING = "";
 
     /**

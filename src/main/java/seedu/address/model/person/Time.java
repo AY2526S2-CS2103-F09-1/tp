@@ -178,14 +178,21 @@ public class Time {
         String trimmedTime = time.trim();
 
         for (DateTimeFormatter formatter : USER_TIME_FORMATTERS) {
-            try {
-                return LocalTime.parse(trimmedTime, formatter);
-            } catch (DateTimeParseException ignored) {
-                // Try next format.
+            LocalTime parsedTime = parseSingleTimeWithFormatter(trimmedTime, formatter);
+            if (parsedTime != null) {
+                return parsedTime;
             }
         }
 
         return null;
+    }
+
+    private static LocalTime parseSingleTimeWithFormatter(String time, DateTimeFormatter formatter) {
+        try {
+            return LocalTime.parse(time, formatter);
+        } catch (DateTimeParseException dateTimeParseException) {
+            return null;
+        }
     }
 
     private static String formatTime(LocalTime time) {

@@ -7,12 +7,15 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -36,7 +39,8 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_REMARK);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_TAG,
+                        PREFIX_TAG_DELETE, PREFIX_REMARK);
 
         Id id;
 
@@ -57,7 +61,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         populateRemarkIfExists(argMultimap, editPersonDescriptor);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+            throw new ParseException(Messages.MESSAGE_NOT_EDITED);
         }
 
         return new EditCommand(id, editPersonDescriptor);
@@ -73,7 +77,13 @@ public class EditCommandParser implements Parser<EditCommand> {
 
     private void populateTagsIfExists(ArgumentMultimap argMultimap, EditPersonDescriptor editPersonDescriptor)
             throws ParseException {
-        parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
+        Optional<Set<Tag>> tagsToAdd = parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG));
+        Optional<Set<Tag>> tagsToDelete = parseTagsToDeleteForEdit(argMultimap.getAllValues(PREFIX_TAG_DELETE));
+
+        validateTagEdits(tagsToAdd, tagsToDelete);
+
+        tagsToAdd.ifPresent(editPersonDescriptor::setTags);
+        tagsToDelete.ifPresent(editPersonDescriptor::setTagsToDelete);
     }
 
     private void populateAddressIfExists(ArgumentMultimap argMultimap, EditPersonDescriptor editPersonDescriptor)
@@ -111,15 +121,53 @@ public class EditCommandParser implements Parser<EditCommand> {
             return Optional.empty();
         }
 
-        // A bare t/ clears all tags, but it cannot be combined with tag values.
+        // A bare t/ clears all tags, but it cannot be combined with tag values or tdel/ values.
         if (isTagReset(tags)) {
             return Optional.of(Collections.emptySet());
         }
         if (containsTagResetValue(tags)) {
-            throw new ParseException(EditCommand.MESSAGE_INVALID_TAG_RESET);
+            throw new ParseException(Messages.MESSAGE_INVALID_TAG_RESET);
         }
 
         return Optional.of(ParserUtil.parseTags(tags));
+    }
+
+    private Optional<Set<Tag>> parseTagsToDeleteForEdit(Collection<String> tagsToDelete) throws ParseException {
+        requireNonNull(tagsToDelete);
+
+        if (tagsToDelete.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(ParserUtil.parseTags(tagsToDelete));
+    }
+
+    private void validateTagEdits(Optional<Set<Tag>> tagsToAdd, Optional<Set<Tag>> tagsToDelete)
+            throws ParseException {
+        requireNonNull(tagsToAdd);
+        requireNonNull(tagsToDelete);
+
+        if (isTagResetRequested(tagsToAdd) && tagsToDelete.isPresent()) {
+            throw new ParseException(Messages.MESSAGE_INVALID_TAG_RESET);
+        }
+
+        if (hasOverlappingTags(tagsToAdd, tagsToDelete)) {
+            throw new ParseException(Messages.MESSAGE_CONFLICTING_TAG_EDITS);
+        }
+    }
+
+    private static boolean isTagResetRequested(Optional<Set<Tag>> tagsToAdd) {
+        return tagsToAdd.isPresent() && tagsToAdd.get().isEmpty();
+    }
+
+    private static boolean hasOverlappingTags(Optional<Set<Tag>> tagsToAdd, Optional<Set<Tag>> tagsToDelete) {
+        if (tagsToAdd.isEmpty() || tagsToDelete.isEmpty()) {
+            return false;
+        }
+
+        Set<Tag> overlappingTags = new HashSet<>(tagsToAdd.get());
+        overlappingTags.retainAll(tagsToDelete.get());
+        return !overlappingTags.isEmpty();
     }
 
     private static boolean isTagReset(Collection<String> tags) {

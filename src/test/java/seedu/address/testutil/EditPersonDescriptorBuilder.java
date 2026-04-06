@@ -91,7 +91,17 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Phone} of the {@code EditPersonDescriptor} that we are building.
+     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code tagsToDelete}
+     * of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withTagsToDelete(String... tags) {
+        Set<Tag> tagSet = Stream.of(tags).map(Tag::new).collect(Collectors.toSet());
+        descriptor.setTagsToDelete(tagSet);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Remark} of the {@code EditPersonDescriptor} that we are building.
      */
     public EditPersonDescriptorBuilder withRemark(String remark) {
         descriptor.setRemark(Optional.of(new Remark(remark)));

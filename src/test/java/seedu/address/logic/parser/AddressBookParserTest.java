@@ -11,6 +11,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
 
@@ -96,6 +97,16 @@ public class AddressBookParserTest {
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + ID_FIRST.getValue() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor),
+                currentMaxId);
+        assertEquals(new EditCommand(ID_FIRST, descriptor), command);
+    }
+
+    @Test
+    public void parseCommand_editWithDeletedCategories() throws Exception {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTagsToDelete(VALID_TAG_STUDENT).build();
+        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+                + ID_FIRST.getValue() + " " + PREFIX_TAG_DELETE + VALID_TAG_STUDENT,
                 currentMaxId);
         assertEquals(new EditCommand(ID_FIRST, descriptor), command);
     }

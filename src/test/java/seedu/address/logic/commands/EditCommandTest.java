@@ -36,6 +36,8 @@ import seedu.address.testutil.PersonBuilder;
  * Contains integration tests (interaction with the Model) and unit tests for EditCommand.
  */
 public class EditCommandTest {
+    private static final String TAG_TEST_PHONE = "91234567";
+    private static final String TAG_TEST_ADDRESS = "42 Tag Test Avenue";
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
@@ -49,7 +51,7 @@ public class EditCommandTest {
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -75,7 +77,7 @@ public class EditCommandTest {
                 .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_PARENT).build();
         EditCommand editCommand = new EditCommand(maxId, descriptor);
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
@@ -95,7 +97,7 @@ public class EditCommandTest {
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -115,7 +117,7 @@ public class EditCommandTest {
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT, VALID_TAG_TUTOR).build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -133,7 +135,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withTags().build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -151,7 +153,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withoutPhone().build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -169,7 +171,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withoutAddress().build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -186,7 +188,102 @@ public class EditCommandTest {
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
+                Messages.format(personToEdit));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, personToEdit);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_repeatedSameTagInputAcrossExistingTagStates_success() {
+        // Repeated tag inputs such as `t/Student t/Student` are deduplicated by the parser.
+        // These cases verify the resulting edit behavior for all relevant initial tag states.
+        assertRepeatedStudentTagAdditionSuccess(
+                createTagTestPerson(40, VALID_TAG_STUDENT, VALID_TAG_PARENT),
+                VALID_TAG_STUDENT, VALID_TAG_PARENT);
+        assertRepeatedStudentTagAdditionSuccess(
+                createTagTestPerson(41, VALID_TAG_STUDENT),
+                VALID_TAG_STUDENT);
+        assertRepeatedStudentTagAdditionSuccess(
+                createTagTestPerson(42, VALID_TAG_PARENT),
+                VALID_TAG_PARENT, VALID_TAG_STUDENT);
+        assertRepeatedStudentTagAdditionSuccess(
+                createTagTestPerson(43),
+                VALID_TAG_STUDENT);
+    }
+
+    @Test
+    public void execute_addStudentDeleteParentAcrossExistingTagStates_success() {
+        assertAddStudentDeleteParentSuccess(
+                createTagTestPerson(44, VALID_TAG_STUDENT, VALID_TAG_PARENT),
+                VALID_TAG_STUDENT);
+        assertAddStudentDeleteParentSuccess(
+                createTagTestPerson(45, VALID_TAG_STUDENT),
+                VALID_TAG_STUDENT);
+        assertAddStudentDeleteParentSuccess(
+                createTagTestPerson(46, VALID_TAG_PARENT),
+                VALID_TAG_STUDENT);
+        assertAddStudentDeleteParentSuccess(
+                createTagTestPerson(47),
+                VALID_TAG_STUDENT);
+    }
+
+    @Test
+    public void execute_idInAddressBookDeleteSpecificTag_success() {
+        Person alanTuring = new PersonBuilder().withId(42).withName("Alan Turing")
+                .withPhone("91234567").withAddress("Computing Avenue")
+                .withTags(VALID_TAG_STUDENT, VALID_TAG_TUTOR).build();
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(alanTuring);
+        Model modelWithAlan = new ModelManager(addressBook, new UserPrefs());
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTagsToDelete(VALID_TAG_STUDENT)
+                .build();
+        EditCommand editCommand = new EditCommand(Id.of(42), descriptor);
+
+        Person editedPerson = new PersonBuilder(alanTuring).withTags(VALID_TAG_TUTOR).build();
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(modelWithAlan.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(alanTuring, editedPerson);
+
+        assertCommandSuccess(editCommand, modelWithAlan, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_idInAddressBookAddAndDeleteTags_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTags(VALID_TAG_TUTOR)
+                .withTagsToDelete(VALID_TAG_STUDENT)
+                .build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
+
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+        Person editedPerson = new PersonBuilder(personToEdit).withTags(VALID_TAG_TUTOR).build();
+
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_idInAddressBookDeleteMissingTag_success() {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTagsToDelete(VALID_TAG_PARENT).build();
+        EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
+
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(personToEdit));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
@@ -198,7 +295,7 @@ public class EditCommandTest {
     @Test
     public void execute_idInAddressBookNoFieldSpecified_failure() {
         EditCommand editCommand = new EditCommand(ID_FIRST, new EditPersonDescriptor());
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_NOT_EDITED);
+        assertCommandFailure(editCommand, model, Messages.MESSAGE_NOT_EDITED);
     }
 
     @Test
@@ -213,7 +310,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withName(VALID_NAME_BOB).build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
@@ -234,7 +331,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withTags(VALID_TAG_STUDENT, VALID_TAG_TUTOR).build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
@@ -260,7 +357,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withName(VALID_NAME_BOB).build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
@@ -283,7 +380,7 @@ public class EditCommandTest {
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withTags(VALID_TAG_PARENT, VALID_TAG_TUTOR).build();
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
@@ -301,7 +398,7 @@ public class EditCommandTest {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstPerson).build();
         EditCommand editCommand = new EditCommand(ID_SECOND, descriptor);
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(editCommand, model, Messages.MESSAGE_DUPLICATE_PERSON);
     }
 
     @Test
@@ -314,7 +411,7 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(ID_FIRST,
                 new EditPersonDescriptorBuilder(personInBook).build());
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(editCommand, model, Messages.MESSAGE_DUPLICATE_PERSON);
     }
 
     @Test
@@ -350,5 +447,50 @@ public class EditCommandTest {
         String expected = EditCommand.class.getCanonicalName() + "{id=" + ID_FIRST + ", editPersonDescriptor="
                 + editPersonDescriptor + "}";
         assertEquals(expected, editCommand.toString());
+    }
+
+    private void assertRepeatedStudentTagAdditionSuccess(Person personToEdit, String... expectedTags) {
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(personToEdit);
+        Model modelWithPerson = new ModelManager(addressBook, new UserPrefs());
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags(VALID_TAG_STUDENT).build();
+        EditCommand editCommand = new EditCommand(personToEdit.getId(), descriptor);
+
+        Person editedPerson = new PersonBuilder(personToEdit).withTags(expectedTags).build();
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(modelWithPerson.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, modelWithPerson, expectedMessage, expectedModel);
+    }
+
+    private void assertAddStudentDeleteParentSuccess(Person personToEdit, String... expectedTags) {
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(personToEdit);
+        Model modelWithPerson = new ModelManager(addressBook, new UserPrefs());
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+                .withTags(VALID_TAG_STUDENT)
+                .withTagsToDelete(VALID_TAG_PARENT)
+                .build();
+        EditCommand editCommand = new EditCommand(personToEdit.getId(), descriptor);
+
+        Person editedPerson = new PersonBuilder(personToEdit).withTags(expectedTags).build();
+        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(modelWithPerson.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, editedPerson);
+
+        assertCommandSuccess(editCommand, modelWithPerson, expectedMessage, expectedModel);
+    }
+
+    private Person createTagTestPerson(int id, String... tags) {
+        return new PersonBuilder().withId(id)
+                .withPhone(TAG_TEST_PHONE)
+                .withAddress(TAG_TEST_ADDRESS)
+                .withTags(tags)
+                .build();
     }
 }

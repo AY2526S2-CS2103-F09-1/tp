@@ -1,5 +1,8 @@
 package seedu.address.logic;
 
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,6 +21,14 @@ public class Messages {
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
+    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
+    public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the contact list.";
+    public static final String MESSAGE_INVALID_TAG_RESET =
+            "The tag reset prefix " + PREFIX_TAG + " cannot be combined with tag values or "
+                    + PREFIX_TAG_DELETE + " values.";
+    public static final String MESSAGE_CONFLICTING_TAG_EDITS =
+            "A tag cannot be both added and deleted in the same command.";
     public static final String MESSAGE_CANNOT_USE_MODE = "The m/ prefix is not allowed in this command.";
     public static final String MESSAGE_INVALID_MODE =
             "Mode must be 'and' or 'or'. Use m/and or m/or. If omitted, the default is m/or.";

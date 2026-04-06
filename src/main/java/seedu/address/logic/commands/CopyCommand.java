@@ -44,7 +44,8 @@ public class CopyCommand extends Command {
     public static final String MESSAGE_EMPTY_FIELD_VALUE = "There is no %s to copy for this contact.";
 
     private static final Set<String> VALID_FIELDS = Set.of(
-            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix(), PREFIX_MEETING_LINK.getPrefix());
+            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix(),
+            PREFIX_MEETING_LINK.getPrefix());
 
     private final Id targetId;
     private final String field;

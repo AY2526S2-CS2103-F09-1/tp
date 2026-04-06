@@ -24,7 +24,8 @@ public class SampleDataUtil {
         return new Person[] {
             new Person(Id.of(1), new Name("Alex Yeoh"), Optional.of(new Phone("87438807")),
                 Optional.of(new Address("Blk 30 Geylang Street 29, #06-40")),
-                getTagSet("Student"), Optional.of(new Remark("First student")), Optional.of(new MeetingLink("https://www.zoom.com/676767"))),
+                getTagSet("Student"), Optional.of(new Remark("First student")),
+                Optional.of(new MeetingLink("https://www.zoom.com/676767"))),
             new Person(Id.of(2), new Name("Bernice Yu"), Optional.of(new Phone("99272758")),
                 Optional.of(new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18")),
                 getTagSet("Parent"), Optional.empty(), Optional.of(new MeetingLink("https://www.zoom.com/123"))),

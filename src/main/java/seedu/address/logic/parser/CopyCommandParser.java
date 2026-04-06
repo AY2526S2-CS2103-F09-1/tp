@@ -18,7 +18,8 @@ import seedu.address.model.person.Id;
 public class CopyCommandParser implements Parser<CopyCommand> {
 
     private static final Set<String> VALID_FIELDS = Set.of(
-            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix(), PREFIX_MEETING_LINK.getPrefix());
+            PREFIX_NAME.getPrefix(), PREFIX_PHONE.getPrefix(), PREFIX_ADDRESS.getPrefix(),
+            PREFIX_MEETING_LINK.getPrefix());
 
     /**
      * Parses the given {@code String} of arguments in the context of the CopyCommand

@@ -149,7 +149,8 @@ public class PersonTest {
                 + ", phone=" + ALICE.getPhone()
                 + ", address=" + ALICE.getAddress()
                 + ", tags=" + ALICE.getTags()
-                + ", remark=" + ALICE.getRemark() + "}";
+                + ", remark=" + ALICE.getRemark()
+                + ", meetingLink=" + ALICE.getMeetingLink() + "}";
         assertEquals(expected, ALICE.toString());
     }
 }

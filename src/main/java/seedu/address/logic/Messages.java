@@ -48,7 +48,9 @@ public class Messages {
                 .append("; Tags: ");
         person.getTags().forEach(builder::append);
         builder.append("; Remark: ")
-            .append(person.getRemark().map(x -> x.toString()).orElse(EMPTY_STRING));
+                .append(person.getRemark().map(x -> x.toString()).orElse(EMPTY_STRING))
+                .append("; Meeting Link: ")
+                .append(person.getMeetingLink().map(x -> x.toString()).orElse(EMPTY_STRING));
         return builder.toString();
     }
 

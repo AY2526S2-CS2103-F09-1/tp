@@ -1,8 +1,12 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
+import static seedu.address.testutil.TypicalIds.ID_SECOND;
+
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,17 +26,32 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {
-        assertParseSuccess(parser, "1", new DeleteCommand(ID_FIRST));
+        ArrayList<Id> ids = new ArrayList<Id>();
+        ids.add(ID_FIRST);
+        assertParseSuccess(parser, "1", new DeleteCommand(ids));
+    }
+
+    @Test
+    public void parse_emptyArgs_throwsParseException() {
+        String expected = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, "", expected);
+        assertParseFailure(parser, " ", expected);
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
         assertParseFailure(parser, "a", Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "-1", Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1 a", Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "a 1", Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1 -1 2", Id.MESSAGE_CONSTRAINTS);
     }
 
     @Test
-    public void parse_tooManyArguments_throwsParseException() {
-        assertParseFailure(parser, "1 2", String.format(
-                DeleteCommand.MESSAGE_TOO_MANY_ARGUMENTS, DeleteCommand.MESSAGE_USAGE));
+    public void parse_manyArgs() {
+        ArrayList<Id> ids = new ArrayList<Id>();
+        ids.add(ID_FIRST);
+        ids.add(ID_SECOND);
+        assertParseSuccess(parser, "1 2", new DeleteCommand(ids));
     }
 }

@@ -15,6 +15,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIds.ID_FIRST;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +76,9 @@ public class AddressBookParserTest {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + ID_FIRST.getValue(),
                 currentMaxId);
-        assertEquals(new DeleteCommand(ID_FIRST), command);
+        ArrayList<Id> ids = new ArrayList<Id>();
+        ids.add(ID_FIRST);
+        assertEquals(new DeleteCommand(ids), command);
     }
 
     @Test

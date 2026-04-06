@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Id;
+import seedu.address.model.person.MeetingLink;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -35,10 +36,21 @@ class JsonAdaptedPerson {
     private final String time;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final String remark;
+    private final String meetingLink;
 
     public JsonAdaptedPerson(int id, String name, String phone, String address, String time,
             List<JsonAdaptedTag> tags, String remark) {
-        this(id, name, phone, address, time, null, tags, remark);
+        this(id, name, phone, address, time, null, tags, remark, EMPTY_STRING);
+    }
+
+    public JsonAdaptedPerson(int id, String name, String phone, String address, String time,
+            List<JsonAdaptedTag> tags, String remark, String meetingLink) {
+        this(id, name, phone, address, time, null, tags, remark, meetingLink);
+    }
+
+    public JsonAdaptedPerson(int id, String name, String phone, String address,
+            List<JsonAdaptedTag> tags, String remark, String meetingLink) {
+        this(id, name, phone, address, EMPTY_STRING, null, tags, remark, meetingLink);
     }
 
     /**
@@ -52,7 +64,8 @@ class JsonAdaptedPerson {
             @JsonProperty("time") String time,
             @JsonProperty("date") String legacyDate,
             @JsonProperty("tags") List<JsonAdaptedTag> tags,
-            @JsonProperty("remark") String remark) {
+            @JsonProperty("remark") String remark,
+            @JsonProperty("meetingLink") String meetingLink) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -62,6 +75,7 @@ class JsonAdaptedPerson {
             this.tags.addAll(tags);
         }
         this.remark = remark;
+        this.meetingLink = meetingLink;
     }
 
     /**
@@ -80,6 +94,8 @@ class JsonAdaptedPerson {
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
         remark = source.getRemark().map(x -> x.value)
+            .orElse(EMPTY_STRING);
+        meetingLink = source.getMeetingLink().map(x -> x.value)
             .orElse(EMPTY_STRING);
     }
 
@@ -103,7 +119,10 @@ class JsonAdaptedPerson {
 
         final Optional<Remark> modelRemark = getModelRemark();
 
-        return new Person(modelId, modelName, modelPhone, modelAddress, modelTime, modelTags, modelRemark);
+        final Optional<MeetingLink> modelMeetingLink = getModelMeetingLink();
+
+        return new Person(modelId, modelName, modelPhone, modelAddress, modelTime, modelTags, modelRemark,
+                modelMeetingLink);
     }
 
     private Optional<Time> getModelTime() throws IllegalValueException {
@@ -132,6 +151,23 @@ class JsonAdaptedPerson {
             return null;
         }
         return Time.isValidTimeOrEmptyString(legacyDate) ? legacyDate : EMPTY_STRING;
+    }
+
+    private void validateMeetingLink() throws IllegalValueException {
+        if (this.meetingLink == null) {
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, MeetingLink.class.getSimpleName()));
+        }
+        if (!MeetingLink.isValidMeetingLinkOrEmptyString(this.meetingLink)) {
+            throw new IllegalValueException(MeetingLink.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    private Optional<MeetingLink> getModelMeetingLink() throws IllegalValueException {
+        validateMeetingLink();
+        return this.meetingLink.isEmpty()
+                ? Optional.empty()
+                : Optional.of(new MeetingLink(this.meetingLink));
     }
 
     private Optional<Remark> getModelRemark() throws IllegalValueException {

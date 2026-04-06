@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.MeetingLink;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -40,6 +41,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setTime(person.getTime());
         descriptor.setTags(person.getTags());
         descriptor.setRemark(person.getRemark());
+        descriptor.setMeetingLink(person.getMeetingLink());
     }
 
     /**
@@ -123,6 +125,22 @@ public class EditPersonDescriptorBuilder {
      */
     public EditPersonDescriptorBuilder withRemark(String remark) {
         descriptor.setRemark(Optional.of(new Remark(remark)));
+        return this;
+    }
+
+    /**
+     * Sets the {@code MeetingLink} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withMeetingLink(String meetingLink) {
+        descriptor.setMeetingLink(Optional.of(new MeetingLink(meetingLink)));
+        return this;
+    }
+
+    /**
+     * Clears the {@code MeetingLink} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withoutMeetingLink() {
+        descriptor.setMeetingLink(Optional.empty());
         return this;
     }
 

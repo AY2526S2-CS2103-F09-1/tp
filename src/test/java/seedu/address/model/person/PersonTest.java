@@ -153,12 +153,27 @@ public class PersonTest {
         // different remark -> returns false
         editedAlice = new PersonBuilder(ALICE).withRemark(VALID_REMARK_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
+
+        // has meeting link, original does not -> returns false
+        editedAlice = new PersonBuilder(ALICE).withMeetingLink("https://zoom.us/whatisthis").build();
+        assertFalse(ALICE.equals(editedAlice));
+
+        // different meeting link values -> returns false
+        Person aliceWithLink = new PersonBuilder(ALICE).withMeetingLink("https://zoom.us/woah").build();
+        Person aliceWithOtherLink = new PersonBuilder(ALICE).withMeetingLink("https://zoom.us/aiya").build();
+        assertFalse(aliceWithLink.equals(aliceWithOtherLink));
     }
 
     @Test
-    public void hashCode_sameValues_sameHashCode() {
+    public void hashCode_equalPersons_sameHashCode() {
         Person aliceCopy = new PersonBuilder(ALICE).build();
         assertEquals(ALICE.hashCode(), aliceCopy.hashCode());
+    }
+
+    @Test
+    public void hashCode_personWithMeetingLink_differentFromPersonWithout() {
+        Person aliceWithLink = new PersonBuilder(ALICE).withMeetingLink("https://zoom.us/randomLink").build();
+        assertFalse(ALICE.hashCode() == aliceWithLink.hashCode());
     }
 
     @Test
@@ -170,7 +185,8 @@ public class PersonTest {
                 + ", address=" + ALICE.getAddress()
                 + ", time=" + ALICE.getTime()
                 + ", tags=" + ALICE.getTags()
-                + ", remark=" + ALICE.getRemark() + "}";
+                + ", remark=" + ALICE.getRemark()
+                + ", meetingLink=" + ALICE.getMeetingLink() + "}";
         assertEquals(expected, ALICE.toString());
     }
 }

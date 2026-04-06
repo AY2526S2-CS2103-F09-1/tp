@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.Messages.MATCH_MODE_AND_KEYWORD;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -23,7 +24,8 @@ public class FindCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Finds persons whose specified fields contain any of the given keywords.\n"
-            + "By default, the search uses OR semantics. To perform an AND search, specify m/and.\n"
+            + "By default, the search uses OR semantics. To perform an AND search, specify "
+            + PREFIX_MODE + MATCH_MODE_AND_KEYWORD + ".\n"
             + "Parameters: "
             + "[" + PREFIX_MODE + "MODE] "
             + "[" + PREFIX_NAME + "NAME]... "
@@ -34,7 +36,7 @@ public class FindCommand extends Command {
             + "Example:\n"
             + "\t" + COMMAND_WORD + " " + PREFIX_NAME + "Ali " + PREFIX_NAME + "August "
             + PREFIX_ADDRESS + "119224\n"
-            + "\t" + COMMAND_WORD + " " + PREFIX_MODE + "and " + PREFIX_TAG + "Student "
+            + "\t" + COMMAND_WORD + " " + PREFIX_MODE + MATCH_MODE_AND_KEYWORD + " " + PREFIX_TAG + "Student "
             + PREFIX_NAME + "Clement " + PREFIX_PHONE + "9234\n"
             + "\t" + COMMAND_WORD + " " + PREFIX_REMARK + "new student\n";
 

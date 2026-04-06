@@ -53,7 +53,7 @@ public class MessagesTest {
         String formatted = Messages.format(person);
 
         assertEquals("Alice; Phone: 91234567; Address: 123, Jurong West Ave 6; Time: Monday 18:00;"
-                + " Tags: [Student]; Remark: first student", formatted);
+                + " Tags: [Student]; Remark: first student; Meeting Link: ", formatted);
     }
 
     @Test
@@ -65,12 +65,13 @@ public class MessagesTest {
                 Optional.of(new Address("311, Clementi Ave 2")),
                 Optional.<Time>empty(),
                 new HashSet<Tag>(),
-                Optional.<Remark>of(new Remark("Test remark 1")));
+                Optional.of(new Remark("Test remark 1")),
+                Optional.empty());
 
         String formatted = Messages.format(person);
 
-        assertEquals("Bob; Phone: ; Address: 311, Clementi Ave 2; Time: ; Tags: ; Remark: Test remark 1",
-                formatted);
+        assertEquals("Bob; Phone: ; Address: 311, Clementi Ave 2; Time: ; Tags: ; Remark: Test remark 1; "
+                + "Meeting Link: ", formatted);
     }
 
     @Test
@@ -78,15 +79,17 @@ public class MessagesTest {
         Person person = new Person(
                 Id.of(1),
                 new Name("Bob"),
-                Optional.<Phone>of(new Phone("91234567")),
+                Optional.of(new Phone("91234567")),
                 Optional.of(new Address("311, Clementi Ave 2")),
                 Optional.<Time>empty(),
                 new HashSet<Tag>(),
-                Optional.<Remark>empty());
+                Optional.empty(),
+                Optional.empty());
 
         String formatted = Messages.format(person);
 
-        assertEquals("Bob; Phone: 91234567; Address: 311, Clementi Ave 2; Time: ; Tags: ; Remark: ", formatted);
+        assertEquals("Bob; Phone: 91234567; Address: 311, Clementi Ave 2; Time: ; Tags: ; Remark: ; "
+                + "Meeting Link: ", formatted);
     }
 
     @Test
@@ -98,11 +101,12 @@ public class MessagesTest {
                 Optional.empty(),
                 Optional.<Time>empty(),
                 new HashSet<Tag>(),
-                Optional.<Remark>empty());
+                Optional.empty(),
+                Optional.empty());
 
         String formatted = Messages.format(person);
 
-        assertEquals("Bob; Phone: 98765432; Address: ; Time: ; Tags: ; Remark: ", formatted);
+        assertEquals("Bob; Phone: 98765432; Address: ; Time: ; Tags: ; Remark: ; Meeting Link: ", formatted);
     }
 
 }

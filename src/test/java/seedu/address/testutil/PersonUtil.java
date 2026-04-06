@@ -1,6 +1,7 @@
 package seedu.address.testutil;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MEETING_LINK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
@@ -41,7 +42,9 @@ public class PersonUtil {
         person.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
-        sb.append(PREFIX_REMARK + person.getRemark().get().value + " ");
+        person.getRemark().ifPresent(remark -> sb.append(PREFIX_REMARK).append(remark.value).append(" "));
+        person.getMeetingLink().ifPresent(meetingLink ->
+                sb.append(PREFIX_MEETING_LINK).append(meetingLink.value).append(" "));
         return sb.toString();
     }
 
@@ -72,7 +75,13 @@ public class PersonUtil {
         }
         descriptor.getTagsToDelete().ifPresent(tags ->
                 tags.forEach(s -> sb.append(PREFIX_TAG_DELETE).append(s.tagName).append(" ")));
-        descriptor.getRemark().ifPresent(remark -> sb.append(PREFIX_REMARK).append(remark.value));
+        descriptor.getRemark().ifPresent(remark -> sb.append(PREFIX_REMARK).append(remark.value).append(" "));
+        if (descriptor.isMeetingLinkChanged()) {
+            Runnable appendClearedMeetingLink = () -> appendClearedEditDetail(sb, PREFIX_MEETING_LINK);
+            descriptor.getMeetingLink().ifPresentOrElse(
+                    meetingLink -> sb.append(PREFIX_MEETING_LINK).append(meetingLink.value).append(" "),
+                    appendClearedMeetingLink);
+        }
         return sb.toString();
     }
 

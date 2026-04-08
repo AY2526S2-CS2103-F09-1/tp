@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -46,7 +47,9 @@ public class DeleteCommand extends Command {
         requireNonNull(model);
 
         ArrayList<Person> personsToDelete = new ArrayList<Person>();
-        for (Id id : targetIds) {
+        //to remove duplicates
+        HashSet<Id> uniqueIdToDelete = new HashSet<Id>(targetIds);
+        for (Id id : uniqueIdToDelete) {
             Person person = model.findPersonById(id)
                     .orElseThrow(() -> new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID,
                     id.getValue())));

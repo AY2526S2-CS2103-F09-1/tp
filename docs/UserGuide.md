@@ -24,6 +24,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
    ![Ui](images/Ui.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+   Tip: You can right-click the command box to access common text actions such as cut/copy/paste (the exact menu options may vary by OS).<br>
    Some example commands you can try:
 
    * `list`: List all contacts.
@@ -58,6 +59,9 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
+* Command words are case-sensitive and must be typed in lowercase.<br>
+  e.g. `add ...` is valid, but `Add ...` is invalid.
+
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
@@ -89,6 +93,7 @@ A person can have any number of tags (including 0)
 * Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
 * This behaviour is similar for remark and meeting link. `add n/John Doe r/` and `add n/John Doe l/` are both valid.
   They create a contact without a remark and meeting link respectively.
+* EduConnect allows overlapping meeting schedules across different contacts (e.g. `4–6pm` and `5–7pm`).
 * If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
 
 Examples:
@@ -283,6 +288,8 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. **Only one running app instance can access the data file at a time**. If you open multiple app windows at the same time, data may not be saved properly. The remedy is to keep only one instance of EduConnect running at any time.
+4. **When clicking between contacts in the list**, the displayed text may shift slightly, and the list may not auto-scroll to fully show the newly selected contact even if it was fully visible before. This is expected UI behavior.
 
 --------------------------------------------------------------------------------------------------------------------
 

@@ -20,12 +20,12 @@ public class SampleDataUtilTest {
         Person[] samplePersons = SampleDataUtil.getSamplePersons();
 
         assertEquals(6, samplePersons.length);
-        assertSamplePerson(samplePersons[0], 1, "Student");
-        assertSamplePerson(samplePersons[1], 2, "Student");
+        assertSamplePerson(samplePersons[0], 1, "Student", "Referral");
+        assertSamplePerson(samplePersons[1], 2, "Prospect");
         assertSamplePerson(samplePersons[2], 3, "Tutor");
-        assertSamplePerson(samplePersons[3], 4, "Student");
+        assertSamplePerson(samplePersons[3], 4, "Student", "Trial");
         assertSamplePerson(samplePersons[4], 5, "Parent");
-        assertSamplePerson(samplePersons[5], 6, "Tutor");
+        assertSamplePerson(samplePersons[5], 6, "Tutor", "Inactive");
     }
 
     @Test
@@ -34,20 +34,21 @@ public class SampleDataUtilTest {
 
         List<Person> samplePersons = sampleAddressBook.getPersonList();
         assertEquals(6, samplePersons.size());
-        assertSamplePerson(samplePersons.get(0), 1, "Student");
-        assertSamplePerson(samplePersons.get(5), 6, "Tutor");
+        assertSamplePerson(samplePersons.get(0), 1, "Student", "Referral");
+        assertSamplePerson(samplePersons.get(5), 6, "Tutor", "Inactive");
     }
 
     @Test
     public void getTagSet_validTags_returnsExpectedTags() {
-        Set<Tag> tags = SampleDataUtil.getTagSet("Student", "Parent");
+        Set<Tag> tags = SampleDataUtil.getTagSet("Student", "Referral");
 
-        assertEquals(Set.of(new Tag("Student"), new Tag("Parent")), tags);
+        assertEquals(Set.of(new Tag("Student"), new Tag("Referral")), tags);
     }
 
-    private void assertSamplePerson(Person person, int expectedId, String expectedTagName) {
+    private void assertSamplePerson(Person person, int expectedId, String... expectedTagNames) {
         assertEquals(Id.of(expectedId), person.getId());
         assertTrue(person.getPhone().isPresent());
-        assertEquals(Set.of(new Tag(expectedTagName)), person.getTags());
+        Set<Tag> expectedTags = SampleDataUtil.getTagSet(expectedTagNames);
+        assertEquals(expectedTags, person.getTags());
     }
 }

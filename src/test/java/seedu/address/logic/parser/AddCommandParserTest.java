@@ -24,6 +24,8 @@ import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PROSPECT;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_REFERRAL;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_TUTOR;
 import static seedu.address.logic.commands.CommandTestUtil.TIME_DESC_AMY;
@@ -34,6 +36,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PROSPECT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_REFERRAL;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_TUTOR;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TIME_BOB;
@@ -81,6 +85,18 @@ public class AddCommandParserTest {
                 NAME_DESC_BOB + PHONE_DESC_BOB + ADDRESS_DESC_BOB + TIME_DESC_BOB + TAG_DESC_PARENT
                         + TAG_DESC_STUDENT + REMARK_DESC_BOB + MEETING_LINK_DESC_BOB,
                 new AddCommand(expectedPersonMultipleTags));
+    }
+
+    @Test
+    public void parse_expandedTagLibrary_success() {
+        Person expectedPerson = new PersonBuilder(AMY)
+                .withTags(VALID_TAG_PROSPECT, VALID_TAG_REFERRAL)
+                .build();
+
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
+                        + TIME_DESC_AMY + TAG_DESC_PROSPECT + TAG_DESC_REFERRAL
+                        + REMARK_DESC_AMY + MEETING_LINK_DESC_AMY,
+                new AddCommand(expectedPerson));
     }
 
     @Test

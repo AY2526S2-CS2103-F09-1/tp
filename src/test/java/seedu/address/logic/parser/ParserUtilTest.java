@@ -41,6 +41,7 @@ public class ParserUtilTest {
     private static final String VALID_TIME_DURATION_ALTERNATE = "wednesday 1800 - 1930";
     private static final String VALID_TAG_1 = "Student";
     private static final String VALID_TAG_2 = "Parent";
+    private static final String VALID_TAG_3 = "Referral";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -280,6 +281,12 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTag_validExpandedLibraryValue_returnsNormalizedTag() throws Exception {
+        Tag expectedTag = new Tag("Referral");
+        assertEquals(expectedTag, ParserUtil.parseTag("reFeRrAl"));
+    }
+
+    @Test
     public void parseTags_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseTags(null));
     }
@@ -303,8 +310,9 @@ public class ParserUtilTest {
 
     @Test
     public void parseTags_collectionWithValidTags_returnsTagSet() throws Exception {
-        Set<Tag> actualTagSet = ParserUtil.parseTags(Arrays.asList(VALID_TAG_1, VALID_TAG_2));
-        Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag("Student"), new Tag("Parent")));
+        Set<Tag> actualTagSet = ParserUtil.parseTags(Arrays.asList(VALID_TAG_1, VALID_TAG_2, VALID_TAG_3));
+        Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(
+                new Tag("Student"), new Tag("Parent"), new Tag("Referral")));
 
         assertEquals(expectedTagSet, actualTagSet);
     }

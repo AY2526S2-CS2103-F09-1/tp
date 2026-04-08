@@ -9,6 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_PROSPECT;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_STUDENT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
@@ -16,6 +17,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PROSPECT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_STUDENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MODE;
@@ -95,6 +97,15 @@ public class FindCommandParserTest {
                         Collections.emptyList(), Collections.singletonList(VALID_TAG_STUDENT),
                                 Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
         assertParseSuccess(parser, TAG_DESC_STUDENT, expectedFindCommand);
+    }
+
+    @Test
+    public void parse_expandedTagPrefix_returnsFindCommand() {
+        FindCommand expectedFindCommand = new FindCommand(
+                new PersonContainsKeywordsPredicate(Collections.emptyList(), Collections.emptyList(),
+                        Collections.emptyList(), Collections.singletonList(VALID_TAG_PROSPECT),
+                        Collections.emptyList(), Collections.emptyList(), MatchMode.OR));
+        assertParseSuccess(parser, TAG_DESC_PROSPECT, expectedFindCommand);
     }
 
     @Test

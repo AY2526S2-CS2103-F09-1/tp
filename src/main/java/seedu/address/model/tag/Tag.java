@@ -54,6 +54,10 @@ public class Tag {
         supportedTagNames.put("student", "Student");
         supportedTagNames.put("parent", "Parent");
         supportedTagNames.put("tutor", "Tutor");
+        supportedTagNames.put("prospect", "Prospect");
+        supportedTagNames.put("trial", "Trial");
+        supportedTagNames.put("referral", "Referral");
+        supportedTagNames.put("inactive", "Inactive");
         return Collections.unmodifiableMap(supportedTagNames);
     }
 

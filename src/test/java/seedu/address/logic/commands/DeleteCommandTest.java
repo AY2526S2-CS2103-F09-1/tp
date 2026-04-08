@@ -109,7 +109,7 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_multipleIdsInAddressBook_success() {
-        ArrayList<Id> ids = new ArrayList<>();
+        ArrayList<Id> ids = new ArrayList<Id>();
         ids.add(ID_FIRST);
         ids.add(ID_SECOND);
         ids.add(ID_THIRD);
@@ -122,7 +122,7 @@ public class DeleteCommandTest {
         String expectedMessage = DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS;
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        ArrayList<Person> personsToDelete = new ArrayList<>();
+        ArrayList<Person> personsToDelete = new ArrayList<Person>();
         personsToDelete.add(first.get());
         personsToDelete.add(second.get());
         personsToDelete.add(third.get());
@@ -156,6 +156,44 @@ public class DeleteCommandTest {
 
         assertCommandFailure(deleteCommand, emptyModel,
                 String.format(Messages.MESSAGE_INVALID_PERSON_ID, ID_FIRST.getValue()));
+    }
+
+    @Test
+    public void execute_duplicateSingleId_deletesOnce() {
+        ArrayList<Id> ids = new ArrayList<Id>();
+        ids.add(ID_FIRST);
+        ids.add(ID_FIRST);
+        DeleteCommand deleteCommand = new DeleteCommand(ids);
+
+        Person personToDelete = model.findPersonById(ID_FIRST).get();
+        String expectedMessage = DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS;
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.deletePerson(personToDelete);
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_duplicateMultipleIds_deletesEachOnce() {
+        ArrayList<Id> ids = new ArrayList<Id>();
+        ids.add(ID_THIRD);
+        ids.add(ID_THIRD);
+        ids.add(ID_SECOND);
+        ids.add(ID_SECOND);
+        DeleteCommand deleteCommand = new DeleteCommand(ids);
+
+        Person secondPerson = model.findPersonById(ID_SECOND).get();
+        Person thirdPerson = model.findPersonById(ID_THIRD).get();
+        String expectedMessage = DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS;
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        ArrayList<Person> personsToDelete = new ArrayList<Person>();
+        personsToDelete.add(secondPerson);
+        personsToDelete.add(thirdPerson);
+        expectedModel.deletePersons(personsToDelete);
+
+        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
     }
 
     @Test

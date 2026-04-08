@@ -53,7 +53,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/Student` or as `n/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/Student`, `t/Student t/Referral` etc.
+  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/Student`, `t/Student t/Freshman` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -85,8 +85,8 @@ A person can have any number of tags (including 0)
 
 * Only `n/NAME` is required.
 * `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `l/MEETING_LINK`, and `t/TAG` are optional.
-* Supported tags are `Student`, `Parent`, `Tutor`, `Prospect`, `Trial`, `Referral`, and `Inactive`.
-* The extra lifecycle tags are useful for keeping track of new leads, trial lessons, referrals, and paused contacts.
+* Supported tags are `Student`, `Parent`, `Tutor`, `Freshman`, `Sophomore`, `Junior`, `Senior`, and `Graduate`.
+* The extra academic tags are useful for tracking a student’s level or marking a contact as a graduate.
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
 * If a phone number is specified, it needs to be 8 digits long, and begin with 6, 8, or 9.
 * Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
@@ -96,8 +96,8 @@ A person can have any number of tags (including 0)
 * If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
 
 Examples:
-* `add n/John Doe t/Student t/Trial p/98765432 a/John street, block 123, #01-01 r/new student`
-* `add n/John Doe a/John street, block 123, #01-01 t/Parent t/Referral`
+* `add n/John Doe t/Student t/Freshman p/98765432 a/John street, block 123, #01-01 r/new student`
+* `add n/Jane Doe a/John street, block 123, #01-01 t/Tutor t/Graduate`
 * `add n/Jane Doe p/98765432 l/https://zoom.us/j/123456789`
 
 The first example gives the following expected output:
@@ -150,7 +150,7 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETI
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
 * `t/TAG` appends the provided tags to the person’s existing tags.
 * `tdel/TAG` removes the provided tags from the person’s existing tags.
-* Only valid tags may be used: `Student`, `Parent`, `Tutor`, `Prospect`, `Trial`, `Referral`, `Inactive`.
+* Only valid tags may be used: `Student`, `Parent`, `Tutor`, `Freshman`, `Sophomore`, `Junior`, `Senior`, `Graduate`.
 * Repeating an existing tag has no effect because duplicate tags are not stored.
 * Deleting a tag that the person does not currently have has no effect.
 * You can remove all the person’s tags by typing `t/` without specifying any tag after it.
@@ -195,7 +195,7 @@ Examples:
 * `find p/9435` returns persons whose phone number contains `9435`
 * `find n/aleX a/seran` returns persons whose name contains `aleX` or whose address contains `seran`
 * `find t/student` returns persons whose tags contain `student`
-* `find t/prospect` returns persons whose tags contain `prospect`
+* `find t/freshman` returns persons whose tags contain `freshman`
 * `find n/Ali n/August` returns persons whose names contain `Ali` or `August`
 * `find r/first` returns persons whose remarks contain `first` or `First` (note that the search in case-insensitive)
 
@@ -288,7 +288,7 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/89761234 a/123, Clementi Rd, 1234665 r/new student l/https://zoom.us/j/123456789 t/Parent t/Referral`, `add n/James Ho l/https://zoom.us/j/123456789`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/89761234 a/123, Clementi Rd, 1234665 r/new student l/https://zoom.us/j/123456789 t/Student t/Freshman`, `add n/James Ho l/https://zoom.us/j/123456789`
 **Clear** | `clear`
 **Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`

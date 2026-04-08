@@ -20,12 +20,12 @@ public class SampleDataUtilTest {
         Person[] samplePersons = SampleDataUtil.getSamplePersons();
 
         assertEquals(6, samplePersons.length);
-        assertSamplePerson(samplePersons[0], 1, "Student", "Referral");
-        assertSamplePerson(samplePersons[1], 2, "Prospect");
-        assertSamplePerson(samplePersons[2], 3, "Tutor");
-        assertSamplePerson(samplePersons[3], 4, "Student", "Trial");
+        assertSamplePerson(samplePersons[0], 1, "Student", "Freshman");
+        assertSamplePerson(samplePersons[1], 2, "Student", "Sophomore");
+        assertSamplePerson(samplePersons[2], 3, "Tutor", "Graduate");
+        assertSamplePerson(samplePersons[3], 4, "Student", "Junior");
         assertSamplePerson(samplePersons[4], 5, "Parent");
-        assertSamplePerson(samplePersons[5], 6, "Tutor", "Inactive");
+        assertSamplePerson(samplePersons[5], 6, "Student", "Senior");
     }
 
     @Test
@@ -34,15 +34,15 @@ public class SampleDataUtilTest {
 
         List<Person> samplePersons = sampleAddressBook.getPersonList();
         assertEquals(6, samplePersons.size());
-        assertSamplePerson(samplePersons.get(0), 1, "Student", "Referral");
-        assertSamplePerson(samplePersons.get(5), 6, "Tutor", "Inactive");
+        assertSamplePerson(samplePersons.get(0), 1, "Student", "Freshman");
+        assertSamplePerson(samplePersons.get(5), 6, "Student", "Senior");
     }
 
     @Test
     public void getTagSet_validTags_returnsExpectedTags() {
-        Set<Tag> tags = SampleDataUtil.getTagSet("Student", "Referral");
+        Set<Tag> tags = SampleDataUtil.getTagSet("Student", "Graduate");
 
-        assertEquals(Set.of(new Tag("Student"), new Tag("Referral")), tags);
+        assertEquals(Set.of(new Tag("Student"), new Tag("Graduate")), tags);
     }
 
     private void assertSamplePerson(Person person, int expectedId, String... expectedTagNames) {

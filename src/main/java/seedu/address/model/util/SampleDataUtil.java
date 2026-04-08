@@ -25,20 +25,20 @@ public class SampleDataUtil {
         return new Person[] {
             new Person(Id.of(1), new Name("Alex Yeoh"), Optional.of(new Phone("87438807")),
                 Optional.of(new Address("Blk 30 Geylang Street 29, #06-40")),
-                Optional.of(new Time("Sunday 10:00")), getTagSet("Student", "Referral"),
+                Optional.of(new Time("Sunday 10:00")), getTagSet("Student", "Freshman"),
                 Optional.of(new Remark("First student")),
                 Optional.of(new MeetingLink("https://www.zoom.com/676767"))),
             new Person(Id.of(2), new Name("Bernice Yu"), Optional.of(new Phone("99272758")),
                 Optional.of(new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18")),
-                Optional.<Time>empty(), getTagSet("Prospect"), Optional.empty(),
+                Optional.<Time>empty(), getTagSet("Student", "Sophomore"), Optional.empty(),
                 Optional.of(new MeetingLink("https://www.zoom.com/123"))),
             new Person(Id.of(3), new Name("Charlotte Oliveiro"), Optional.of(new Phone("93210283")),
                 Optional.of(new Address("Blk 11 Ang Mo Kio Street 74, #11-04")),
-                Optional.<Time>empty(), getTagSet("Tutor"), Optional.empty(),
+                Optional.<Time>empty(), getTagSet("Tutor", "Graduate"), Optional.empty(),
                 Optional.empty()),
             new Person(Id.of(4), new Name("David Li"), Optional.of(new Phone("91031282")),
                 Optional.of(new Address("Blk 436 Serangoon Gardens Street 26, #16-43")),
-                Optional.of(new Time("Saturday 14:00")), getTagSet("Student", "Trial"),
+                Optional.of(new Time("Saturday 14:00")), getTagSet("Student", "Junior"),
                 Optional.of(new Remark("2nd student")),
                 Optional.empty()),
             new Person(Id.of(5), new Name("Irfan Ibrahim"), Optional.of(new Phone("92492021")),
@@ -47,7 +47,7 @@ public class SampleDataUtil {
                 Optional.empty()),
             new Person(Id.of(6), new Name("Roy Balakrishnan"), Optional.of(new Phone("92624417")),
                 Optional.of(new Address("Blk 45 Aljunied Street 85, #11-31")),
-                Optional.<Time>empty(), getTagSet("Tutor", "Inactive"), Optional.empty(), Optional.empty())
+                Optional.<Time>empty(), getTagSet("Student", "Senior"), Optional.empty(), Optional.empty())
         };
     }
 

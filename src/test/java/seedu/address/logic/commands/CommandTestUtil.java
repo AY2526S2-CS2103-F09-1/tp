@@ -34,10 +34,11 @@ public class CommandTestUtil {
     public static final String VALID_TAG_STUDENT = "Student";
     public static final String VALID_TAG_PARENT = "Parent";
     public static final String VALID_TAG_TUTOR = "Tutor";
-    public static final String VALID_TAG_PROSPECT = "Prospect";
-    public static final String VALID_TAG_TRIAL = "Trial";
-    public static final String VALID_TAG_REFERRAL = "Referral";
-    public static final String VALID_TAG_INACTIVE = "Inactive";
+    public static final String VALID_TAG_FRESHMAN = "Freshman";
+    public static final String VALID_TAG_SOPHOMORE = "Sophomore";
+    public static final String VALID_TAG_JUNIOR = "Junior";
+    public static final String VALID_TAG_SENIOR = "Senior";
+    public static final String VALID_TAG_GRADUATE = "Graduate";
 
     public static final String VALID_NAME_AMY = "Amy Bee";
     public static final String VALID_NAME_BOB = "Bob Choo";
@@ -69,10 +70,11 @@ public class CommandTestUtil {
     public static final String TAG_DESC_STUDENT = " " + PREFIX_TAG + VALID_TAG_STUDENT;
     public static final String TAG_DESC_PARENT = " " + PREFIX_TAG + VALID_TAG_PARENT;
     public static final String TAG_DESC_TUTOR = " " + PREFIX_TAG + VALID_TAG_TUTOR;
-    public static final String TAG_DESC_PROSPECT = " " + PREFIX_TAG + VALID_TAG_PROSPECT;
-    public static final String TAG_DESC_TRIAL = " " + PREFIX_TAG + VALID_TAG_TRIAL;
-    public static final String TAG_DESC_REFERRAL = " " + PREFIX_TAG + VALID_TAG_REFERRAL;
-    public static final String TAG_DESC_INACTIVE = " " + PREFIX_TAG + VALID_TAG_INACTIVE;
+    public static final String TAG_DESC_FRESHMAN = " " + PREFIX_TAG + VALID_TAG_FRESHMAN;
+    public static final String TAG_DESC_SOPHOMORE = " " + PREFIX_TAG + VALID_TAG_SOPHOMORE;
+    public static final String TAG_DESC_JUNIOR = " " + PREFIX_TAG + VALID_TAG_JUNIOR;
+    public static final String TAG_DESC_SENIOR = " " + PREFIX_TAG + VALID_TAG_SENIOR;
+    public static final String TAG_DESC_GRADUATE = " " + PREFIX_TAG + VALID_TAG_GRADUATE;
     public static final String TAG_DELETE_DESC_STUDENT = " " + PREFIX_TAG_DELETE + VALID_TAG_STUDENT;
     public static final String TAG_DELETE_DESC_PARENT = " " + PREFIX_TAG_DELETE + VALID_TAG_PARENT;
     public static final String TAG_DELETE_DESC_TUTOR = " " + PREFIX_TAG_DELETE + VALID_TAG_TUTOR;

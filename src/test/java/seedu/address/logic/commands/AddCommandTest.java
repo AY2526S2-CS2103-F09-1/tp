@@ -49,41 +49,239 @@ public class AddCommandTest {
     }
 
     @Test
-    public void execute_duplicatePersonAllFieldsSame_throwsCommandException() {
+    public void execute_duplicatePersonSameFieldsSameCapitalisation_throwsCommandException() {
         Person validPerson = new PersonBuilder().build();
-        AddCommand addCommand = new AddCommand(validPerson);
         ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
+        AddCommand addCommand = new AddCommand(validPerson);
         assertThrows(CommandException.class,
                 AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
     }
 
     @Test
-    public void execute_duplicatePersonDifferentId_throwsCommandException() {
+    public void execute_duplicatePersonSameFieldsDifferentCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        String validPersonNameUppercase = validPerson.getName().fullName.toUpperCase();
+
+        Optional<String> validPersonAddressUppercaseFound = validPerson
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert validPersonAddressUppercaseFound.isPresent()
+                : "Valid person built has empty address";
+        String validPersonAddressUppercase = validPersonAddressUppercaseFound.get();
+
+        // capitalisation of name and address is different, but these are
+        // still duplicates as equality of name and address is case-insensitive
+        Person validPersonDifferentCase = new PersonBuilder(validPerson)
+                .withName(validPersonNameUppercase)
+                .withAddress(validPersonAddressUppercase)
+                .build();
+        AddCommand addCommand = new AddCommand(validPersonDifferentCase);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentIdSameCapitalisation_throwsCommandException() {
         Person validPerson = new PersonBuilder().withId(1).build();
-        AddCommand addCommand = new AddCommand(validPerson);
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
         // different id, but still considered as a duplicate
         // since the two sets of identity fields are identical
         Person existingDuplicatedPerson = new PersonBuilder().withId(2).build();
-        ModelStub modelStub = new ModelStubWithPerson(existingDuplicatedPerson);
-
+        AddCommand addCommand = new AddCommand(existingDuplicatedPerson);
         assertThrows(CommandException.class,
                 AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
     }
 
     @Test
-    public void execute_duplicatePersonDifferentTags_throwsCommandException() {
+    public void execute_duplicatePersonDifferentIdDifferentCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withId(1).build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        String validPersonNameUppercase = validPerson.getName().fullName.toUpperCase();
+
+        Optional<String> validPersonAddressUppercaseFound = validPerson
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert validPersonAddressUppercaseFound.isPresent()
+                : "Valid person built has empty address";
+        String validPersonAddressUppercase = validPersonAddressUppercaseFound.get();
+
+        // different id, but still considered as a duplicate
+        // since the two sets of identity fields are identical (case-insensitive)
+        Person validPersonDifferentIdDifferentCase = new PersonBuilder(validPerson)
+                .withId(2)
+                .withName(validPersonNameUppercase)
+                .withAddress(validPersonAddressUppercase)
+                .build();
+        AddCommand addCommand = new AddCommand(validPersonDifferentIdDifferentCase);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentTagsSameCapitalisation_throwsCommandException() {
         Person validPerson = new PersonBuilder().withTags(VALID_TAG_TUTOR).build();
-        AddCommand addCommand = new AddCommand(validPerson);
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
         // different tags, but still considered as a duplicate
         // since the two sets of identity fields are identical
         Person existingDuplicatedPerson = new PersonBuilder()
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_TUTOR)
                 .build();
-        ModelStub modelStub = new ModelStubWithPerson(existingDuplicatedPerson);
+        AddCommand addCommand = new AddCommand(existingDuplicatedPerson);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
 
+    @Test
+    public void execute_duplicatePersonDifferentTagsDifferentCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withTags(VALID_TAG_TUTOR).build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        String validPersonNameUppercase = validPerson.getName().fullName.toUpperCase();
+
+        Optional<String> validPersonAddressUppercaseFound = validPerson
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert validPersonAddressUppercaseFound.isPresent()
+                : "Valid person built has empty address";
+        String validPersonAddressUppercase = validPersonAddressUppercaseFound.get();
+
+        // different tags, but still considered as a duplicate
+        // since the two sets of identity fields are identical (case-insensitive)
+        Person validPersonDifferentTagsDifferentCase = new PersonBuilder(validPerson)
+                .withName(validPersonNameUppercase)
+                .withAddress(validPersonAddressUppercase)
+                .withTags(VALID_TAG_STUDENT, VALID_TAG_TUTOR)
+                .build();
+        AddCommand addCommand = new AddCommand(validPersonDifferentTagsDifferentCase);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentLinkSameCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withMeetingLink("https://zoom.com/123").build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        // different link, but still considered as a duplicate
+        // since the two sets of identity fields are identical
+        Person existingDuplicatedPerson = new PersonBuilder()
+                .withMeetingLink("https://zoom.com/456")
+                .build();
+        AddCommand addCommand = new AddCommand(existingDuplicatedPerson);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentLinkDifferentCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withMeetingLink("https://zoom.com/123").build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        String validPersonNameUppercase = validPerson.getName().fullName.toUpperCase();
+
+        Optional<String> validPersonAddressUppercaseFound = validPerson
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert validPersonAddressUppercaseFound.isPresent()
+                : "Valid person built has empty address";
+        String validPersonAddressUppercase = validPersonAddressUppercaseFound.get();
+
+        // different link, but still considered as a duplicate
+        // since the two sets of identity fields are identical (case-insensitive)
+        Person validPersonDifferentLinkDifferentCase = new PersonBuilder(validPerson)
+                .withName(validPersonNameUppercase)
+                .withAddress(validPersonAddressUppercase)
+                .withMeetingLink("https://zoom.com/456")
+                .build();
+        AddCommand addCommand = new AddCommand(validPersonDifferentLinkDifferentCase);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentRemarkSameCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withRemark("lazy student").build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        // different remark, but still considered as a duplicate
+        // since the two sets of identity fields are identical
+        Person existingDuplicatedPerson = new PersonBuilder()
+                .withRemark("gets distracted easily")
+                .build();
+        AddCommand addCommand = new AddCommand(existingDuplicatedPerson);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentRemarkDifferentCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withRemark("lazy student").build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        String validPersonNameUppercase = validPerson.getName().fullName.toUpperCase();
+
+        Optional<String> validPersonAddressUppercaseFound = validPerson
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert validPersonAddressUppercaseFound.isPresent()
+                : "Valid person built has empty address";
+        String validPersonAddressUppercase = validPersonAddressUppercaseFound.get();
+
+        // different remark, but still considered as a duplicate
+        // since the two sets of identity fields are identical (case-insensitive)
+        Person validPersonDifferentRemarkDifferentCase = new PersonBuilder(validPerson)
+                .withName(validPersonNameUppercase)
+                .withAddress(validPersonAddressUppercase)
+                .withRemark("gets distracted easily")
+                .build();
+        AddCommand addCommand = new AddCommand(validPersonDifferentRemarkDifferentCase);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentTimeSameCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withTime("Thursday 16:00").build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        // different time, but still considered as a duplicate
+        // since the two sets of identity fields are identical
+        Person existingDuplicatedPerson = new PersonBuilder()
+                .withTime("Sunday 10:00")
+                .build();
+        AddCommand addCommand = new AddCommand(existingDuplicatedPerson);
+        assertThrows(CommandException.class,
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonDifferentTimeDifferentCapitalisation_throwsCommandException() {
+        Person validPerson = new PersonBuilder().withTime("Thursday 16:00").build();
+        ModelStub modelStub = new ModelStubWithPerson(validPerson);
+
+        String validPersonNameUppercase = validPerson.getName().fullName.toUpperCase();
+
+        Optional<String> validPersonAddressUppercaseFound = validPerson
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert validPersonAddressUppercaseFound.isPresent()
+                : "Valid person built has empty address";
+        String validPersonAddressUppercase = validPersonAddressUppercaseFound.get();
+
+        // different time, but still considered as a duplicate
+        // since the two sets of identity fields are identical (case-insensitive)
+        Person validPersonDifferentTimeDifferentCase = new PersonBuilder(validPerson)
+                .withName(validPersonNameUppercase)
+                .withAddress(validPersonAddressUppercase)
+                .withTime("Sunday 10:00")
+                .build();
+        AddCommand addCommand = new AddCommand(validPersonDifferentTimeDifferentCase);
         assertThrows(CommandException.class,
                 AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
     }

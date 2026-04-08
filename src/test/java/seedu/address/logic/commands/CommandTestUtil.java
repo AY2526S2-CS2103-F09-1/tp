@@ -77,6 +77,12 @@ public class CommandTestUtil {
     // 'a' not allowed in phones
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a";
 
+    // addresses with forward slashes are not allowed
+    public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS + "woodlands/avenue";
+
+    // remarks with only whitespaces are not allowed
+    public static final String INVALID_REMARK_DESC = " " + PREFIX_REMARK + "   ";
+
     // not a valid hour
     public static final String INVALID_TIME_DESC = " " + PREFIX_TIME + "Monday 25:00";
 

@@ -13,7 +13,7 @@ public class Name {
             "Names should not be blank, and should only contain alphabets, \"-\", \",\", and \" \".";
 
     /*
-     * The first character of the address must be alphabetical,
+     * The first character of the name must be alphabetical,
      * otherwise " " (a blank string) becomes a valid input.
      */
     public static final String VALIDATION_REGEX = "[A-Za-z][A-Za-z ,\\-]*";
@@ -56,7 +56,11 @@ public class Name {
         }
 
         Name otherName = (Name) other;
-        return fullName.equals(otherName.fullName);
+
+        // equality check is case-insensitive
+        String fullNameLower = fullName.toLowerCase();
+        String otherFullNameLower = otherName.fullName.toLowerCase();
+        return fullNameLower.equals(otherFullNameLower);
     }
 
     @Override

@@ -153,6 +153,7 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETI
 * When used to clear tags, bare `t/` must not be combined with tag values or `tdel/` values in the same command.
   It may still be combined with non-tag edits such as `n/`, `p/`, `a/`, `d/`, `r/`, or `l/`.
 * The same tag cannot be added and deleted in the same command.
+* Editing a contact such that it becomes identical to an existing contact is not allowed. Each contact must be unique.
 
 Examples:
 *  `edit 1 p/91234567`: Edit the phone number of the person with `ID` 1, changing it to `91234567`.

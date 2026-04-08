@@ -145,6 +145,42 @@ public class CopyCommandTest {
     }
 
     @Test
+    public void getFieldValue_phonePresent_returnsPhone() throws Exception {
+        Person personWithPhone = new PersonBuilder().withPhone("91234567").build();
+        CopyCommand copyCommand = new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix());
+        Method getFieldValueMethod = CopyCommand.class.getDeclaredMethod("getFieldValue", Person.class);
+        getFieldValueMethod.setAccessible(true);
+
+        String fieldValue = getFieldValueMethod.invoke(copyCommand, personWithPhone).toString();
+
+        assertEquals("91234567", fieldValue);
+    }
+
+    @Test
+    public void getFieldValue_namePresent_returnsName() throws Exception {
+        Person personWithName = new PersonBuilder().withName("thisIs aName").build();
+        CopyCommand copyCommand = new CopyCommand(ID_FIRST, PREFIX_NAME.getPrefix());
+        Method getFieldValueMethod = CopyCommand.class.getDeclaredMethod("getFieldValue", Person.class);
+        getFieldValueMethod.setAccessible(true);
+
+        String fieldValue = getFieldValueMethod.invoke(copyCommand, personWithName).toString();
+
+        assertEquals("thisIs aName", fieldValue);
+    }
+
+    @Test
+    public void getFieldValue_emptyPhone_returnsEmptyString() throws Exception {
+        Person personWithoutPhone = new PersonBuilder().withoutPhone().build();
+        CopyCommand copyCommand = new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix());
+        Method getFieldValueMethod = CopyCommand.class.getDeclaredMethod("getFieldValue", Person.class);
+        getFieldValueMethod.setAccessible(true);
+
+        String fieldValue = getFieldValueMethod.invoke(copyCommand, personWithoutPhone).toString();
+
+        assertEquals("", fieldValue);
+    }
+
+    @Test
     public void equals() {
         CopyCommand copyFirstPhone = new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix());
         CopyCommand copySecondPhone = new CopyCommand(ID_SECOND, PREFIX_PHONE.getPrefix());

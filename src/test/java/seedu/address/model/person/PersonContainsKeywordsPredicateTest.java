@@ -199,7 +199,7 @@ public class PersonContainsKeywordsPredicateTest {
         assertFalse(predicate.test(new PersonBuilder()
                 .withName("Alice Bob")
                 .withAddress("123 Geylang Road")
-                .withPhone("56788765")
+                .withPhone("86788765")
                 .build()));
 
         // Name and tag keywords should not match each other's fields
@@ -324,7 +324,7 @@ public class PersonContainsKeywordsPredicateTest {
                 Collections.emptyList(), Collections.singletonList("345"),
                 Collections.emptyList(), Collections.emptyList(), MatchMode.AND);
 
-        assertTrue(predicate.test(new PersonBuilder().withName("Ali Lim").withPhone("12345678").build()));
+        assertTrue(predicate.test(new PersonBuilder().withName("Ali Lim").withPhone("82345678").build()));
         assertFalse(predicate.test(new PersonBuilder().withName("Ali Lim").withPhone("99999999").build()));
     }
 

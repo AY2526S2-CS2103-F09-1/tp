@@ -33,7 +33,7 @@ public class ParserUtilTest {
     private static final String INVALID_UNLISTED_TAG = "friend";
 
     private static final String VALID_NAME = "Rachel Walker";
-    private static final String VALID_PHONE = "12345678";
+    private static final String VALID_PHONE = "92345678";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
     private static final String VALID_TIME = "Monday 18:00";
     private static final String VALID_TIME_ALTERNATE = "monday 1800";

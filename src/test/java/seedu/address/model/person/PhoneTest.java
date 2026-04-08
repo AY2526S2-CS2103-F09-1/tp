@@ -36,7 +36,8 @@ public class PhoneTest {
 
         // valid phone numbers
         assertTrue(Phone.isValidPhone("93121534")); // exactly 8 numbers
-        assertTrue(Phone.isValidPhone("10348692")); // exactly 8 numbers
+        assertTrue(Phone.isValidPhone("62341238")); // exactly 8 numbers
+        assertFalse(Phone.isValidPhone("10348692")); // exactly 8 numbers but does not start with 6/8/9
     }
 
     @Test

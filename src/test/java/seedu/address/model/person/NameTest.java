@@ -27,6 +27,7 @@ public class NameTest {
         // invalid name
         assertFalse(Name.isValidName("")); // empty string
         assertFalse(Name.isValidName(" ")); // spaces only
+        assertFalse(Name.isValidName("   James charles")); // leading space (expected behaviour to reject this)
         assertFalse(Name.isValidName("^$^%#")); // only special characters
         assertFalse(Name.isValidName("peter*")); // contains special characters
         assertFalse(Name.isValidName("peter the 2nd")); // contains numbers
@@ -39,6 +40,7 @@ public class NameTest {
         assertTrue(Name.isValidName("Jamie-Lee Smith")); // with a dash
         assertTrue(Name.isValidName("Charles III")); // with Roman numerals
         assertTrue(Name.isValidName("David Roger Jackson Ray Jr")); // long names
+        assertTrue(Name.isValidName("Leroy Jenkins   ")); // trailing whitespace
     }
 
     @Test

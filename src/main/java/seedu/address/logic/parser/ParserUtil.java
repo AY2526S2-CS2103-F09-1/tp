@@ -5,6 +5,7 @@ import static seedu.address.logic.Messages.MATCH_MODE_AND_KEYWORD;
 import static seedu.address.logic.Messages.MATCH_MODE_OR_KEYWORD;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_MODE;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +45,17 @@ public class ParserUtil {
         try {
             parsedIdValue = Integer.parseInt(trimmedId);
         } catch (NumberFormatException ex) {
-            throw new ParseException(Id.MESSAGE_CONSTRAINTS);
+            // check if this is an overflow issue or not
+            try {
+                new BigInteger(trimmedId);
+            } catch (NumberFormatException formatEx) {
+                // merely a formatting issue
+                throw new ParseException(Id.MESSAGE_CONSTRAINTS);
+            }
+
+            // this is an overflow issue - it's a valid integer that is
+            // outside of Integer range
+            throw new ParseException(Id.OVERFLOW_MESSAGE_CONSTRAINTS);
         }
 
         if (!Id.isValidId(parsedIdValue)) {

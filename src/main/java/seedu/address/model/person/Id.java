@@ -11,7 +11,9 @@ import java.util.Optional;
 public class Id implements Comparable<Id> {
     public static final String MESSAGE_CONSTRAINTS =
             "IDs should not be blank, and must be a positive integer.";
-    public static final String OVERFLOW_MESSAGE =
+    public static final String OVERFLOW_MESSAGE_CONSTRAINTS =
+            "To avoid overflow, IDs should be within the range of java.lang.Integer.";
+    public static final String INCOMING_OVERFLOW_MESSAGE =
             "The provided ID is already of the maximum possible value, "
             + "and will lead to an overflow.";
 
@@ -50,7 +52,7 @@ public class Id implements Comparable<Id> {
                 .filter(idValue -> idValue < LARGEST_VALUE)
                 // increment by 1 to avoid duplicated ids
                 .map(idValue -> new Id(idValue + 1))
-                .orElseThrow(() -> new IllegalArgumentException(OVERFLOW_MESSAGE));
+                .orElseThrow(() -> new IllegalArgumentException(INCOMING_OVERFLOW_MESSAGE));
     }
 
     /**

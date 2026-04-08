@@ -8,10 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.model.person.Address;
 import seedu.address.model.person.MeetingLink;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Remark;
+import seedu.address.model.person.Time;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -30,9 +32,9 @@ public class PersonCard extends UiPart<Region> {
 
     private static final String PHONE_ICON = "\u260E";
     private static final String ADDRESS_ICON = "\u2302";
-    private static final String TIME_ICON = "\u23F0";
+    private static final String TIME_ICON = "@";
     private static final String REMARK_ICON = "\u270E";
-    private static final String MEETING_LINK_ICON = "\u26D3";
+    private static final String MEETING_LINK_ICON = "\u2197";
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
@@ -83,6 +85,7 @@ public class PersonCard extends UiPart<Region> {
 
     private void renderMeetingLink(Person person, Label meetingLinkLabel) {
         Optional<MeetingLink> link = person.getMeetingLink();
+        meetingLinkLabel.setWrapText(true);
 
         // if the Meeting Link inside not empty, set text
         // else inform the user the Meeting Link is missing
@@ -94,6 +97,7 @@ public class PersonCard extends UiPart<Region> {
 
     private void renderRemark(Person person, Label remarkLabel) {
         Optional<Remark> remark = person.getRemark();
+        remarkLabel.setWrapText(true);
 
         // if the Remark inside is not empty, set text
         // else just show an empty string
@@ -116,11 +120,14 @@ public class PersonCard extends UiPart<Region> {
     private void renderNameWithId(Person person, Label nameWithIdLabel) {
         String fullName = person.getName().fullName;
         int idValue = person.getId().getValue();
+
+        nameWithIdLabel.setWrapText(true);
         nameWithIdLabel.setText(fullName + " (ID: " + idValue + ")");
     }
 
     private void renderPhone(Person person, Label phoneLabel) {
         Optional<Phone> phone = person.getPhone();
+        phoneLabel.setWrapText(true);
 
         // if the Phone inside is not empty, set text
         // else inform user the Phone is missing
@@ -131,21 +138,24 @@ public class PersonCard extends UiPart<Region> {
     }
 
     private void renderAddress(Person person, Label addressLabel) {
-        person.getAddress().ifPresentOrElse(address -> renderPresentAddress(address.value, addressLabel), () ->
-                renderMissingAddress(addressLabel));
-    }
+        Optional<Address> address = person.getAddress();
+        addressLabel.setWrapText(true);
 
-    private void renderPresentAddress(String addressValue, Label addressLabel) {
-        addressLabel.setText(ADDRESS_ICON + " " + addressValue);
-    }
-
-    private void renderMissingAddress(Label addressLabel) {
-        addressLabel.setText(ADDRESS_ICON + " " + MESSAGE_MISSING_ADDRESS);
-        addCssClass(addressLabel, CSS_CLASS_MISSING_FIELD);
+        // if the Address inside is not empty, set text
+        // else inform user the Address is missing
+        address.ifPresentOrElse(a -> addressLabel.setText(ADDRESS_ICON + " " + a.value), () -> {
+            addressLabel.setText(ADDRESS_ICON + " " + MESSAGE_MISSING_ADDRESS);
+            addCssClass(addressLabel, CSS_CLASS_MISSING_FIELD);
+        });
     }
 
     private void renderTime(Person person, Label timeLabel) {
-        person.getTime().ifPresentOrElse(timeValue -> timeLabel.setText(TIME_ICON + " " + timeValue), () -> {
+        Optional<Time> time = person.getTime();
+        timeLabel.setWrapText(true);
+
+        // if the Time inside is not empty, set text
+        // else inform user the Time is missing
+        time.ifPresentOrElse(t -> timeLabel.setText(TIME_ICON + " " + t.value), () -> {
             timeLabel.setText(TIME_ICON + " " + MESSAGE_MISSING_TIME);
             addCssClass(timeLabel, CSS_CLASS_MISSING_FIELD);
         });

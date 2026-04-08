@@ -17,7 +17,13 @@ end box
 [-> LogicManager : execute("del 1")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("del 1")
+LogicManager -> Model : findMaxId()
+activate Model
+
+Model --> LogicManager : currentMaxId
+deactivate Model
+
+LogicManager -> AddressBookParser : parseCommand("del 1", currentMaxId)
 activate AddressBookParser
 
 create DeleteCommandParser
@@ -31,7 +37,7 @@ AddressBookParser -> DeleteCommandParser : parse("1")
 activate DeleteCommandParser
 
 create DeleteCommand
-DeleteCommandParser -> DeleteCommand
+DeleteCommandParser -> DeleteCommand : new DeleteCommand(id)
 activate DeleteCommand
 
 DeleteCommand --> DeleteCommandParser :
@@ -55,7 +61,7 @@ activate Model
 Model --> DeleteCommand : personToDelete
 deactivate Model
 
-DeleteCommand -> Model : deletePerson(personToDelete)
+DeleteCommand -> Model : deletePersons(personToDelete)
 activate Model
 
 Model --> DeleteCommand

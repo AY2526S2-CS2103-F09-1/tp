@@ -3,7 +3,6 @@ package seedu.address.model.person;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PARENT;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
@@ -93,7 +92,22 @@ public class UniquePersonListTest {
     @Test
     public void add_duplicatePerson_throwsDuplicatePersonException() {
         uniquePersonList.add(ALICE);
-        assertThrows(DuplicatePersonException.class, () -> uniquePersonList.add(ALICE));
+
+        // make an edited person, with the same identity fields (case-insensitive)
+        String aliceNameUppercase = ALICE.getName().fullName.toUpperCase();
+        Optional<String> aliceAddressUppercaseFound = ALICE
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert aliceAddressUppercaseFound.isPresent()
+                : "Person has empty address";
+        String aliceAddressUppercase = aliceAddressUppercaseFound.get();
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withName(aliceNameUppercase)
+                .withAddress(aliceAddressUppercase)
+                .withTags(VALID_TAG_PARENT)
+                .build();
+
+        assertThrows(DuplicatePersonException.class, () -> uniquePersonList.add(editedAlice));
     }
 
     @Test
@@ -112,7 +126,7 @@ public class UniquePersonListTest {
     }
 
     @Test
-    public void setPerson_editedPersonIsSamePerson_success() {
+    public void setPerson_editedPersonIsIdenticalPerson_success() {
         uniquePersonList.add(ALICE);
         uniquePersonList.setPerson(ALICE, ALICE);
         UniquePersonList expectedUniquePersonList = new UniquePersonList();
@@ -124,8 +138,8 @@ public class UniquePersonListTest {
     public void setPerson_editedPersonHasSameIdentity_success() {
         uniquePersonList.add(ALICE);
         Person editedAlice = new PersonBuilder(ALICE)
-                .withAddress(VALID_ADDRESS_BOB)
                 .withTags(VALID_TAG_PARENT)
+                .withMeetingLink("https://zoom.com/123")
                 .build();
         uniquePersonList.setPerson(ALICE, editedAlice);
         UniquePersonList expectedUniquePersonList = new UniquePersonList();
@@ -146,7 +160,22 @@ public class UniquePersonListTest {
     public void setPerson_editedPersonHasNonUniqueIdentity_throwsDuplicatePersonException() {
         uniquePersonList.add(ALICE);
         uniquePersonList.add(BOB);
-        assertThrows(DuplicatePersonException.class, () -> uniquePersonList.setPerson(ALICE, BOB));
+
+        // make an edited version of first person, with the same identity fields (case-insensitive)
+        String aliceNameUppercase = ALICE.getName().fullName.toUpperCase();
+        Optional<String> aliceAddressUppercaseFound = ALICE
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert aliceAddressUppercaseFound.isPresent()
+                : "Person has empty address";
+        String aliceAddressUppercase = aliceAddressUppercaseFound.get();
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withName(aliceNameUppercase)
+                .withAddress(aliceAddressUppercase)
+                .withTags(VALID_TAG_PARENT)
+                .build();
+
+        assertThrows(DuplicatePersonException.class, () -> uniquePersonList.setPerson(BOB, editedAlice));
     }
 
     @Test
@@ -198,7 +227,21 @@ public class UniquePersonListTest {
 
     @Test
     public void setPersons_listWithDuplicatePersons_throwsDuplicatePersonException() {
-        List<Person> listWithDuplicatePersons = Arrays.asList(ALICE, ALICE);
+        // make an edited person, with the same identity fields (case-insensitive)
+        String aliceNameUppercase = ALICE.getName().fullName.toUpperCase();
+        Optional<String> aliceAddressUppercaseFound = ALICE
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert aliceAddressUppercaseFound.isPresent()
+                : "Person has empty address";
+        String aliceAddressUppercase = aliceAddressUppercaseFound.get();
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withName(aliceNameUppercase)
+                .withAddress(aliceAddressUppercase)
+                .withTags(VALID_TAG_PARENT)
+                .build();
+
+        List<Person> listWithDuplicatePersons = Arrays.asList(ALICE, editedAlice);
         assertThrows(DuplicatePersonException.class, () -> uniquePersonList.setPersons(listWithDuplicatePersons));
     }
 

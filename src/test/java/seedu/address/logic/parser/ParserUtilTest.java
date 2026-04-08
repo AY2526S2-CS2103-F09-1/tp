@@ -33,7 +33,7 @@ public class ParserUtilTest {
     private static final String INVALID_UNLISTED_TAG = "friend";
 
     private static final String VALID_NAME = "Rachel Walker";
-    private static final String VALID_PHONE = "12345678";
+    private static final String VALID_PHONE = "92345678";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
     private static final String VALID_TIME = "Monday 18:00";
     private static final String VALID_TIME_ALTERNATE = "monday 1800";
@@ -48,14 +48,29 @@ public class ParserUtilTest {
     private static final String INVALID_REMARK = " ";
 
     @Test
-    public void parseId_invalidInput_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseId("10 a"));
+    public void parseId_nonIntegerInput_throwsParseException() {
+        assertThrows(ParseException.class, Id.MESSAGE_CONSTRAINTS, () ->
+                ParserUtil.parseId("10 a"));
     }
 
     @Test
-    public void parseId_outOfRangeInput_throwsParseException() {
-        assertThrows(ParseException.class, Id.MESSAGE_CONSTRAINTS, ()
-            -> ParserUtil.parseId(Long.toString(Integer.MAX_VALUE + 1)));
+    public void parseId_negativeIntegerInput_throwsParseException() {
+        assertThrows(ParseException.class, Id.MESSAGE_CONSTRAINTS, () ->
+                ParserUtil.parseId("-3"));
+    }
+
+    @Test
+    public void parseId_integerCausesOverflow_throwsParseException() {
+        long maxPossibleInt = Integer.MAX_VALUE;
+        long minPossibleInt = Integer.MIN_VALUE;
+
+        // above Integer's max value
+        assertThrows(ParseException.class, Id.OVERFLOW_MESSAGE_CONSTRAINTS, () ->
+                ParserUtil.parseId(Long.toString(maxPossibleInt + 1)));
+
+        // below Integer's min value
+        assertThrows(ParseException.class, Id.OVERFLOW_MESSAGE_CONSTRAINTS, () ->
+                ParserUtil.parseId(Long.toString(minPossibleInt - 1)));
     }
 
     @Test

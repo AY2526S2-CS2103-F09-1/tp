@@ -3,11 +3,15 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_MEETING_LINK_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_REMARK_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DURATION_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_NO_DAY_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.MEETING_LINK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.MEETING_LINK_DESC_BOB;
@@ -55,6 +59,7 @@ import seedu.address.model.person.MeetingLink;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Time;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 
@@ -106,11 +111,14 @@ public class AddCommandParserTest {
                         PREFIX_REMARK, PREFIX_MEETING_LINK));
 
         // one repetition, for each non-tag field (invalid field inputs placed at the front)
-        // NOTE: all addresses and remarks are valid
         assertParseFailure(parser, INVALID_NAME_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
         assertParseFailure(parser, INVALID_PHONE_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+        assertParseFailure(parser, INVALID_ADDRESS_DESC + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
+        assertParseFailure(parser, INVALID_REMARK_DESC + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
         assertParseFailure(parser, INVALID_TIME_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TIME));
         assertParseFailure(parser, INVALID_MEETING_LINK_DESC + validExpectedPersonString,
@@ -121,6 +129,10 @@ public class AddCommandParserTest {
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NAME));
         assertParseFailure(parser, validExpectedPersonString + INVALID_PHONE_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_PHONE));
+        assertParseFailure(parser, validExpectedPersonString + INVALID_ADDRESS_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
+        assertParseFailure(parser, validExpectedPersonString + INVALID_REMARK_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_REMARK));
         assertParseFailure(parser, validExpectedPersonString + INVALID_TIME_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TIME));
         assertParseFailure(parser, validExpectedPersonString + INVALID_MEETING_LINK_DESC,
@@ -270,5 +282,16 @@ public class AddCommandParserTest {
         assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
                 + TIME_DESC_AMY + TAG_DESC_STUDENT + REMARK_DESC_AMY + INVALID_MEETING_LINK_DESC,
                 MeetingLink.MESSAGE_CONSTRAINTS);
+
+        // invalid time
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
+                + INVALID_TIME_DESC + TAG_DESC_STUDENT + REMARK_DESC_AMY + MEETING_LINK_DESC_AMY,
+                Time.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
+                + INVALID_TIME_DURATION_DESC + TAG_DESC_STUDENT + REMARK_DESC_AMY + MEETING_LINK_DESC_AMY,
+                Time.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
+                + INVALID_TIME_NO_DAY_DESC + TAG_DESC_STUDENT + REMARK_DESC_AMY + MEETING_LINK_DESC_AMY,
+                Time.MESSAGE_CONSTRAINTS);
     }
 }

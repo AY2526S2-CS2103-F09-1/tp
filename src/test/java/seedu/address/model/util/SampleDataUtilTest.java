@@ -21,7 +21,7 @@ public class SampleDataUtilTest {
 
         assertEquals(6, samplePersons.length);
         assertSamplePerson(samplePersons[0], 1, "Student");
-        assertSamplePerson(samplePersons[1], 2, "Parent");
+        assertSamplePerson(samplePersons[1], 2, "Student");
         assertSamplePerson(samplePersons[2], 3, "Tutor");
         assertSamplePerson(samplePersons[3], 4, "Student");
         assertSamplePerson(samplePersons[4], 5, "Parent");

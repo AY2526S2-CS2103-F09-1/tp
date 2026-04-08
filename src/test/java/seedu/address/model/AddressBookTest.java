@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -45,9 +46,20 @@ public class AddressBookTest {
 
     @Test
     public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
-        // Two persons with the same identity fields
-        Person editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_PARENT)
+        // make an edited person, with the same identity fields (case-insensitive)
+        String aliceNameUppercase = ALICE.getName().fullName.toUpperCase();
+        Optional<String> aliceAddressUppercaseFound = ALICE
+                .getAddress()
+                .map(a -> a.value.toUpperCase());
+        assert aliceAddressUppercaseFound.isPresent()
+                : "Person has empty address";
+        String aliceAddressUppercase = aliceAddressUppercaseFound.get();
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withName(aliceNameUppercase)
+                .withAddress(aliceAddressUppercase)
+                .withTags(VALID_TAG_PARENT)
                 .build();
+
         List<Person> newPersons = Arrays.asList(ALICE, editedAlice);
         AddressBookStub newData = new AddressBookStub(newPersons);
 

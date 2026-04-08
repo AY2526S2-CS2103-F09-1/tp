@@ -133,7 +133,9 @@ public class ModelManager implements Model {
         requireAllNonNull(target, editedPerson);
 
         addressBook.setPerson(target, editedPerson);
-        displayPersons.setAll(filteredPersons);
+
+        // only display the person added
+        updateFilteredPersonList(person -> person.isSamePerson(editedPerson));
     }
 
     @Override

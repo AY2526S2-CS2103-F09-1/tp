@@ -90,7 +90,9 @@ A person can have any number of tags (including 0)
 * Only `n/NAME` is required.
 * `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `l/MEETING_LINK`, and `t/TAG` are optional.
 * `add n/John Doe` and `add n/John Doe p/` are both valid. Both create a contact without a phone number.
+* If a phone number is specified, it needs to be 8 digits long, and begin with 6, 8, or 9.
 * Similarly, `add n/John Doe` and `add n/John Doe a/` are both valid. Both create a contact without an address.
+* If an address is specified, it cannot contain a `/` inside.
 * This behaviour is similar for remark and meeting link. `add n/John Doe r/` and `add n/John Doe l/` are both valid.
   They create a contact without a remark and meeting link respectively.
 * EduConnect allows overlapping meeting schedules across different contacts (e.g. `4–6pm` and `5–7pm`).
@@ -99,13 +101,16 @@ A person can have any number of tags (including 0)
 Examples:
 * `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student`
 * `add n/John Doe a/John street, block 123, #01-01 t/Parent t/Tutor`
-* `add n/Jane Doe p/98765432`
-* `add n/Jane Doe p/`
-* `add n/Jane Doe a/`
+* `add n/Jane Doe p/98765432 l/https://zoom.us/j/123456789`
 
 The first example gives the following expected output:
 
   ![result for 'add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student'](images/AddCommandResult.png)
+
+Adding optional prefix without input will be equivalent to adding just the name.
+ie. the following will behave the same way
+* `add n/Jane Doe p/98765432`
+* `add n/Jane Doe p/`
 
 ### Listing all persons: `list`
 
@@ -129,9 +134,9 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETI
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * `p/PHONE` updates the stored phone number. You can remove the stored phone number by typing `p/`
-  without specifying any value after it.
+  without specifying any value after it. Similar to [add](#adding-a-person-add), the phone number specified must have 8 digits, and start with 6, 8 or 9.
 * `a/ADDRESS` updates the stored address. You can remove the stored address by typing `a/` without
-  specifying any value after it.
+  specifying any value after it. Similar to [add](#adding-a-person-add) command, the address specified cannot contain `/`.
 * `d/DAY_TIME` updates the stored meeting schedule. You can store either a single time or a duration,
   both with a weekday.
 * `d/DAY_TIME` accepts `Day HH:mm`, `Day HHmm`, `Day HH:mm - HH:mm`, and `Day HHmm - HHmm`.
@@ -155,6 +160,7 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETI
 * When used to clear tags, bare `t/` must not be combined with tag values or `tdel/` values in the same command.
   It may still be combined with non-tag edits such as `n/`, `p/`, `a/`, `d/`, `r/`, or `l/`.
 * The same tag cannot be added and deleted in the same command.
+* Editing a contact such that it becomes identical to an existing contact is not allowed. Each contact must be unique.
 
 Examples:
 *  `edit 1 p/91234567`: Edit the phone number of the person with `ID` 1, changing it to `91234567`.
@@ -207,18 +213,20 @@ Expected behavior:
 
 ### Deleting a person: `del`
 
-Delete the specified person from the address book.
+Delete one or more specified persons from the address book.
 
-Format: `del ID`
+Format: `del ID [ID]…​`
 
-* Deletes the person with the specified `ID`.
-* `ID` **must be a positive integer** 1, 2, 3, …​
+* Deletes the persons with the specified `ID`s.
+* Each `ID` **must be a positive integer** 1, 2, 3, …​
+* Multiple IDs can be provided, separated by spaces.
+* If any of the given IDs does not exist, none of the contacts will be deleted.
 
 Examples:
 * `del 2`: Delete the person with `ID` 2 from the address book.
+* `del 1 3 5`: Delete the persons with `ID` 1, 3, and 5 from the address book atomically.
 * `find n/Betsy` followed by `del 1`: Delete the person with `ID` 1 from the address book. Note that it does not delete the first person in the results of the `find` command.
-* `add n/Andrew` followed by `del 1`: Delete the person with `ID` 1 from the address book. Note that it does not delete the contact that was just added.
-* `add n/Andrew` followed by `del 1`: Fail if there is no person with `ID` 1 in the address book.
+* `del 1 99`: Fail if either `ID` 1 or `ID` 99 is not found — neither contact will be deleted.
 
 ### Copying a person information: `copy`
 
@@ -264,7 +272,7 @@ EduConnect data is saved in the hard disk automatically after any command that c
 
 ### Editing the data file
 
-EduConnect data is saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+EduConnect data is saved automatically as a JSON file `[JAR file location]/data/educonnect.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
 If your changes to the data file makes its format invalid, EduConnect will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
@@ -297,9 +305,9 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/22224444 a/123, Clementi Rd, 1234665 r/new student l/https://zoom.us/j/123456789 t/Parent t/Tutor`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho p/89761234 a/123, Clementi Rd, 1234665 r/new student l/https://zoom.us/j/123456789 t/Parent t/Tutor`, `add n/James Ho l/https://zoom.us/j/123456789`
 **Clear** | `clear` (run twice)
-**Delete** | `del ID`<br> e.g., `del 3`
+**Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/DAY_TIME] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
 **Find** | `find [n/NAME]... [a/ADDRESS]... [p/PHONE]... [t/TAG]... [r/REMARK]...`<br> e.g., `find n/James t/Student`
 **List** | `list`

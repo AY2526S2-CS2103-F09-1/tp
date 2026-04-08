@@ -9,9 +9,14 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Address {
 
-    public static final String MESSAGE_CONSTRAINTS = "Addresses can take any values, and it should not be blank";
+    public static final String MESSAGE_CONSTRAINTS = "Addresses can take any values, "
+        + "should not contain /, and it should not be blank";
 
-    public static final String VALIDATION_REGEX = "[^\\s].*";
+    /**
+     * The first character of the address must be non-whitespace,
+     * otherwise " " (a blank string) becomes a valid input.
+     */
+    public static final String VALIDATION_REGEX = "[^\\s/][^/]*";
 
     public final String value;
 
@@ -65,7 +70,11 @@ public class Address {
         }
 
         Address otherAddress = (Address) other;
-        return value.equals(otherAddress.value);
+
+        // equality check is case-insensitive
+        String addressLower = value.toLowerCase();
+        String otherAddressLower = otherAddress.value.toLowerCase();
+        return addressLower.equals(otherAddressLower);
     }
 
     @Override

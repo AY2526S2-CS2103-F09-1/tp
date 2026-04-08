@@ -3,7 +3,7 @@ package seedu.address.model.person;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.model.person.Id.OVERFLOW_MESSAGE;
+import static seedu.address.model.person.Id.INCOMING_OVERFLOW_MESSAGE;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class IdTest {
     public void fromCurrentMaxId_largestPossibleCurrentMaxId_throwsIllegalArgumentException() {
         Optional<Id> currentMaxId = Optional.of(Id.of(Integer.MAX_VALUE));
         assertThrows(IllegalArgumentException.class,
-                OVERFLOW_MESSAGE, () -> Id.fromCurrentMaxId(currentMaxId));
+                INCOMING_OVERFLOW_MESSAGE, () -> Id.fromCurrentMaxId(currentMaxId));
     }
 
     @Test

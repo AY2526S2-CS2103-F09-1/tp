@@ -59,5 +59,33 @@ public class CopyCommandParserTest {
     public void parse_invalidField_throwsParseException() {
         assertParseFailure(parser, "1 email", CopyCommand.MESSAGE_INVALID_FIELD);
         assertParseFailure(parser, "1 xyz", CopyCommand.MESSAGE_INVALID_FIELD);
+        assertParseFailure(parser, "1 r/", CopyCommand.MESSAGE_INVALID_FIELD);
+        assertParseFailure(parser, "1 t/", CopyCommand.MESSAGE_INVALID_FIELD);
+        assertParseFailure(parser, "1 d/", CopyCommand.MESSAGE_INVALID_FIELD);
+    }
+
+    @Test
+    public void parse_validLargeId_returnsCopyCommand() {
+        Id largeId = Id.of(6776);
+        assertParseSuccess(parser, "6776 " + PREFIX_PHONE, new CopyCommand(largeId, PREFIX_PHONE.getPrefix()));
+    }
+
+    @Test
+    public void parse_idWithLeadingZeros_treatedAsValidId() {
+        // "01" is parsed as integer 1 — leading zeros are silently accepted
+        assertParseSuccess(parser, "01 " + PREFIX_PHONE, new CopyCommand(ID_FIRST, PREFIX_PHONE.getPrefix()));
+    }
+
+    @Test
+    public void parse_fieldOnly_throwsParseException() {
+        // field given but no ID
+        assertParseFailure(parser, PREFIX_PHONE.getPrefix(),
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, CopyCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_whitespaceOnly_throwsParseException() {
+        assertParseFailure(parser, "   ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, CopyCommand.MESSAGE_USAGE));
     }
 }

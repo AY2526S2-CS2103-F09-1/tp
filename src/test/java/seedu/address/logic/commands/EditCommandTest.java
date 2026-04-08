@@ -53,7 +53,7 @@ public class EditCommandTest {
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -79,8 +79,8 @@ public class EditCommandTest {
                 .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_PARENT).build();
         EditCommand editCommand = new EditCommand(maxId, descriptor);
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                maxId.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personWithMaxId, editedPerson);
@@ -98,7 +98,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withTime(VALID_TIME_AMY).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -118,7 +118,7 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
         Person editedPerson = new PersonBuilder(personWithTime).withoutTime().build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personWithTime, editedPerson);
@@ -137,7 +137,7 @@ public class EditCommandTest {
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -157,7 +157,7 @@ public class EditCommandTest {
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withTags(VALID_TAG_STUDENT, VALID_TAG_PARENT, VALID_TAG_TUTOR).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -175,7 +175,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withTags().build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -193,7 +193,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withoutPhone().build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -211,7 +211,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withoutAddress().build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -230,7 +230,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withMeetingLink(VALID_MEETING_LINK_AMY).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -248,7 +248,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withoutMeetingLink().build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -265,8 +265,8 @@ public class EditCommandTest {
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(personToEdit));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, personToEdit);
@@ -322,7 +322,7 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(Id.of(42), descriptor);
 
         Person editedPerson = new PersonBuilder(alanTuring).withTags(VALID_TAG_TUTOR).build();
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, 42);
 
         Model expectedModel = new ModelManager(new AddressBook(modelWithAlan.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(alanTuring, editedPerson);
@@ -343,7 +343,7 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withTags(VALID_TAG_TUTOR).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -360,8 +360,8 @@ public class EditCommandTest {
         assertTrue(personToEditFound.isPresent());
         Person personToEdit = personToEditFound.get();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(personToEdit));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, personToEdit);
@@ -387,8 +387,8 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withName(VALID_NAME_BOB).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -408,8 +408,8 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withTags(VALID_TAG_STUDENT, VALID_TAG_TUTOR).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                ID_FIRST.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -434,8 +434,8 @@ public class EditCommandTest {
         Person personToEdit = personToEditFound.get();
         Person editedPerson = new PersonBuilder(personToEdit).withName(VALID_NAME_BOB).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                ID_SECOND.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -457,8 +457,8 @@ public class EditCommandTest {
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withTags(VALID_TAG_PARENT, VALID_TAG_TUTOR).build();
 
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS,
-                Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                ID_SECOND.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -531,11 +531,13 @@ public class EditCommandTest {
         addressBook.addPerson(personToEdit);
         Model modelWithPerson = new ModelManager(addressBook, new UserPrefs());
 
+        Id personToEditId = personToEdit.getId();
+
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags(VALID_TAG_STUDENT).build();
-        EditCommand editCommand = new EditCommand(personToEdit.getId(), descriptor);
+        EditCommand editCommand = new EditCommand(personToEditId, descriptor);
 
         Person editedPerson = new PersonBuilder(personToEdit).withTags(expectedTags).build();
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, personToEditId.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(modelWithPerson.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -548,14 +550,16 @@ public class EditCommandTest {
         addressBook.addPerson(personToEdit);
         Model modelWithPerson = new ModelManager(addressBook, new UserPrefs());
 
+        Id personToEditId = personToEdit.getId();
+
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
                 .withTags(VALID_TAG_STUDENT)
                 .withTagsToDelete(VALID_TAG_PARENT)
                 .build();
-        EditCommand editCommand = new EditCommand(personToEdit.getId(), descriptor);
+        EditCommand editCommand = new EditCommand(personToEditId, descriptor);
 
         Person editedPerson = new PersonBuilder(personToEdit).withTags(expectedTags).build();
-        String expectedMessage = String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, personToEditId.getValue());
 
         Model expectedModel = new ModelManager(new AddressBook(modelWithPerson.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);

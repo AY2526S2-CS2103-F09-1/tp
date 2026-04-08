@@ -9,7 +9,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_DELETE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -62,6 +61,9 @@ public class EditCommand extends Command {
             + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG + "\n"
             + "Accepted time formats: Day HH:mm, Day HHmm, Day HH:mm - HH:mm, or Day HHmm - HHmm";
 
+    public static final String MESSAGE_SUCCESS =
+            "Alright, the contact with ID %d has been edited to the following:";
+
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;
 
@@ -95,8 +97,7 @@ public class EditCommand extends Command {
         }
 
         model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(Messages.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, id.getValue()));
     }
 
     /**

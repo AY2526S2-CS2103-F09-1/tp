@@ -96,6 +96,7 @@ public class Person {
             return true;
         }
 
+        // name and address equality checks are case-insensitive
         return otherPerson != null
                 && otherPerson.getName().equals(getName())
                 && otherPerson.getPhone().equals(getPhone())

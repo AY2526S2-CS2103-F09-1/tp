@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_MEETING_LINK_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_REMARK_BOB;
@@ -26,70 +27,106 @@ public class PersonTest {
     }
 
     @Test
-    public void isSamePerson() {
-        // same object -> returns true
+    public void isSamePerson_sameObject_returnsTrue() {
         assertTrue(ALICE.isSamePerson(ALICE));
+    }
 
-        // same name, phone number, address, different tags -> returns true
+    @Test
+    public void isSamePerson_otherPersonNull_returnsFalse() {
+        assertFalse(ALICE.isSamePerson(null));
+    }
+
+    @Test
+    public void isSamePerson_sameIdentityFieldsSameCapitalisation_returnsTrue() {
+        // all fields same
         assertTrue(ALICE.isSamePerson(new PersonBuilder(ALICE).build()));
 
-        // same name, phone number, address, different tags -> returns true
+        // different tags, all other attributes same
         Person editedAlice = new PersonBuilder(ALICE).withTags(VALID_TAG_PARENT).build();
         assertTrue(ALICE.isSamePerson(editedAlice));
 
-        // same name, phone number, address, different time -> returns true
+        // different time, all other attributes same
         editedAlice = new PersonBuilder(ALICE).withTime(VALID_TIME_BOB).build();
         assertTrue(ALICE.isSamePerson(editedAlice));
 
-        // null -> returns false
-        assertFalse(ALICE.isSamePerson(null));
+        // different remark, all other attributes same
+        editedAlice = new PersonBuilder(ALICE).withRemark(VALID_REMARK_BOB).build();
+        assertTrue(ALICE.isSamePerson(editedAlice));
 
-        // same name, all other attributes different -> returns false
-        editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB)
-                .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_PARENT).build();
+        // different link, all other attributes same
+        editedAlice = new PersonBuilder(ALICE).withMeetingLink(VALID_MEETING_LINK_BOB).build();
+        assertTrue(ALICE.isSamePerson(editedAlice));
+    }
+
+    @Test
+    public void isSamePerson_sameIdentityFieldsDifferentCapitalisation_returnsTrue() {
+        // name differs in case, all other attributes same
+        Person editedBob = new PersonBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();
+        assertTrue(BOB.isSamePerson(editedBob));
+
+        // address differs in case, all other attributes same
+        editedBob = new PersonBuilder(BOB).withAddress(VALID_ADDRESS_BOB.toLowerCase()).build();
+        assertTrue(BOB.isSamePerson(editedBob));
+    }
+
+    @Test
+    public void isSamePerson_differentIdentityFields_returnsFalse() {
+        // same name, all other attributes different
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withPhone(VALID_PHONE_BOB)
+                .withAddress(VALID_ADDRESS_BOB)
+                .withTags(VALID_TAG_PARENT)
+                .withRemark(VALID_REMARK_BOB)
+                .withTime(VALID_TIME_BOB)
+                .withMeetingLink(VALID_MEETING_LINK_BOB)
+                .build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // same phone number, all other attributes different -> returns false
-        editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB)
-                .withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_PARENT).build();
+        // same phone number, all other attributes different
+        editedAlice = new PersonBuilder(ALICE)
+                .withName(VALID_NAME_BOB)
+                .withAddress(VALID_ADDRESS_BOB)
+                .withTags(VALID_TAG_PARENT)
+                .withRemark(VALID_REMARK_BOB)
+                .withTime(VALID_TIME_BOB)
+                .withMeetingLink(VALID_MEETING_LINK_BOB)
+                .build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // same address, all other attributes different -> returns false
-        editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB)
-                .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_PARENT).build();
+        // same address, all other attributes different
+        editedAlice = new PersonBuilder(ALICE)
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withTags(VALID_TAG_PARENT)
+                .withRemark(VALID_REMARK_BOB)
+                .withTime(VALID_TIME_BOB)
+                .withMeetingLink(VALID_MEETING_LINK_BOB)
+                .build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // different name, all other attributes same -> returns false
+        // different name, all other attributes same
         editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // different phone number, all other attributes same -> returns false
+        // different phone number, all other attributes same
         editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // different address, all other attributes same -> returns false
+        // different address, all other attributes same
         editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // address removed, all other attributes same -> returns false
+        // address removed, all other attributes same
         editedAlice = new PersonBuilder(ALICE).withoutAddress().build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
-        // name differs in case, all other attributes same -> returns false
-        Person editedBob = new PersonBuilder(BOB).withName(VALID_NAME_BOB.toLowerCase()).build();
+        // name has trailing spaces, all other attributes same
+        String nameWithTrailingSpaces = VALID_NAME_BOB + "   ";
+        Person editedBob = new PersonBuilder(BOB).withName(nameWithTrailingSpaces).build();
         assertFalse(BOB.isSamePerson(editedBob));
 
-        // name has trailing spaces, all other attributes same -> returns false
-        String nameWithTrailingSpaces = VALID_NAME_BOB + " ";
-        editedBob = new PersonBuilder(BOB).withName(nameWithTrailingSpaces).build();
-        assertFalse(BOB.isSamePerson(editedBob));
-
-        // address differs in case, all other attributes same -> returns false
-        editedBob = new PersonBuilder(BOB).withAddress(VALID_ADDRESS_BOB.toLowerCase()).build();
-        assertFalse(BOB.isSamePerson(editedBob));
-
-        // address has trailing spaces, all other attributes same -> returns false
-        String addressWithTrailingSpaces = VALID_ADDRESS_BOB + " ";
+        // address has trailing spaces, all other attributes same
+        String addressWithTrailingSpaces = VALID_ADDRESS_BOB + "   ";
         editedBob = new PersonBuilder(BOB).withAddress(addressWithTrailingSpaces).build();
         assertFalse(BOB.isSamePerson(editedBob));
     }

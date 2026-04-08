@@ -30,7 +30,7 @@ public class SampleDataUtil {
                 Optional.of(new MeetingLink("https://www.zoom.com/676767"))),
             new Person(Id.of(2), new Name("Bernice Yu"), Optional.of(new Phone("99272758")),
                 Optional.of(new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18")),
-                Optional.<Time>empty(), getTagSet("Parent"), Optional.empty(),
+                Optional.<Time>empty(), getTagSet("Student"), Optional.empty(),
                 Optional.of(new MeetingLink("https://www.zoom.com/123"))),
             new Person(Id.of(3), new Name("Charlotte Oliveiro"), Optional.of(new Phone("93210283")),
                 Optional.of(new Address("Blk 11 Ang Mo Kio Street 74, #11-04")),

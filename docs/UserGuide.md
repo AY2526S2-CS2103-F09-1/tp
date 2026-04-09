@@ -3,14 +3,17 @@ layout: page
 title: User Guide
 ---
 
+<h1 style="color:#2f6db2; text-align:center; margin-bottom:0.2em;">EduConnect User Guide</h1>
+
 EduConnect is a **desktop application that enables private tutors to manage their work contacts, optimized for use via a Command Line Interface (CLI)** while still having the benefits of a Graphical User Interface (GUI). If you can type fast, EduConnect can get your contact management tasks done faster than traditional GUI apps.
+</p>
 
 * Table of Contents
 {:toc}
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Quick start
+## <span style="color:#2f6db2;">Quick Start</span>
 
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
@@ -45,7 +48,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Features
+## <span style="color:#2f6db2;">Features</span>
 
 <div markdown="block" class="alert alert-info">
 
@@ -66,9 +69,9 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
 </div>
 
-### Viewing help: `help`
+### <span style="color:#d9730d;">Viewing help: <code>help</code></span>
 
-💡 Show a message explaining how to access the help page.
+💡 Opens the help window and shows how to access the full guide.
 
 <div class="alert alert-light" role="alert">
 Format: `help`
@@ -76,7 +79,7 @@ Format: `help`
 
 ![help message](images/helpMessage.png)
 
-### Adding a person: `add`
+### <span style="color:#d9730d;">Adding a person: <code>add</code></span>
 
 💡 Add a person to the address book.
 
@@ -100,9 +103,9 @@ The first example gives the following expected output:
 
 ![result for 'add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student'](images/AddCommandResult.png)
 
-### Listing all persons: `list`
+### <span style="color:#d9730d;">Listing all persons: <code>list</code></span>
 
-💡 Show a list of all persons in the address book.
+💡 Shows all contacts currently stored in the address book.
 
 <div class="alert alert-light" role="alert">
 Format: `list`
@@ -117,7 +120,7 @@ The example gives the following expected output:
 
 ![result for 'list'](images/ListCommandResult.png)
 
-### Editing a person: `edit`
+### <span style="color:#d9730d;">Editing a person: <code>edit</code></span>
 
 💡 Edit an existing person in the address book.
 
@@ -151,7 +154,7 @@ The first example gives the following expected output:
 Expected behavior:
 * The `edit` command succeeds even if the provided values are identical to the existing ones (i.e., no changes are made).
 
-### Locating persons: `find`
+### <span style="color:#d9730d;">Locating persons: <code>find</code></span>
 
 💡 Find persons whose specified fields match the given keywords.
 
@@ -197,7 +200,7 @@ Expected behavior:
 * `find d/1500-1600` will not match a person whose time is `14:00 - 17:00` (range queries require an exact stored range match).
 * `find t/best friend` will not return an error, but will return no results (as this is not a valid tag).
 
-### Deleting a person: `del`
+### <span style="color:#d9730d;">Deleting a person: <code>del</code></span>
 
 💡 Delete one or more specified persons from the address book.
 
@@ -219,7 +222,7 @@ The first example gives the following expected output:
 
 ![result for 'del 2'](images/DeleteCommandResult.png)
 
-### Copying a person information: `copy`
+### <span style="color:#d9730d;">Copying a person information: <code>copy</code></span>
 
 💡 Copy a specified field of a person from the address book to the user clipboard.
 
@@ -243,9 +246,9 @@ The fourth example gives the following expected output:
 
 ![result for 'copy 1 l/'](images/CopyCommandResult.png)
 
-### Clearing all entries: `clear`
+### <span style="color:#d9730d;">Clearing all entries: <code>clear</code></span>
 
-💡 Clear all entries from the address book (with a two-step confirmation), whilst displaying all the contacts that have been removed.
+💡 Clear all entries from the address book with a two-step confirmation
 
 <div class="alert alert-light" role="alert">
 Format: `clear`
@@ -263,19 +266,18 @@ The first `clear` gives the following expected output:
 
 ![result for 'clear'](images/ClearCommandResult1.png)
 
-### Exiting the program: `exit`
+### <span style="color:#d9730d;">Exiting the program: <code>exit</code></span>
 
 💡 Exit the program.
 
 <div class="alert alert-light" role="alert">
 Format: `exit`
 </div>
-
-### Saving the data
+### <span style="color:#d9730d;">Saving the data</span>
 
 EduConnect data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
-### Editing the data file
+### <span style="color:#d9730d;">Editing the data file</span>
 
 EduConnect data is saved automatically as a JSON file `[JAR file location]/data/educonnect.json`. Advanced users are welcome to update data directly by editing that data file.
 
@@ -284,11 +286,11 @@ If your changes to the data file makes its format invalid, EduConnect will disca
 Furthermore, certain edits can cause EduConnect to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
-## Command Rules
+## <span style="color:#2f6db2;">Command Rules</span>
 
 These rules apply across multiple commands in EduConnect:
 
-### Command syntax
+### <span style="color:#d9730d;">Command syntax</span>
 
 * Command words and prefixes are case-sensitive and must be typed in lowercase.<br>
   e.g. `add n/Alex` is valid, but `Add n/Alex` and `add N/Alex` are invalid.
@@ -319,13 +321,13 @@ These rules apply across multiple commands in EduConnect:
     * In `edit`, `t/` by itself clears all tags.
     * `tdel/` must be followed by a tag value (e.g. `tdel/Student`).
 
-### Duplicate contacts
+### <span style="color:#d9730d;">Duplicate contacts</span>
 * Two contacts are considered duplicates if they have the same name, phone number, and address. Name and address are compared case-insensitively.
 * EduConnect does not allow duplicate contacts.
   * Adding a duplicate contact is invalid.
   * Editing a contact such that it becomes a duplicate of an existing contact is also invalid.
 
-### Field constraints
+### <span style="color:#d9730d;">Field constraints</span>
 
 * `n/NAME`:
   * Must not be blank.
@@ -365,20 +367,20 @@ These rules apply across multiple commands in EduConnect:
 * `l/MEETING_LINK`:
   * If provided, it must be a valid URL starting with `http://` or `https://` (no spaces).
 
-### Special case: Non-English characters in input
+### <span style="color:#d9730d;">Special case: Non-English characters in input</span>
 * Non-English (Unicode) characters are supported only in `a/ADDRESS`. Other fields restrict input due to validation rules.
   * Example: `add n/adi a/爱德华七世宿舍` is accepted.
   * `find a/爱德华` can match partial non-English address text (substring match).
   * However, this is not recommended, as the system assumes English input.
 
-## FAQ
+## <span style="color:#2f6db2;">FAQ</span>
 
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous EduConnect home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Known issues
+## <span style="color:#2f6db2;">Known issues</span>
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
@@ -389,16 +391,16 @@ These rules apply across multiple commands in EduConnect:
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Command summary
+## <span style="color:#2f6db2;">Command summary</span>
 
-Action | Format, Examples
---------|------------------
+| Action | Format and Example |
+| --- | --- |
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/89761234 a/123, Clementi Rd, 119224 r/new student d/Wed 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Student`
-**Clear** | `clear` (run twice)
 **Copy** | `copy ID FIELD`<br> e.g., `copy 1 l/`
 **Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
 **Find** | `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`<br> e.g., `find m/and n/James t/Student d/tue`
+**Clear** | `clear` (run twice)
 **List** | `list`
 **Exit** | `exit`
 **Help** | `help`

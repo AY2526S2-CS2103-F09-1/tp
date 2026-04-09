@@ -58,7 +58,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/Student` or as `n/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…` can be used as empty (0 times), `t/Student`, `t/Student t/Freshman`, etc.
+  e.g. `[t/TAG]…` can be used as empty (0 times), `t/Student`, `t/Student t/Primary`, etc.
 
 * For more shared command behavior, see [Command Rules](#command-rules).
 
@@ -90,14 +90,14 @@ A person can have any number of tags (including 0)
 
 * Only `n/NAME` is required.
 * `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `d/WEEKLY_TIMESLOT`, `l/MEETING_LINK`, and `t/TAG` are optional (see [Command Rules](#command-rules) for shared constraints and behavior such as empty values).
-* Supported tags are `Student`, `Parent`, `Tutor`, `Freshman`, `Sophomore`, `Junior`, `Senior`, and `Graduate`.
-* The academic tags are useful for tracking a student's level or marking a contact as a graduate.
+* Supported tags are `Student`, `Parent`, `Tutor`, `Primary`, `Secondary`, `JC`, `Trial`, and `Unpaid`.
+* The extra tags are useful for tracking education level, trial students, and unpaid fees.
 * If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
 
 Examples:
-* `add n/John Doe t/Student t/Freshman p/98765432 a/John street, block 123, #01-01 r/new student`
-* `add n/John Doe a/John street, block 123, #01-01 t/Parent t/Tutor`
-* `add n/Jane Doe p/98765432 d/Wednesday 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Graduate`
+* `add n/John Doe t/Student t/Trial p/98765432 a/John street, block 123, #01-01 r/new student`
+* `add n/John Doe a/John street, block 123, #01-01 t/Parent t/Unpaid`
+* `add n/Jane Doe p/98765432 d/Wednesday 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Tutor t/JC`
 
 The first example gives the following expected output:
 
@@ -129,7 +129,7 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [
 Tag rules:
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
 * `t/TAG` adds tags; `tdel/TAG` removes tags.
-* Only valid tags may be used: `Student`, `Parent`, `Tutor`, `Freshman`, `Sophomore`, `Junior`, `Senior`, `Graduate` (case-insensitive).
+* Only valid tags may be used: `Student`, `Parent`, `Tutor`, `Primary`, `Secondary`, `JC`, `Trial`, `Unpaid` (case-insensitive).
 * Repeating an existing tag has no effect; deleting a tag that the person does not have has no effect.
 * To clear all tags, use `t/` by itself (do not combine it with any `t/TAG` or `tdel/TAG` in the same command).
 * The same tag cannot be added and deleted in the same command.
@@ -175,7 +175,7 @@ Weekly timeslot rules (`d/`):
 Examples (Find people whose):
 * `find n/alex a/119224`: Name contains `alex` OR address contains `119224`.
 * `find m/and t/student n/clement`: Tagged `Student` AND name contains `clement`.
-* `find t/freshman`: Tagged `Freshman`.
+* `find t/unpaid`: Tagged `Unpaid`.
 * `find p/9`: Phone contains `9` (contacts without phone are excluded).
 * `find d/1200 d/thu`: Weekly timeslot is `12:00` (or within a stored time range that includes `12:00`) or is on Thursday.
 * `find d/tue 1500-1600`: Weekly timeslot is on Tuesday and is exactly `15:00 - 16:00` (or a stored single time within that range).
@@ -315,7 +315,7 @@ These rules apply across multiple commands in EduConnect:
   * Reference: [Singapore address format](https://frasermclean.com/posts/singapore-address-format)
 
 * `t/TAG`:
-  * Must be one of `Student`, `Parent`, `Tutor`, `Freshman`, `Sophomore`, `Junior`, `Senior`, or `Graduate` (case-insensitive).
+  * Must be one of `Student`, `Parent`, `Tutor`, `Primary`, `Secondary`, `JC`, `Trial`, or `Unpaid` (case-insensitive).
   * Repeating an existing tag has no effect because duplicate tags are not stored.
 
 * `d/WEEKLY_TIMESLOT`:
@@ -364,7 +364,7 @@ These rules apply across multiple commands in EduConnect:
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho d/Monday 1800`, `add n/James Ho p/89761234 a/123, Clementi Rd, 1234665 r/new student d/Wednesday 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Student t/Freshman`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho d/Monday 1800`, `add n/James Ho p/89761234 a/123, Clementi Rd, 1234665 r/new student d/Wednesday 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Student t/Primary`
 **Clear** | `clear` (run twice)
 **Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`

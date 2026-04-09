@@ -54,11 +54,11 @@ public class Tag {
         supportedTagNames.put("student", "Student");
         supportedTagNames.put("parent", "Parent");
         supportedTagNames.put("tutor", "Tutor");
-        supportedTagNames.put("freshman", "Freshman");
-        supportedTagNames.put("sophomore", "Sophomore");
-        supportedTagNames.put("junior", "Junior");
-        supportedTagNames.put("senior", "Senior");
-        supportedTagNames.put("graduate", "Graduate");
+        supportedTagNames.put("primary", "Primary");
+        supportedTagNames.put("secondary", "Secondary");
+        supportedTagNames.put("jc", "JC");
+        supportedTagNames.put("trial", "Trial");
+        supportedTagNames.put("unpaid", "Unpaid");
         return Collections.unmodifiableMap(supportedTagNames);
     }
 

@@ -18,4 +18,10 @@ Person *--> "1" Id
 Person *--> "1" Name
 Person *--> "0..1" Phone
 Person *--> "0..1" Address
+Person *--> "0..1" Time
+
+Id -[hidden]right-> Name
+Name -[hidden]right-> Phone
+Phone -[hidden]right-> Address
+Address -[hidden]right-> Time
 @enduml

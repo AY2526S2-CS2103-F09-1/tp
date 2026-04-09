@@ -18,6 +18,7 @@ Class Id
 Class Address
 Class Name
 Class Phone
+Class Time
 Class Tag
 
 Class I #FFFFFF
@@ -41,6 +42,7 @@ Person *--> "1" Id
 Person *--> "1" Name
 Person *--> "0..1" Phone
 Person *--> "0..1" Address
+Person *--> "0..1" Time
 Person *--> "*" Tag
 Person *--> "0..1" Remark
 
@@ -50,7 +52,8 @@ UniquePersonList -[hidden]right-> I
 Id -[hidden]right-> Name
 Name -[hidden]right-> Phone
 Phone -[hidden]right-> Address
-Address -[hidden]right-> Tag
+Address -[hidden]right-> Time
+Time -[hidden]right-> Tag
 Tag -[hidden]right-> Remark
 
 ModelManager --> "~* filtered" Person

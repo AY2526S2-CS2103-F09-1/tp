@@ -270,7 +270,6 @@ The first `clear` gives the following expected output:
 <div class="alert alert-light" role="alert">
 Format: `exit`
 </div>
-
 ### Saving the data
 
 EduConnect data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
@@ -394,11 +393,11 @@ These rules apply across multiple commands in EduConnect:
 Action | Format, Examples
 --------|------------------
 **Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/89761234 a/123, Clementi Rd, 119224 r/new student d/Wed 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Student`
-**Clear** | `clear` (run twice)
 **Copy** | `copy ID FIELD`<br> e.g., `copy 1 l/`
 **Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
 **Find** | `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`<br> e.g., `find m/and n/James t/Student d/tue`
+**Clear** | `clear` (run twice)
 **List** | `list`
 **Exit** | `exit`
 **Help** | `help`

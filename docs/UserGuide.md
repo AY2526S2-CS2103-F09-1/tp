@@ -123,11 +123,14 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [
 Examples:
 * `edit 1 p/91234567`: Set the phone number of contact 1.
 * `edit 1 d/Monday 18:00`: Set the weekly timeslot of contact 1.
-* `edit 1 d/Wednesday 1800 - 1930 l/https://zoom.us/j/123456789 t/Tutor tdel/Student`: Set weekly timeslot + meeting link, add `Tutor` tag, and remove `Student` tag.
+* `edit 1 d/`: Clear the weekly timeslot of contact 1.
+* `edit 1 t/Parent t/Tutor`: Add `Parent` and `Tutor` tags to contact 1.
+* `edit 1 tdel/Student`: Remove the `Student` tag from contact 1.
 * `edit 2 t/`: Clear all tags of contact 2.
+* `edit 1 d/Wednesday 1800 - 1930 l/https://zoom.us/j/123456789 t/Tutor tdel/Student`: Set weekly timeslot + meeting link, add `Tutor` tag, and remove `Student` tag.
 
 Expected behavior:
-* The `edit` command succeeds even if the provided values are identical to the existing ones (i.e., no changes are made).
+* When using edit, if the input matches the existing values (e.g., same name or same tag), it still shows a success message even though nothing has changed.
 
 ### Locating persons: `find`
 
@@ -142,17 +145,12 @@ Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REM
 * Contacts missing a field never match that field (e.g. contacts without a phone number never match `p/…`).
 
 **Mode rules (`m`)**
-<div markdown="block" class="alert alert-primary">
-<strong>:bulb: Mode options</strong>
 * `m/` is optional, case-insensitive, and accepts only `and` or `or` (at most once).
 * Without this prefix, the default is OR semantics.
 * `m/and` requires all provided keywords to match.
 * `m/or` requires at least one provided condition to match.
-</div>
 
 **Weekly timeslot rules (`d/`)**
-<div markdown="block" class="alert alert-primary">
-<strong>:bulb: Weekly timeslot matching</strong>
 * The `d/` prefix in `FindCommand` is less strict, as it is used for searching. See [Field constraints](#field-constraints) → `d/WEEKLY_TIMESLOT` for general behavior.
 * `d/` supports day-only, time-only, and day + time queries.
 * Day queries match contacts whose weekly timeslot falls on that day.
@@ -160,7 +158,6 @@ Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REM
 * Range time queries match an exact stored range and may also match a stored single time within the query range.
 * Day + time/range queries must match both the day and the specified time or range.
 * Flexible formats (e.g., `DD:HH–DDHH` or similar variations) are allowed.
-</div>
 
 Examples (Find people whose):
 * `find n/alex a/119224`: Name contains `alex` OR address contains `119224`.
@@ -170,15 +167,11 @@ Examples (Find people whose):
 * `find d/1200 d/thu`: Weekly timeslot is `12:00` (or within a stored time range that includes `12:00`) or is on Thursday.
 * `find d/tue 1500-1600`: Weekly timeslot is on Tuesday and is exactly `15:00 - 16:00` (or a stored single time within that range).
 
-<div markdown="block" class="alert alert-warning">
-<strong>:warning: Expected behaviour</strong>
-
 Expected behavior:
-- `find p/ben` will not return an error, but will return no results (since phone numbers contain digits only).
-- `find p/9` will not match contacts with no phone field (missing phone never matches `p/`).
-- `find d/1500-1600` will not match a person whose time is `14:00 - 17:00` (range queries require an exact stored range match).
-- `find t/best friend` will not return an error, but will return no results (as this is not a valid tag).
-</div>
+* `find p/ben` will not return an error, but will return no results (since phone numbers contain digits only).
+* `find p/9` will not match contacts with no phone field (missing phone never matches `p/`).
+* `find d/1500-1600` will not match a person whose time is `14:00 - 17:00` (range queries require an exact stored range match).
+* `find t/best friend` will not return an error, but will return no results (as this is not a valid tag).
 
 ### Deleting a person: `del`
 
@@ -354,7 +347,7 @@ Action | Format, Examples
 **Clear** | `clear` (run twice)
 **Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
-**Find** | `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`<br> e.g., `find m/and n/James t/Student d/tue`
+**Find** | `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`<br> e.g., `find n/James t/Student`, `find d/tue d/1200`
 **List** | `list`
 **Copy** | `copy ID FIELD`<br> e.g., `copy 1 l/`
 **Exit** | `exit`

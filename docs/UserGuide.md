@@ -90,7 +90,6 @@ A person can have any number of tags (including 0)
 
 * Only `n/NAME` is required.
 * `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `d/WEEKLY_TIMESLOT`, `l/MEETING_LINK`, and `t/TAG` are optional (see [Command Rules](#command-rules) for shared constraints and behavior such as empty values).
-* If the new contact is a duplicate of an existing contact, it will not be added. Duplicate contacts are defined as those with the same name, phone number and address.
 
 Examples:
 * `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student`
@@ -122,14 +121,14 @@ Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [
 * `ID` specifies the person to be edited.
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values (see [Command Rules](#command-rules) for shared constraints and how to clear fields using empty values such as `p/`, `d/`, or `t/`).
-* Editing a contact such that it becomes identical to an existing contact is not allowed. Each contact must be unique.
 
 Tag rules:
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
 * `t/TAG` adds tags; `tdel/TAG` removes tags.
 * Only valid tags may be used: `Student`, `Parent`, `Tutor` (case-insensitive).
-* Repeating an existing tag has no effect; deleting a tag that the person does not have has no effect.
-* To clear all tags, use `t/` by itself (do not combine it with any `t/TAG` or `tdel/TAG` in the same command).
+* For a given contact, adding a tag that already exists has no effect.
+* Similarly, deleting a tag that does not exist has no effect.
+* To clear all tags, use `t/` by itself.
 * The same tag cannot be added and deleted in the same command.
 
 Examples:
@@ -153,7 +152,8 @@ Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REM
 * See [Command Rules](#command-rules) for shared constraints and behavior.
 * Repeating prefixes are allowed. Users can perform either an OR search or an AND search.
 * Each contact will appear at most once in the results, even if multiple fields match.
-* Contacts missing a field never match that field (e.g. contacts without a phone number never match `p/…`).
+* For a given field in the search query, contacts missing that particular field will not be matched.
+  * e.g. contacts without a phone number never match `p/…`).
 
 Mode rules (`m`):
 * `m/` is optional, case-insensitive, and accepts only `and` or `or` (at most once).
@@ -292,6 +292,12 @@ These rules apply across multiple commands in EduConnect:
     * In `edit`, `t/` by itself clears all tags.
     * `tdel/` must be followed by a tag value (e.g. `tdel/Student`).
 
+### Duplicate contacts
+* Two contacts are considered duplicates if they have the same name, phone number, and address. Name and address are compared case-insensitively.
+* EduConnect does not allow duplicate contacts.
+  * Adding a duplicate contact is invalid.
+  * Editing a contact such that it becomes a duplicate of an existing contact is also invalid.
+
 ### Field constraints
 
 * `n/NAME`:
@@ -360,12 +366,12 @@ These rules apply across multiple commands in EduConnect:
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/`, `add n/James Ho d/Monday 1800`, `add n/James Ho p/89761234 a/123, Clementi Rd, 1234665 r/new student d/Wednesday 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Parent t/Tutor`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/89761234 a/123, Clementi Rd, 119224 r/new student d/Wed 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Student`
 **Clear** | `clear` (run twice)
+**Copy** | `copy ID FIELD`<br> e.g., `copy 1 l/`
 **Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
 **Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
 **Find** | `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`<br> e.g., `find m/and n/James t/Student d/tue`
 **List** | `list`
-**Copy** | `copy ID FIELD`<br> e.g., `copy 1 l/`
 **Exit** | `exit`
 **Help** | `help`

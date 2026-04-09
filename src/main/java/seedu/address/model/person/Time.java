@@ -17,9 +17,11 @@ import java.util.List;
 public class Time {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Time slots should be in the format Day HH:mm or Day HHmm. Durations should be in the format "
-                    + "Day HH:mm - HH:mm or Day HHmm - HHmm. Day must be Monday to Sunday, all values must be "
-                    + "valid 24-hour times, and a duration must not end before it starts";
+            "Invalid weekly timeslot format.\n"
+                    + "Use: Day HH:mm, Day HHmm, Day HH:mm - HH:mm, or Day HHmm - HHmm.\n"
+                    + "Day must begin with at least the first two letters of a valid day name.\n"
+                    + "Time must use valid 24-hour values.\n"
+                    + "For durations, the end time must not be earlier than the start time.";
     private static final String EMPTY_STRING = "";
     private static final String DAY_TIME_SEPARATOR = " ";
     private static final String DURATION_SEPARATOR = " - ";
@@ -119,7 +121,7 @@ public class Time {
     public static String getCanonicalDayQuery(String dayToken) {
         requireNonNull(dayToken);
         String trimmedDayToken = dayToken.trim();
-        // find d/t OR find d/s are not allowed
+        // d/t OR d/s are not allowed
         if (trimmedDayToken.isEmpty() || trimmedDayToken.length() <= 1) {
             return null;
         }
@@ -141,13 +143,12 @@ public class Time {
     }
 
     private static DayOfWeek parseDayOfWeek(String dayToken) {
-        for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
-            if (dayOfWeek.name().equalsIgnoreCase(dayToken)) {
-                return dayOfWeek;
-            }
+        String canonicalDay = getCanonicalDayQuery(dayToken);
+        if (canonicalDay == null) {
+            return null;
         }
 
-        return null;
+        return DayOfWeek.valueOf(canonicalDay.toUpperCase());
     }
 
     private static String formatDayOfWeek(DayOfWeek dayOfWeek) {

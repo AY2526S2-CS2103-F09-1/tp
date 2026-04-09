@@ -472,7 +472,13 @@ public class EditCommandTest {
         assertTrue(firstPersonFound.isPresent());
         Person firstPerson = firstPersonFound.get();
 
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstPerson).build();
+        String duplicateNameWithDifferentCapitalisation = firstPerson.getName().toString().toLowerCase();
+        String duplicateAddressWithDifferentCapitalisation =
+                firstPerson.getAddress().get().toString().toLowerCase();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstPerson)
+                .withName(duplicateNameWithDifferentCapitalisation)
+                .withAddress(duplicateAddressWithDifferentCapitalisation)
+                .build();
         EditCommand editCommand = new EditCommand(ID_SECOND, descriptor);
 
         assertCommandFailure(editCommand, model, Messages.MESSAGE_DUPLICATE_PERSON);
@@ -485,8 +491,14 @@ public class EditCommandTest {
         Optional<Person> personInBookFound = model.findPersonById(ID_SECOND);
         assertTrue(personInBookFound.isPresent());
         Person personInBook = personInBookFound.get();
+        String duplicateNameWithDifferentCapitalisation = personInBook.getName().toString().toLowerCase();
+        String duplicateAddressWithDifferentCapitalisation =
+                personInBook.getAddress().get().toString().toLowerCase();
         EditCommand editCommand = new EditCommand(ID_FIRST,
-                new EditPersonDescriptorBuilder(personInBook).build());
+                new EditPersonDescriptorBuilder(personInBook)
+                        .withName(duplicateNameWithDifferentCapitalisation)
+                        .withAddress(duplicateAddressWithDifferentCapitalisation)
+                        .build());
 
         assertCommandFailure(editCommand, model, Messages.MESSAGE_DUPLICATE_PERSON);
     }

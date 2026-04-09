@@ -38,10 +38,18 @@ public class TimeTest {
         assertFalse(Time.isValidTime("18:00 - 1830"));
         assertFalse(Time.isValidTime("Monday"));
         assertFalse(Time.isValidTime("Funday 18:00"));
+        assertFalse(Time.isValidTime("T 23:59"));
+        assertFalse(Time.isValidTime("S 10:00"));
+        assertFalse(Time.isValidTime("Su 24:00"));
+        assertFalse(Time.isValidTime("SunD"));
         assertFalse(Time.isValidTime("Monday 18:00 - 1830"));
 
         assertTrue(Time.isValidTime("Monday 18:00"));
         assertTrue(Time.isValidTime("monday 1800"));
+        assertTrue(Time.isValidTime("Mon 10:00"));
+        assertTrue(Time.isValidTime("tU 2359"));
+        assertTrue(Time.isValidTime("SunD 0000"));
+        assertTrue(Time.isValidTime("thu 08:15 - 09:45"));
         assertTrue(Time.isValidTime("Sunday 18:00 - 19:30"));
         assertTrue(Time.isValidTime("sunday 1800 - 1930"));
     }
@@ -62,6 +70,10 @@ public class TimeTest {
     public void constructor_validInput_storesCanonicalValue() {
         assertEquals("Monday 18:00", new Time("Monday 18:00").value);
         assertEquals("Monday 18:00", new Time("monday 1800").value);
+        assertEquals("Monday 10:00", new Time("Mon 1000").value);
+        assertEquals("Tuesday 23:59", new Time("tU 2359").value);
+        assertEquals("Sunday 00:00", new Time("SunD 0000").value);
+        assertEquals("Thursday 08:15 - 09:45", new Time("thu 08:15 - 09:45").value);
         assertEquals("Sunday 18:00 - 19:30", new Time("Sunday 18:00 - 19:30").value);
         assertEquals("Sunday 18:00 - 19:30", new Time("sunday 1800 - 1930").value);
     }
@@ -97,8 +109,11 @@ public class TimeTest {
 
     @Test
     public void getCanonicalDayQuery() {
+        assertEquals("Tuesday", Time.getCanonicalDayQuery("tU"));
         assertEquals("Friday", Time.getCanonicalDayQuery("fr"));
         assertEquals("Wednesday", Time.getCanonicalDayQuery("wed"));
+        assertEquals("Sunday", Time.getCanonicalDayQuery("SunD"));
+        assertEquals(null, Time.getCanonicalDayQuery("t"));
         assertEquals(null, Time.getCanonicalDayQuery("f"));
         assertEquals(null, Time.getCanonicalDayQuery("fi"));
         assertEquals(null, Time.getCanonicalDayQuery("s"));

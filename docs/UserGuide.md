@@ -63,17 +63,17 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
 ### Viewing help: `help`
 
-Show a message explaining how to access the help page.
-
+💡 Show a message explaining how to access the help page.
 ![help message](images/helpMessage.png)
 
+<div class="alert alert-light" role="alert">
 Format: `help`
-
+</div>
 
 ### Adding a person: `add`
-
-Add a person to the address book.
-
+<div class="alert alert-light" role="alert">
+💡 Add a person to the address book.
+</div>
 Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**

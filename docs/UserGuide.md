@@ -24,7 +24,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
    ![Ui](images/Ui.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
-   Tip: You can right-click the command box to access common text actions such as cut/copy/paste (the exact menu options may vary by OS).<br>
+
    Some example commands you can try:
 
    * `list`: List all contacts.
@@ -38,6 +38,10 @@ EduConnect is a **desktop application that enables private tutors to manage thei
    * `exit`: Exit the app.
 
 1. Refer to the [Features](#features) below for details of each command.
+
+<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
+   You can right-click the command box to access common text actions such as cut/copy/paste (the exact menu options may vary by OS).<br>
+</div>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -54,27 +58,31 @@ EduConnect is a **desktop application that enables private tutors to manage thei
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/Student` or as `n/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/Student`, `t/Student t/Freshman` etc.
+  e.g. `[t/TAG]…` can be used as empty (0 times), `t/Student`, `t/Student t/Freshman`, etc.
+
+* For more shared command behavior, see [Command Rules](#command-rules).
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 
-* For more shared command behavior, see [Command Rules](#command-rules).
 </div>
 
 ### Viewing help: `help`
 
 💡 Show a message explaining how to access the help page.
-![help message](images/helpMessage.png)
 
 <div class="alert alert-light" role="alert">
 Format: `help`
 </div>
 
+![help message](images/helpMessage.png)
+
 ### Adding a person: `add`
-<div class="alert alert-light" role="alert">
+
 💡 Add a person to the address book.
-</div>
+
+<div class="alert alert-light" role="alert">
 Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​`
+</div>
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
@@ -97,24 +105,28 @@ The first example gives the following expected output:
 
 ### Listing all persons: `list`
 
-Show a list of all persons in the address book.
+💡 Show a list of all persons in the address book.
 
+<div class="alert alert-light" role="alert">
 Format: `list`
+</div>
 
 * The number of people currently in the contact list will also be shown.
 
 ### Editing a person: `edit`
 
-Edit an existing person in the address book.
+💡 Edit an existing person in the address book.
 
+<div class="alert alert-light" role="alert">
 Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]… [tdel/TAG]…​`
+</div>
 
 * `ID` specifies the person to be edited.
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values (see [Command Rules](#command-rules) for shared constraints and how to clear fields using empty values such as `p/`, `d/`, or `t/`).
 * Editing a contact such that it becomes identical to an existing contact is not allowed. Each contact must be unique.
 
-**Tag rules**
+Tag rules:
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
 * `t/TAG` adds tags; `tdel/TAG` removes tags.
 * Only valid tags may be used: `Student`, `Parent`, `Tutor`, `Freshman`, `Sophomore`, `Junior`, `Senior`, `Graduate` (case-insensitive).
@@ -133,9 +145,11 @@ Expected behavior:
 
 ### Locating persons: `find`
 
-Find persons whose specified fields match the given keywords.
+💡 Find persons whose specified fields match the given keywords.
 
+<div class="alert alert-light" role="alert">
 Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`
+</div>
 
 * At least one prefixed keyword must be provided; unprefixed keywords are not allowed (e.g. `find Alex` is invalid).
 * See [Command Rules](#command-rules) for shared constraints and behavior.
@@ -143,19 +157,19 @@ Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REM
 * Each contact will appear at most once in the results, even if multiple fields match.
 * Contacts missing a field never match that field (e.g. contacts without a phone number never match `p/…`).
 
-**Mode rules (`m`)**
+Mode rules (`m`):
 * `m/` is optional, case-insensitive, and accepts only `and` or `or` (at most once).
 * Without this prefix, the default is OR semantics.
 * `m/and` requires all provided keywords to match.
 * `m/or` requires at least one provided condition to match.
 
-**Weekly timeslot rules (`d/`)**
-* The `d/` prefix in `FindCommand` is less strict, as it is used for searching. See [Field constraints](#field-constraints) → `d/WEEKLY_TIMESLOT` for general behavior.
+Weekly timeslot rules (`d/`):
+* The `d/` prefix in `FindCommand` is less strict, as it is used for searching.
 * `d/` supports day-only, time-only, and day + time queries.
-* Day queries match contacts whose weekly timeslot falls on that day.
-* Single time queries match either an exact stored time or a stored range containing that time.
-* Range time queries match an exact stored range and may also match a stored single time within the query range.
-* Day + time/range queries must match both the day and the specified time or range.
+  * Day queries match contacts whose weekly timeslot falls on that day.
+  * Single time queries match either an exact stored time or a stored range containing that time.
+  * Range time queries match an exact stored range and may also match a stored single time within the query range.
+  * Day + time/range queries must match both the day and the specified time or range.
 * Flexible formats (e.g., `DD:HH–DDHH` or similar variations) are allowed.
 
 Examples (Find people whose):
@@ -174,9 +188,11 @@ Expected behavior:
 
 ### Deleting a person: `del`
 
-Delete one or more specified persons from the address book.
+💡 Delete one or more specified persons from the address book.
 
+<div class="alert alert-light" role="alert">
 Format: `del ID [ID]…​`
+</div>
 
 * Deletes the persons with the specified `ID`s.
 * Multiple IDs can be provided, separated by spaces.
@@ -190,9 +206,11 @@ Examples:
 
 ### Copying a person information: `copy`
 
-Copy a specified field of a person from the address book to the user clipboard.
+💡 Copy a specified field of a person from the address book to the user clipboard.
 
+<div class="alert alert-light" role="alert">
 Format: `copy ID FIELD`
+</div>
 
 * Possible fields include `n/` for name, `p/` for phone number, `a/` for address, and `l/` for meeting link.
 * Copy is not supported for the weekly timeslot, tags, or remark fields. The `d/`, `t/`, `tdel/`, and `r/`
@@ -208,9 +226,11 @@ Examples:
 
 ### Clearing all entries: `clear`
 
-Clear all entries from the address book (with a two-step confirmation), whilst displaying all the contacts that have been removed.
+💡 Clear all entries from the address book (with a two-step confirmation), whilst displaying all the contacts that have been removed.
 
+<div class="alert alert-light" role="alert">
 Format: `clear`
+</div>
 
 * The first `clear` shows a warning and does not delete anything.
 * The second consecutive `clear` deletes all contacts.
@@ -222,9 +242,11 @@ Examples:
 
 ### Exiting the program: `exit`
 
-Exit the program.
+💡 Exit the program.
 
+<div class="alert alert-light" role="alert">
 Format: `exit`
+</div>
 
 ### Saving the data
 
@@ -260,9 +282,9 @@ These rules apply across multiple commands in EduConnect:
 * `ID` must be a positive integer 1, 2, 3, …​. Leading zeroes are accepted and ignored.<br>
   e.g. `edit 001 n/Ali` is interpreted as `edit 1 n/Ali`.
 
-* ID is unique and not reused. Deleting a contact does not free its ID.  
-  e.g., if the current ID is 10 and you delete contact 9, the next added contact will have ID 11.  
-  Exception: If the latest contact (e.g., ID 10) is deleted, the next added contact will reuse ID 10.
+* `ID` is unique and not reused. Deleting a contact does not free its `ID`.  
+  e.g., if the current `ID` is 10 and you delete contact 9, the next added contact will have `ID` 11.  
+  Exception: If the latest contact (e.g., `ID` 10) is deleted, the next added contact will reuse `ID` 10.
 
 * Empty values:
   * For `add`, providing an optional prefix with no value creates the contact with that field missing.<br>
@@ -290,7 +312,7 @@ These rules apply across multiple commands in EduConnect:
 
 * `a/ADDRESS`:
   * Must not contain `/` (to avoid ambiguity with prefixes such as `n/` and `p/`).
-  * Reference: [Singapore address format (example)](https://frasermclean.com/posts/singapore-address-format)
+  * Reference: [Singapore address format](https://frasermclean.com/posts/singapore-address-format)
 
 * `t/TAG`:
   * Must be one of `Student`, `Parent`, `Tutor`, `Freshman`, `Sophomore`, `Junior`, `Senior`, or `Graduate` (case-insensitive).

@@ -61,6 +61,11 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseId_leadingZeroInput_success() throws Exception {
+        assertEquals(ID_FIRST, ParserUtil.parseId("001"));
+    }
+
+    @Test
     public void parseId_integerCausesOverflow_throwsParseException() {
         long maxPossibleInt = Integer.MAX_VALUE;
         long minPossibleInt = Integer.MIN_VALUE;

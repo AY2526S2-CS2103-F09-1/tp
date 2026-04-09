@@ -71,7 +71,9 @@ public class LogicManagerTest {
     @Test
     public void execute_validCommand_success() throws Exception {
         String listCommand = ListCommand.COMMAND_WORD;
-        assertCommandSuccess(listCommand, ListCommand.MESSAGE_SUCCESS, model);
+        assertCommandSuccess(listCommand,
+                String.format(ListCommand.MESSAGE_SUCCESS, 0),
+                model);
     }
 
     @Test
@@ -98,7 +100,9 @@ public class LogicManagerTest {
                 ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_CONFIRMATION, expectedModelAfterFirstClear);
 
         Model expectedModelAfterList = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        assertCommandSuccess(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_SUCCESS, expectedModelAfterList);
+        assertCommandSuccess(ListCommand.COMMAND_WORD,
+                String.format(ListCommand.MESSAGE_SUCCESS, expectedModelAfterList.getFilteredPersonList().size()),
+                expectedModelAfterList);
 
         Model expectedModelAfterCancelledClear = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         assertCommandSuccess(

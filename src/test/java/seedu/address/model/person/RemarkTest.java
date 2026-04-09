@@ -38,6 +38,7 @@ public class RemarkTest {
         assertFalse(Remark.isValidRemark(" \t "));
         assertFalse(Remark.isValidRemark("Hello \n John!")); // contains not only newline
         assertFalse(Remark.isValidRemark("Hello \t John!")); // contains not only tab
+        assertFalse(Remark.isValidRemark("Hello John! \uD83D\uDE03")); // contains emojis
 
         // valid remark
         assertTrue(Remark.isValidRemark("^$^%#")); // only special characters

@@ -5,12 +5,12 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents a Person's remark in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
+ * Guarantees: immutable; is valid as declared in {@link #isValidRemark(String)}
  */
 public class Remark {
 
-    public static final String MESSAGE_CONSTRAINTS =
-        "Remark cannot be empty or only spaces, and cannot contain tabs or newlines.";
+    public static final String MESSAGE_CONSTRAINTS = "Remark must not include tabs or newlines, "
+        + "and should use standard characters only (no emojis).";
 
     /*
      * Requires at least one non-whitespace character, and allows only printable ASCII characters.
@@ -26,7 +26,7 @@ public class Remark {
     /**
      * Constructs a {@code Remark}.
      *
-     * @param name A valid remark.
+     * @param value A valid remark.
      */
     public Remark(String value) {
         requireNonNull(value);

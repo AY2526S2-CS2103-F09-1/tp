@@ -30,7 +30,7 @@ public class AddressTest {
         // invalid addresses
         assertFalse(Address.isValidAddress("")); // empty string
         assertFalse(Address.isValidAddress(" ")); // spaces only
-        assertFalse(Address.isValidAddress("Blk 123 / on the moon"));
+        assertFalse(Address.isValidAddress("Blk 123 / on the moon")); // contains forward slashes
 
         // valid addresses
         assertTrue(Address.isValidAddress("Blk 456, Den Road, #01-355"));

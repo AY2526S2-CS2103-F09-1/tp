@@ -3,8 +3,6 @@ layout: page
 title: User Guide
 ---
 
-<h1 style="color:#2f6db2; text-align:center; margin-bottom:0.2em;">EduConnect User Guide</h1>
-
 EduConnect is a **desktop application that enables private tutors to manage their work contacts, optimized for use via a Command Line Interface (CLI)** while still having the benefits of a Graphical User Interface (GUI). If you can type fast, EduConnect can get your contact management tasks done faster than traditional GUI apps.
 </p>
 
@@ -13,7 +11,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
 --------------------------------------------------------------------------------------------------------------------
 
-## <span style="color:#2f6db2;">Quick Start</span>
+## <span style="color:#FF6600;">Quick Start</span>
 
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
@@ -48,7 +46,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
 --------------------------------------------------------------------------------------------------------------------
 
-## <span style="color:#2f6db2;">Features</span>
+## <span style="color:#FF6600;">Features</span>
 
 <div markdown="block" class="alert alert-info">
 
@@ -286,7 +284,7 @@ If your changes to the data file makes its format invalid, EduConnect will disca
 Furthermore, certain edits can cause EduConnect to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
-## <span style="color:#2f6db2;">Command Rules</span>
+## <span style="color:#FF6600;">Command Rules</span>
 
 These rules apply across multiple commands in EduConnect:
 
@@ -373,14 +371,14 @@ These rules apply across multiple commands in EduConnect:
   * `find a/爱德华` can match partial non-English address text (substring match).
   * However, this is not recommended, as the system assumes English input.
 
-## <span style="color:#2f6db2;">FAQ</span>
+## <span style="color:#FF6600;">FAQ</span>
 
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous EduConnect home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## <span style="color:#2f6db2;">Known issues</span>
+## <span style="color:#FF6600;">Known issues</span>
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
@@ -391,7 +389,7 @@ These rules apply across multiple commands in EduConnect:
 
 --------------------------------------------------------------------------------------------------------------------
 
-## <span style="color:#2f6db2;">Command summary</span>
+## <span style="color:#FF6600;">Command summary</span>
 
 | Action | Format and Example |
 | --- | --- |

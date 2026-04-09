@@ -52,7 +52,7 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `del 1`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
@@ -92,9 +92,9 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("del 1")` API call as an example.
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `del 1` Command](images/DeleteSequenceDiagram.png)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
 </div>
@@ -152,101 +152,6 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Implementation**
-
-This section describes some noteworthy details on how certain features are implemented.
-
-### \[Proposed\] Undo/redo feature
-
-#### Proposed Implementation
-
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
-
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
-
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
-
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
-
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
-
-![UndoRedoState0](images/UndoRedoState0.png)
-
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
-
-![UndoRedoState1](images/UndoRedoState1.png)
-
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-![UndoRedoState2](images/UndoRedoState2.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
-</div>
-
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
-
-![UndoRedoState3](images/UndoRedoState3.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</div>
-
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Logic.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</div>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram-Model.png)
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-![UndoRedoState5](images/UndoRedoState5.png)
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<img src="images/CommitActivityDiagram.png" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
-
---------------------------------------------------------------------------------------------------------------------
-
 ## **Documentation, logging, testing, configuration, dev-ops**
 
 * [Documentation guide](Documentation.md)
@@ -274,6 +179,10 @@ _{Explain here how the data archiving feature will be implemented}_
 * Value speed, efficiency, and minimal friction in workflows
 
 **Value proposition**: To help private tutors seamlessly manage daily tasks in their work. These include contacting parents for announcements, administrative matters or emergencies. They can also involve contacting other tutors for pedagogical discussions or the exchange of learning materials.
+
+In some cases, tutors may teach students at different paces, adapting their teaching methods to each student’s needs, especially in small classes. As a result, a tutor might handle two students at overlapping but not identical times (e.g., one student from 4–6pm and another from 5–7pm). Therefore, we allow users to add tuition timings with overlapping periods.
+
+We also allow parents to include date and time information. This is helpful, especially for parents who wish to meet the tutor regularly (e.g., weekly) to discuss the student’s progress. Overall, we provide users with the flexibility to input the details that best suit their needs.
 
 ### User stories
 
@@ -311,7 +220,7 @@ Guarantees:
 * If the operation fails, the stored contacts remain unchanged.
 
 MSS:
-1. User requests to add a contact by providing a name. Optionally, he can also provide a phone number, an address and a list of tags.
+1. User requests to add a contact by providing a name (required) and any optional fields (phone number, address, weekly timeslot, remark, meeting link, tags).
 2. EduConnect validates the provided details.
 3. EduConnect adds the contact.
 4. EduConnect shows a success message with the added contact details.
@@ -343,28 +252,29 @@ Extensions:
 Actor: User
 
 Guarantees:
-* On successful completion, exactly one existing contact is removed from the stored contacts.
+* On successful completion, all contacts with the specified ID(s) are removed from the stored contacts.
+* If any ID is invalid or not found, no contacts are deleted.
 * If the operation fails, the stored contacts remain unchanged.
 
 MSS:
-1. User requests to delete a contact by specifying the displayed contact reference.
-2. EduConnect validates the contact reference.
-3. EduConnect deletes the selected contact.
-4. EduConnect shows a success message with deleted contact details.
+1. User requests to delete one or more contacts by specifying one or more contact IDs.
+2. EduConnect validates all IDs and checks that all specified IDs exist.
+3. EduConnect deletes the specified contacts.
+4. EduConnect shows a success message with the deleted contact details.
 Use case ends.
 
 Extensions:
-* 1a. User omits the contact reference, or provides too much input.
+* 1a. User provides no IDs.
   * 1a1. EduConnect shows an error message.
   * 1a2. User re-submits the deletion request.
   * Steps 1a1-1a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2a. The contact reference is not a valid positive integer.
+* 2a. Any ID is not a valid positive integer.
   * 2a1. EduConnect shows an error message.
   * 2a2. User re-submits the deletion request.
   * Steps 2a1-2a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2b. The contact reference is not found in the address book.
+* 2b. Any ID is not found in the address book.
   * 2b1. EduConnect shows an error message.
   * 2b2. User re-submits the deletion request.
   * Steps 2b1-2b2 are repeated until valid input is provided.
@@ -429,20 +339,20 @@ Extensions:
 Actor: User
 
 Guarantees:
-* On successful completion, EduConnect displays the stored contacts with their names, phone numbers, addresses, and meeting schedules.
-* If a stored phone number, address, or meeting schedule is missing, EduConnect indicates that the field is missing.
+* On successful completion, EduConnect displays the stored contacts with their name and any available optional fields (phone number, address, weekly timeslot, remark, meeting link).
+* If any optional field is missing, EduConnect indicates that the field is missing.
 * This use case does not modify stored contact data.
 
 MSS:
 1. User requests to view contact information.
-2. EduConnect displays each contact's name, phone number, address, and meeting schedule.
+2. EduConnect displays each contact's name and any available optional fields.
 Use case ends.
 
 Extensions:
 * 2a. There are no contacts.
   * 2a1. EduConnect displays that no contacts are currently available.
   * Use case ends.
-* 2b. A contact is missing a phone number, address, or meeting schedule.
+* 2b. A contact is missing one or more optional fields.
   * 2b1. EduConnect displays a missing-field indicator for that field.
   * Use case resumes from step 2.
 * 2c. Multiple contacts share the same name and tag.
@@ -454,7 +364,7 @@ Actor: User
 
 Guarantees:
 * On successful completion, the specified contact is updated with the provided values.
-* Name, phone, address, and meeting schedule replace their previous values when provided.
+* Name, phone, address, and weekly timeslot replace their previous values when provided.
 * Provided tags are added cumulatively to the contact's existing tags, unless the user explicitly requests to clear all tags.
 * If the operation fails, the stored contacts remain unchanged.
 
@@ -483,28 +393,31 @@ Extensions:
   * 2b1. EduConnect shows an error message.
   * 2b2. User re-submits the edit request.
   * Use case resumes from step 2.
+* 2c. The user provides an ID with leading zeroes.
+  * 2c1. EduConnect accepts the ID and interprets it as the corresponding positive integer.
+  * Use case resumes from step 2.
 * 3a. The user provides one or more tags.
   * 3a1. EduConnect adds those tags to the contact's existing tags.
   * Use case resumes from step 4.
 * 3b. The user requests to clear all tags.
   * 3b1. EduConnect clears all tags from the contact.
   * Use case resumes from step 4.
-* 3c. The user requests to clear the stored meeting schedule.
-  * 3c1. EduConnect removes the stored meeting schedule from the contact.
+* 3c. The user requests to clear the stored weekly timeslot.
+  * 3c1. EduConnect removes the stored weekly timeslot from the contact.
   * Use case resumes from step 4.
 
 #### Use case: UC06 - Search Contacts by Specified Fields
 Actor: User
 
 Guarantees:
-* On successful completion, EduConnect shows only those contacts which have a field (ie. name / address / phone number / tags) matching at least one provided keyword, for that corresponding field. EduConnect also displays the number of contacts found.
+* On successful completion, EduConnect shows only those contacts which match the provided field keywords (i.e. name / address / phone number / tags / remark / weekly timeslot). EduConnect also displays the number of contacts found.
 * Each matching contact appears at most once in the filtered results.
 * If no contacts match, EduConnect shows an empty filtered result.
 * If the operation fails, the currently displayed contacts remain unchanged.
 
 MSS:
 1. User requests to search contacts by entering one or more keywords, each marked with a specific field.
-2. EduConnect finds contacts which has a field that correspondingly matches at least one of the keywords, associated with that field.
+2. EduConnect finds contacts whose fields match the given keywords according to the selected match mode.
 3. EduConnect shows the filtered results and match count.
 Use case ends.
 
@@ -527,6 +440,12 @@ Extensions:
 * 2c. A contact does not have the field being searched.
   * 2c1. EduConnect treats that field as absent and does not match the contact on that field.
   * Use case ends.
+* 2d. The user searches with flexible time formatting such as mixed `HH:mm` / `HHmm`, or with leading spaces after a prefix.
+  * 2d1. EduConnect normalizes the query before matching.
+  * Use case resumes from step 3.
+* 2e. The user searches for partial non-English text in a free-text field such as address.
+  * 2e1. EduConnect performs the usual substring match.
+  * Use case resumes from step 3.
 
 ### Non-Functional Requirements
 
@@ -545,8 +464,12 @@ Extensions:
 * **Tutor**: Refers to a private tutor, which is a user of the EduConnect application
 * **Student**: Refers to a student whom the tutor is teaching
 * **Parent**: Refers to a parent of a student whom the tutor is teaching
+* **Mode**: Refers to the `m/` keyword in `find`, which controls how multiple search conditions are combined (OR by default; AND when specified)
+* **Phone Number**: Refers to a Singapore phone number (8 digits, typically starting with 6/8/9)
+* **Address**: Refers to a Singapore address (e.g. block + street + unit + postal code format)
+* **Weekly timeslot**: A contact's stored weekly timeslot, represented as a `Time` value in the canonical format `Day HH:mm` or `Day HH:mm - HH:mm`
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number and address
+* **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number, and address (name and address comparisons are case-insensitive)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -565,7 +488,8 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file.<br>
+      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
 
@@ -573,8 +497,6 @@ testers are expected to do more *exploratory* testing.
 
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
-
-1. _{ more test cases …​ }_
 
 ### Deleting a person
 
@@ -588,15 +510,66 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `del 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
+   1. Test case: `del 01`<br>
+      Expected: The same contact as `del 1` is deleted.
+
    1. Other incorrect delete commands to try: `del`, `del this`, `del -1`, `del x`, `...` (where `x` is not found in the address book)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+### Clearing all contacts
+
+1. Clearing contacts using the two-step confirmation flow
+
+   1. Prerequisites: Multiple contacts exist in the address book.
+
+   1. Test case: `clear`<br>
+      Expected: No contacts are deleted. A warning message is shown asking the user to type `clear` again to confirm.
+
+   1. Test case: `clear` then `clear`<br>
+      Expected: All contacts are deleted and the UI is refreshed to show an empty list.
+
+   1. Test case: `clear` then any other command (including an invalid command) then `clear`<br>
+      Expected: The second `clear` shows the warning again (the confirmation is reset).
+
+### Finding contacts
+
+1. Finding contacts by weekly timeslot (`d/`)
+
+   1. Prerequisites: Ensure there is at least one contact with a stored weekly timeslot, e.g. `edit 1 d/Friday 17:00`.
+
+   1. Test case: `find d/fri`<br>
+      Expected: Shows contacts whose stored weekly timeslot is on Friday.
+
+   1. Test case: `find d/11:00-1200`<br>
+      Expected: EduConnect accepts the mixed time format and normalizes it to the same matching behavior as `find d/11:00 - 12:00`.
+
+   1. Test case: `find d/1630-1730`<br>
+      Expected: Shows contacts whose stored weekly timeslot is a single time within `16:30 - 17:30` (e.g. `17:00`).
+
+   1. Test case: `find d/1500-1600` (when a contact has `Sunday 15:00 - 15:56` stored)<br>
+      Expected: Shows the contact only if the stored duration is an exact match (`15:00 - 16:00`); a stored duration like `15:00 - 15:56` will not match.
+
+### Parser behavior notes
+
+* Argument values are trimmed after tokenization, so spaces immediately after a valid prefix are ignored.
+* Prefixes remain lowercase and case-sensitive; capitalized forms such as `N/` and `T/` are rejected.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Dealing with a missing data file
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Prerequisites: Close the app.
 
-1. _{ more test cases …​ }_
+   1. Delete the data file `[JAR file location]/data/educonnect.json` (if it exists).
+
+   1. Launch the app.<br>
+      Expected: The app starts with sample data. The data file will be recreated the next time data is saved (after any command that modifies contacts).
+
+1. Dealing with a corrupted data file
+
+   1. Prerequisites: Close the app.
+
+   1. Corrupt the data file `[JAR file location]/data/educonnect.json` (e.g. make it invalid JSON or set an invalid field value).
+
+   1. Launch the app.<br>
+      Expected: The app starts with an empty contact list. The file will be overwritten the next time data is saved (after any command that modifies contacts).

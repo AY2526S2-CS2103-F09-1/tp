@@ -33,7 +33,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 
    * `del 3`: Delete the contact with an `ID` of 3.
 
-   * `clear` (run twice): Delete all contacts.
+   * `clear` (run twice to confirm): Delete all contacts.
 
    * `exit`: Exit the app.
 

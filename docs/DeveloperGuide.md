@@ -364,7 +364,7 @@ Actor: User
 
 Guarantees:
 * On successful completion, the specified contact is updated with the provided values.
-* Name, phone, address, meeting link, and weekly timeslot replace their previous values when provided.
+* Name, phone, address, meeting link, remark, and weekly timeslot replace their previous values when provided.
 * Provided tags are added cumulatively to the contact's existing tags, unless the user explicitly requests to clear all tags.
 * If the operation fails, the stored contacts remain unchanged.
 

@@ -364,7 +364,7 @@ Actor: User
 
 Guarantees:
 * On successful completion, the specified contact is updated with the provided values.
-* Name, phone, address, and weekly timeslot replace their previous values when provided.
+* Name, phone, address, meeting link, remark, and weekly timeslot replace their previous values when provided.
 * Provided tags are added cumulatively to the contact's existing tags, unless the user explicitly requests to clear all tags.
 * If the operation fails, the stored contacts remain unchanged.
 
@@ -405,8 +405,43 @@ Extensions:
 * 3c. The user requests to clear the stored weekly timeslot.
   * 3c1. EduConnect removes the stored weekly timeslot from the contact.
   * Use case resumes from step 4.
+* 3d. The user requests to clear the stored meeting link.
+  * 3d1. EduConnect removes the stored meeting link from the contact.
+  * Use case resumes from step 4.
 
-#### Use case: UC06 - Search Contacts by Specified Fields
+#### Use case: UC06 - Copy Contact Field to Clipboard
+Actor: User
+
+Guarantees:
+* On successful completion, the specified field value of the contact is copied to the system clipboard.
+* If the operation fails, the clipboard remains unchanged.
+
+MSS:
+1. User requests to copy a field of a contact by specifying the contact ID and a field prefix.
+2. EduConnect validates the contact ID and field prefix.
+3. EduConnect retrieves the field value of the specified contact.
+4. EduConnect copies the value to the clipboard and shows a success message.
+Use case ends.
+
+Extensions:
+* 1a. User omits the contact ID or the field prefix.
+  * 1a1. EduConnect shows an error message and input guidance.
+  * 1a2. User re-submits the copy request.
+  * Steps 1a1-1a2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. The contact ID is not found in the address book.
+  * 2a1. EduConnect shows an error message.
+  * 2a2. User re-submits the copy request.
+  * Use case resumes from step 2.
+* 2b. The field prefix is not one of the supported fields (`n/`, `p/`, `a/`, `l/`).
+  * 2b1. EduConnect shows an error message listing the valid fields.
+  * 2b2. User re-submits the copy request.
+  * Use case resumes from step 2.
+* 3a. The specified field is empty for that contact.
+  * 3a1. EduConnect shows an error message indicating there is nothing to copy.
+  * Use case ends.
+
+#### Use case: UC07 - Search Contacts by Specified Fields
 Actor: User
 
 Guarantees:
@@ -468,6 +503,7 @@ Extensions:
 * **Phone Number**: Refers to a Singapore phone number (8 digits, typically starting with 6/8/9)
 * **Address**: Refers to a Singapore address (e.g. block + street + unit + postal code format)
 * **Weekly timeslot**: A contact's stored weekly timeslot, represented as a `Time` value in the canonical format `Day HH:mm` or `Day HH:mm - HH:mm`
+* **Meeting link**: A URL (starting with `http://` or `https://`) stored against a contact for online lessons (e.g. a Zoom or Google Meet link. This field is optional and technically any link starting with `http://` or `https://` can be stored here)
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number, and address (name and address comparisons are case-insensitive)
 
@@ -507,6 +543,15 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `del 1`<br>
       Expected: The contact with `ID` 1 is deleted from the address book. Details of the deleted contact shown as a person card. Timestamp in the status bar is updated.
 
+   1. Test case: `del 1 2`<br>
+      Expected: Both contacts with `ID` 1 and `ID` 2 are deleted together. If any ID is invalid, none are deleted.
+
+   1. Test case: `del 3 3` (duplicate ID)<br>
+      Expected: The contact with `ID` 3 is deleted similar to doing just `del 3`. Duplicate IDs are removed before the deletion starts.
+
+   1. Test case: `del 6 6 7 7` (multiple duplicate IDs)<br>
+      Expected: Contacts with `ID` 6 and `ID` 7 are deleted similar to just doing `del 6 7`.
+
    1. Test case: `del 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
@@ -515,6 +560,36 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `del`, `del this`, `del -1`, `del x`, `...` (where `x` is not found in the address book)<br>
       Expected: Similar to previous.
+
+### Copying a contact field
+
+1. Copying a field while all persons are being shown
+
+   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+   1. Test case: `copy 1 n/`<br>
+      Expected: The name of contact `ID` 1 is copied to the clipboard. Success message is then shown.
+
+   1. Test case: `copy 1 p/`<br>
+      Expected: The phone number of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no phone number stored, an error message is shown instead.
+
+   1. Test case: `copy 1 a/`<br>
+      Expected: The address of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no meeting link, an error message is shown instead.
+
+   1. Test case: `copy 1 l/`<br>
+      Expected: The meeting link of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no meeting link, an error message is shown instead.
+
+   1. Test case: `copy 1 email` (invalid field)<br>
+      Expected: Error message shown listing the valid fields. Nothing is copied to clipboard.
+
+   1. Test case: `copy 0 p/` (invalid ID)<br>
+      Expected: Error message shown. Nothing is copied to clipboard.
+
+   1. Test case: `copy 6767 p/` (ID not in address book)<br>
+      Expected: Error message shown. Nothing is copied to clipboard.
+
+   1. Test case: `copy 1 p/ extraArg` (extra argument)<br>
+      Expected: Error message shown indicating the format is invalid. Nothing is copied to clipboard.
 
 ### Clearing all contacts
 

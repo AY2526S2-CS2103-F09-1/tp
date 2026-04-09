@@ -73,8 +73,16 @@ public class EditCommandParserTest {
     @Test
     public void parse_missingParts_failure() {
         assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_FORMAT);
-        assertParseFailure(parser, "1", Messages.MESSAGE_NOT_EDITED);
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
+    }
+
+    @Test
+    public void parse_noFieldsSpecified_success() {
+        Id targetId = ID_FIRST;
+        String userInput = String.valueOf(targetId.getValue());
+
+        EditCommand expectedCommand = new EditCommand(targetId, new EditPersonDescriptor());
+        assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test

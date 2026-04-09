@@ -9,6 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.REMARK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.TIME_DESC_AMY;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
@@ -65,6 +66,30 @@ public class LogicManagerTest {
     public void execute_commandExecutionError_throwsCommandException() {
         String deleteCommand = "del 9";
         assertCommandException(deleteCommand,
+                String.format(Messages.MESSAGE_INVALID_PERSON_ID, 9));
+    }
+
+    @Test
+    public void execute_editCreatesDuplicateWithDifferentCapitalisation_throwsCommandException() {
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        setUp();
+
+        String duplicateNameWithDifferentCapitalisation = ALICE.getName().toString().toLowerCase();
+        String duplicatePhone = ALICE.getPhone().get().toString();
+        String duplicateAddressWithDifferentCapitalisation = ALICE.getAddress().get().toString().toLowerCase();
+
+        String editCommand = "edit 2 "
+                + "n/" + duplicateNameWithDifferentCapitalisation + " "
+                + "p/" + duplicatePhone + " "
+                + "a/" + duplicateAddressWithDifferentCapitalisation;
+
+        assertCommandException(editCommand, Messages.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_editWithoutEditsAndInvalidId_throwsCommandException() {
+        String editCommand = "edit 9";
+        assertCommandException(editCommand,
                 String.format(Messages.MESSAGE_INVALID_PERSON_ID, 9));
     }
 

@@ -15,9 +15,12 @@ Class UserPrefs
 Class UniquePersonList
 Class Person
 Class Id
-Class Address
 Class Name
 Class Phone
+Class Address
+Class Remark
+Class Time
+Class MeetingLink
 Class Tag
 
 Class I #FFFFFF
@@ -41,8 +44,10 @@ Person *--> "1" Id
 Person *--> "1" Name
 Person *--> "0..1" Phone
 Person *--> "0..1" Address
-Person *--> "*" Tag
 Person *--> "0..1" Remark
+Person *--> "0..1" Time
+Person *--> "0..1" MeetingLink
+Person *--> "*" Tag
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
@@ -50,8 +55,10 @@ UniquePersonList -[hidden]right-> I
 Id -[hidden]right-> Name
 Name -[hidden]right-> Phone
 Phone -[hidden]right-> Address
-Address -[hidden]right-> Tag
-Tag -[hidden]right-> Remark
+Address -[hidden]right-> Remark
+Remark -[hidden]right-> Time
+Time -[hidden]right-> MeetingLink
+MeetingLink -[hidden]right-> Tag
 
 ModelManager --> "~* filtered" Person
 ModelManager --> "~* displayed" Person

@@ -38,11 +38,8 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person with "
-            + "the specified ID. "
-            + "Existing values will be overwritten by the input values, except tags which are appended "
-            + "with t/ and deleted with tdel/.\n"
-            + "Parameters: ID (must be a positive integer) "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the person with the specified ID.\n"
+            + "Parameters: ID "
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
@@ -51,15 +48,16 @@ public class EditCommand extends Command {
             + "[" + PREFIX_MEETING_LINK + "MEETING_LINK] "
             + "[" + PREFIX_TAG + "TAG]… "
             + "[" + PREFIX_TAG_DELETE + "TAG]…\n"
+            + "Notes: "
+            + "Use " + PREFIX_TAG + " to add tags, " + PREFIX_TAG_DELETE + " to remove tags, "
+            + "and " + COMMAND_WORD + " 1 " + PREFIX_TAG + " to clear all tags.\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_TIME + "Monday 18:00 "
-            + PREFIX_REMARK + "Needs additional practices "
+            + PREFIX_TIME + "Mon 1800 "
+            + PREFIX_REMARK + "Smart "
             + PREFIX_MEETING_LINK + "https://zoom.us/j/123456789 "
             + PREFIX_TAG + "Student "
-            + PREFIX_TAG_DELETE + "Parent\n"
-            + "To clear all existing tags, use " + COMMAND_WORD + " 1 " + PREFIX_TAG + "\n"
-            + "Accepted time formats: Day HH:mm, Day HHmm, Day HH:mm - HH:mm, or Day HHmm - HHmm";
+            + PREFIX_TAG_DELETE + "Parent";
 
     public static final String MESSAGE_SUCCESS =
             "Alright, the contact with ID %d has been edited to the following:";
@@ -82,13 +80,13 @@ public class EditCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new CommandException(Messages.MESSAGE_NOT_EDITED);
-        }
-
         Person personToEdit = model.findPersonById(id)
                 .orElseThrow(() -> new CommandException(String.format(Messages.MESSAGE_INVALID_PERSON_ID,
                         id.getValue())));
+
+        if (!editPersonDescriptor.isAnyFieldEdited()) {
+            throw new CommandException(Messages.MESSAGE_NOT_EDITED);
+        }
 
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 

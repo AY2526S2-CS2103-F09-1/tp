@@ -67,10 +67,6 @@ public class EditCommandParser implements Parser<EditCommand> {
         populateRemarkIfExists(argMultimap, editPersonDescriptor);
         populateMeetingLinkIfExists(argMultimap, editPersonDescriptor);
 
-        if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(Messages.MESSAGE_NOT_EDITED);
-        }
-
         return new EditCommand(id, editPersonDescriptor);
     }
 

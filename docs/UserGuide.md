@@ -208,6 +208,7 @@ Format: del ID [ID]…​
 * Deletes the persons with the specified `ID`s.
 * Multiple IDs can be provided, separated by spaces.
 * If any of the given IDs does not exist, none of the contacts will be deleted.
+* **Note:** When deleting multiple entries at once, if more than one index is invalid, the application will only flag the **first** invalid index. For example, running `del 1 3 5` when none of those entries exist will return `ID 1 is not found in the address book.` rather than flagging all invalid indices at once.
 
 Examples:
 * `del 2`: Delete the person with `ID` 2 from the address book.

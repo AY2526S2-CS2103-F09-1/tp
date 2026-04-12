@@ -277,12 +277,58 @@ EduConnect data is saved in the hard disk automatically after any command that c
 
 ### <span style="color:#d9730d;">Editing the data file</span>
 
-EduConnect data is saved automatically as a JSON file `[JAR file location]/data/educonnect.json`. Advanced users are welcome to update data directly by editing that data file.
+EduConnect data is saved automatically as a JSON file `[JAR file location]/data/educonnect.json`. Advanced users are welcome to update data directly by editing that data file. Ensure that you follow the [format specified](####how-to-edit-the-data-file).
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
 If your changes to the data file makes its format invalid, EduConnect will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause EduConnect to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
+
+#### <span style="color:#d9730d;">How to edit the data file</span>
+
+Below is an example of how a valid JSON data file should look like.
+
+```json
+{
+  "persons" : [ {
+    "id" : 1,
+    "name" : "Alex Yeoh",
+    "phone" : "87438807",
+    "address" : "Blk 30 Geylang Street 29, #06-40",
+    "time" : "Sunday 10:00",
+    "tags" : [ "Student" ],
+    "remark" : "First student",
+    "meetingLink" : "https://www.zoom.com/676767"
+  }, {
+    "id" : 2,
+    "name" : "Bernice Yu",
+    "phone" : "99272758",
+    "address" : "Blk 30 Lorong 3 Serangoon Gardens, #07-18",
+    "time" : "",
+    "tags" : [ "Student" ],
+    "remark" : "",
+    "meetingLink" : "https://www.zoom.com/123"
+  }, {
+    "id" : 3,
+    "name" : "Charlotte Oliveiro",
+    "phone" : "93210283",
+    "address" : "Blk 11 Ang Mo Kio Street 74, #11-04",
+    "time" : "",
+    "tags" : [ "Tutor" ],
+    "remark" : "",
+    "meetingLink" : ""
+  } ]
+}
+```
+
+**Notes**
+
+- The JSON file must contain a top-level `persons` key, whose value is an array of person objects.
+- Each person object must include the following keys: `id`, `name`, `phone`, `address`, `time`, `tags`, `remark`, and `meetingLink`.
+- `id` and `name` are mandatory and cannot be left empty.
+- For `phone`, `address`, `time`, `remark`, and `meetingLink`, an empty string (`""`) indicates that the field is not set for that person and will be treated as empty once parsed.
+- For `tags`, an empty array (`[]`) indicates that no tags have been assigned to that person.
+- All field values must comply with the constraints specified for their respective commands, or the file will fail to load.
 
 ## <span style="color:#FF6600;">Command Rules</span>
 

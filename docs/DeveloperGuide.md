@@ -506,6 +506,9 @@ Extensions:
 * **Meeting link**: A URL (starting with `http://` or `https://`) stored against a contact for online lessons (e.g. a Zoom or Google Meet link. This field is optional and technically any link starting with `http://` or `https://` can be stored here)
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
 * **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number, and address (name and address comparisons are case-insensitive)
+* **CLI (Command Line Interface):** A text-based way of interacting with the application by typing commands into a terminal or command prompt, instead of clicking buttons or menus.
+* **GUI (Graphical User Interface):** The visual, point-and-click interface of the application. What you see and interact with on screen, such as buttons, text fields, and windows.
+* **JSON (JavaScript Object Notation):** A plain-text file format used to store and organise data in a structured way. It is the format used by this application to save your data.
 
 --------------------------------------------------------------------------------------------------------------------
 

@@ -386,6 +386,7 @@ These rules apply across multiple commands in EduConnect:
   * Must contain digits only.
   * Must start with `6`, `8`, or `9`.
   * Must be exactly 8 digits long.
+  * Must not have any country code (e.g. `+65`). Assume that all numbers are Singapore numbers.
   * Rationale (Singapore): `8`/`9` are typically mobile numbers, and `6` is typically fixed-line.
   * Reference: [IMDA National Numbering Plan (PDF)](https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/frameworks-and-policies/numbering/national-numbering-plan-and-allocation-process/imda-national-numbering-plan.pdf)
 

@@ -42,17 +42,18 @@ public class EditCommandParser implements Parser<EditCommand> {
      */
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_TIME,
-                        PREFIX_TAG, PREFIX_TAG_DELETE, PREFIX_REMARK, PREFIX_MEETING_LINK);
 
-        Id id;
-
-        try {
-            id = ParserUtil.parseId(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
+        String trimmedArgs = args.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
+
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
+                PREFIX_ADDRESS, PREFIX_TIME, PREFIX_TAG,
+                PREFIX_TAG_DELETE, PREFIX_REMARK, PREFIX_MEETING_LINK);
+
+        Id id = ParserUtil.parseId(argMultimap.getPreamble());
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_PHONE, PREFIX_ADDRESS, PREFIX_TIME,
                 PREFIX_REMARK, PREFIX_MEETING_LINK);

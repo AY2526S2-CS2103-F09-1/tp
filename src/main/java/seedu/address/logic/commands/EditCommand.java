@@ -61,6 +61,8 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_SUCCESS =
             "Alright, the contact with ID %d has been edited to the following:";
+    public static final String MESSAGE_MISSING_TAG_TO_DELETE =
+            "This contact does not have the tag %s.";
 
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -104,7 +106,8 @@ public class EditCommand extends Command {
      * existing tags, specified deleted tags are removed, and an empty edited tag
      * set clears all tags.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
+    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor)
+            throws CommandException {
         requireNonNull(personToEdit);
         requireNonNull(editPersonDescriptor);
 
@@ -131,7 +134,8 @@ public class EditCommand extends Command {
                 updatedRemark, updatedMeetingLink);
     }
 
-    private static Set<Tag> createUpdatedTags(Set<Tag> existingTags, EditPersonDescriptor editPersonDescriptor) {
+    private static Set<Tag> createUpdatedTags(Set<Tag> existingTags, EditPersonDescriptor editPersonDescriptor)
+            throws CommandException {
         requireNonNull(existingTags);
         requireNonNull(editPersonDescriptor);
 
@@ -139,9 +143,11 @@ public class EditCommand extends Command {
                 .map(tagsToApply -> mergeTags(existingTags, tagsToApply))
                 .orElse(existingTags);
 
-        return editPersonDescriptor.getTagsToDelete()
-                .map(tagsToDelete -> removeTags(tagsAfterAdditions, tagsToDelete))
-                .orElse(tagsAfterAdditions);
+        if (editPersonDescriptor.getTagsToDelete().isEmpty()) {
+            return tagsAfterAdditions;
+        }
+
+        return removeTags(tagsAfterAdditions, editPersonDescriptor.getTagsToDelete().get());
     }
 
     private static Set<Tag> mergeTags(Set<Tag> existingTags, Set<Tag> tagsToApply) {
@@ -157,9 +163,16 @@ public class EditCommand extends Command {
         return combinedTags;
     }
 
-    private static Set<Tag> removeTags(Set<Tag> existingTags, Set<Tag> tagsToDelete) {
+    private static Set<Tag> removeTags(Set<Tag> existingTags, Set<Tag> tagsToDelete) throws CommandException {
         requireNonNull(existingTags);
         requireNonNull(tagsToDelete);
+
+        Optional<Tag> missingTag = tagsToDelete.stream()
+                .filter(tag -> !existingTags.contains(tag))
+                .findFirst();
+        if (missingTag.isPresent()) {
+            throw new CommandException(String.format(MESSAGE_MISSING_TAG_TO_DELETE, missingTag.get().tagName));
+        }
 
         Set<Tag> remainingTags = new HashSet<>(existingTags);
         remainingTags.removeAll(tagsToDelete);

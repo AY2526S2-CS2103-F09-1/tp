@@ -604,7 +604,7 @@ testers are expected to do more *exploratory* testing.
       Expected: The phone number of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no phone number stored, an error message is shown instead.
 
    1. Test case: `copy 1 a/`<br>
-      Expected: The address of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no meeting link, an error message is shown instead.
+      Expected: The address of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no address stored, an error message is shown instead.
 
    1. Test case: `copy 1 o/`<br>
       Expected: The meeting link of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no meeting link, an error message is shown instead.

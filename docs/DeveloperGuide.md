@@ -192,7 +192,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 |----------|--------------------------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
 | `* * *`  | tutor                                                                    | add new contacts to EduConnect                                         | track the contact details of relevant people involved in my work - such as students, parents and other tutors |
 | `* * *`  | clumsy tutor                                                             | delete existing contacts from EduConnect                               | remove details that have been entered incorrectly                                                             |
-| `* * *`  | tutor who teaches many students and is in contact with many other tutors | categorise my contact list into 3 groups - students, parents and tutors | filter for the required group more quickly                                                                    |
+| `* * *`  | tutor who teaches many students and is in contact with many other tutors | categorize my contact list into 3 groups - students, parents and tutors | filter for the required group more quickly                                                                    |
 | `* * *`  | tutor                                                                    | view a student’s home address in EduConnect                            | navigate to the correct location for lessons                                                                  |
 | `* *`    | tutor who has many clients                                               | search for a specific contact by name                                       | more swiftly obtain the contact information of the person in question                                         |
 | `* *`    | tutor                                                                    | quickly retrieve a student’s phone number from EduConnect and copy it                   | contact the student via WhatsApp without searching manually                                                   |
@@ -535,7 +535,7 @@ Extensions:
 * **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number, and address (name and address comparisons are case-insensitive)
 * **CLI (Command Line Interface):** A text-based way of interacting with the application by typing commands into a terminal or command prompt, instead of clicking buttons or menus.
 * **GUI (Graphical User Interface):** The visual, point-and-click interface of the application. What you see and interact with on screen, such as buttons, text fields, and windows.
-* **JSON (JavaScript Object Notation):** A plain-text file format used to store and organise data in a structured way. It is the format used by this application to save your data.
+* **JSON (JavaScript Object Notation):** A plain-text file format used to store and organize data in a structured way. It is the format used by this application to save your data.
 
 --------------------------------------------------------------------------------------------------------------------
 

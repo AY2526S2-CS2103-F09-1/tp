@@ -23,7 +23,7 @@ You can reach us at the email `e0970391@u.nus.edu`
 
 <img src="images/limyifei1513.png" width="200px">
 
-[[github](https://github.com/limyifei1513)] 
+[[github](https://github.com/limyifei1513)]
 
 * Role: Deliverables and Deadlines
 * Responsibilities: Ensure project deliverables are done on time and in the right format.

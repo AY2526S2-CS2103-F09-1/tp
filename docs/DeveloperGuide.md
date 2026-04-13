@@ -174,7 +174,7 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 * Type very fast, dislike using the mouse
 * Face-blind
 * Have a bad memory
-* Use WhatsApp as their main mode of contact 
+* Use WhatsApp as their main mode of contact
 * Prefer quick filtering of contacts
 * Value speed, efficiency, and minimal friction in workflows
 
@@ -371,7 +371,7 @@ Extensions:
   * Use case resumes from step 2.
 * 1b. The contact ID is invalid or not found in the address book.
   * 1b1. EduConnect shows an error message.
-  * 1b2. User re-submits the copy request. 
+  * 1b2. User re-submits the copy request.
   * Steps 1b1-1b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
 * 1c. User requests to copy an unknown field.
@@ -444,7 +444,7 @@ MSS:
 2. EduConnect requests for confirmation.
 3. User confirms their intention to clear all contacts.
 4. EduConnect removes all existing contacts in the address book, resulting in an empty contact list.
-5. EduConnect shows a success message indicating that all contact data has been purged.  
+5. EduConnect shows a success message indicating that all contact data has been purged.
 Use case ends.
 
 Extensions:

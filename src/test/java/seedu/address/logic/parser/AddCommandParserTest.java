@@ -84,6 +84,16 @@ public class AddCommandParserTest {
     }
 
     @Test
+    public void parse_overnightTime_success() {
+        Person expectedPerson = new PersonBuilder(AMY).withTime("Wednesday 23:00 - 01:00").build();
+
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_AMY + PHONE_DESC_AMY
+                + ADDRESS_DESC_AMY + " " + PREFIX_TIME + "Wed 2300-0100"
+                + TAG_DESC_STUDENT + REMARK_DESC_AMY + MEETING_LINK_DESC_AMY,
+                new AddCommand(expectedPerson));
+    }
+
+    @Test
     public void parse_repeatedNonTagValue_failure() {
         String validExpectedPersonString = NAME_DESC_BOB + PHONE_DESC_BOB
                 + ADDRESS_DESC_BOB + TIME_DESC_BOB

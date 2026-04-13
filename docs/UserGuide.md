@@ -418,7 +418,7 @@ These rules apply across multiple commands in EduConnect:
     * time range: `Day HH:mm - HH:mm` or `Day HHmm - HHmm` (spaces around `-` are optional)
     * day must come before time (e.g. `d/tue 1500`, not `d/1500 tue`)
   * Valid weekdays: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`.
-  * Valid time: 24-hour time (`00:00` to `23:59`). A duration must not end before it starts.
+  * Valid time: 24-hour time (`00:00` to `23:59`). If a duration ends earlier than or at the same time it starts, it continues into the next day.
   * Display is normalized (e.g. `monday 1800` → `Monday 18:00`).
   * Overlapping weekly timeslots across different contacts are allowed (e.g. staggered lessons for different students).
 

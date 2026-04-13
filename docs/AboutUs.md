@@ -51,6 +51,7 @@ You can reach us at the email `e0970391@u.nus.edu`
 <img src="images/basilkuok.png" width="200px">
 
 [[github](https://github.com/basilkuok)]
+[[portfolio](team/basilkuok.md)]
 
 * Role: Testing
 * Responsibilities: Ensures the testing of the project is done properly and on time.

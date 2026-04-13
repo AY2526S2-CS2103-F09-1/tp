@@ -4,7 +4,6 @@ title: User Guide
 ---
 
 EduConnect is a **desktop application that enables private tutors to manage their work contacts, optimized for use via a Command Line Interface (CLI)** while still having the benefits of a Graphical User Interface (GUI). If you can type fast, EduConnect can get your contact management tasks done faster than traditional GUI apps.
-</p>
 
 * Table of Contents
 {:toc}
@@ -72,7 +71,7 @@ EduConnect is a **desktop application that enables private tutors to manage thei
 💡 Opens the help window and shows how to access the full guide.
 
 <div class="alert alert-light" role="alert">
-Format: `help`
+Format: help
 </div>
 
 ![help message](images/helpMessage.png)
@@ -82,7 +81,7 @@ Format: `help`
 💡 Add a person to the address book.
 
 <div class="alert alert-light" role="alert">
-Format: `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​`
+Format: add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​
 </div>
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
@@ -106,7 +105,7 @@ The first example gives the following expected output:
 💡 Shows all contacts currently stored in the address book.
 
 <div class="alert alert-light" role="alert">
-Format: `list`
+Format: list
 </div>
 
 * The number of people currently in the contact list will also be shown.
@@ -123,7 +122,7 @@ The example gives the following expected output:
 💡 Edit an existing person in the address book.
 
 <div class="alert alert-light" role="alert">
-Format: `edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]… [tdel/TAG]…​`
+Format: edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]… [tdel/TAG]…​
 </div>
 
 * `ID` specifies the person to be edited.
@@ -157,7 +156,7 @@ Expected behavior:
 💡 Find persons whose specified fields match the given keywords.
 
 <div class="alert alert-light" role="alert">
-Format: `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`
+Format: find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…
 </div>
 
 * At least one prefixed keyword must be provided; unprefixed keywords are not allowed (e.g. `find Alex` is invalid).
@@ -204,12 +203,13 @@ Expected behavior:
 💡 Delete one or more specified persons from the address book.
 
 <div class="alert alert-light" role="alert">
-Format: `del ID [ID]…​`
+Format: del ID [ID]…​
 </div>
 
 * Deletes the persons with the specified `ID`s.
 * Multiple IDs can be provided, separated by spaces.
 * If any of the given IDs does not exist, none of the contacts will be deleted.
+* **Note:** When deleting multiple entries at once, if more than one index is invalid, the application will only flag the **first** invalid index. For example, running `del 1 3 5` when none of those entries exist will return `ID 1 is not found in the address book.` rather than flagging all invalid indices at once.
 
 Examples:
 * `del 2`: Delete the person with `ID` 2 from the address book.
@@ -226,7 +226,7 @@ The first example gives the following expected output:
 💡 Copy a specified field of a person from the address book to the user clipboard.
 
 <div class="alert alert-light" role="alert">
-Format: `copy ID FIELD`
+Format: copy ID FIELD
 </div>
 
 * Possible fields include `n/` for name, `p/` for phone number, `a/` for address, and `l/` for meeting link.
@@ -250,7 +250,7 @@ The fourth example gives the following expected output:
 💡 Clear all entries from the address book with a two-step confirmation
 
 <div class="alert alert-light" role="alert">
-Format: `clear`
+Format: clear
 </div>
 
 * The first `clear` shows a warning and does not delete anything.
@@ -270,7 +270,7 @@ The first `clear` gives the following expected output:
 💡 Exit the program.
 
 <div class="alert alert-light" role="alert">
-Format: `exit`
+Format: exit
 </div>
 ### <span style="color:#d9730d;">Saving the data</span>
 
@@ -278,12 +278,59 @@ EduConnect data is saved in the hard disk automatically after any command that c
 
 ### <span style="color:#d9730d;">Editing the data file</span>
 
-EduConnect data is saved automatically as a JSON file `[JAR file location]/data/educonnect.json`. Advanced users are welcome to update data directly by editing that data file.
+EduConnect data is saved automatically as a JSON file `[JAR file location]/data/educonnect.json`. Advanced users are welcome to update data directly by editing that data file. Ensure that you follow the [format specified](####how-to-edit-the-data-file).
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
 If your changes to the data file makes its format invalid, EduConnect will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause EduConnect to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
+
+#### <span style="color:#d9730d;">How to edit the data file</span>
+
+Below is an example of how a valid JSON data file should look like.
+
+```json
+{
+  "persons" : [ {
+    "id" : 1,
+    "name" : "Alex Yeoh",
+    "phone" : "87438807",
+    "address" : "Blk 30 Geylang Street 29, #06-40",
+    "time" : "Sunday 10:00",
+    "tags" : [ "Student" ],
+    "remark" : "First student",
+    "meetingLink" : "https://www.zoom.com/676767"
+  }, {
+    "id" : 2,
+    "name" : "Bernice Yu",
+    "phone" : "99272758",
+    "address" : "Blk 30 Lorong 3 Serangoon Gardens, #07-18",
+    "time" : "",
+    "tags" : [ "Student" ],
+    "remark" : "",
+    "meetingLink" : "https://www.zoom.com/123"
+  }, {
+    "id" : 3,
+    "name" : "Charlotte Oliveiro",
+    "phone" : "93210283",
+    "address" : "Blk 11 Ang Mo Kio Street 74, #11-04",
+    "time" : "Sunday 12:00 - 13:30",
+    "tags" : [ "Tutor", "Parent" ],
+    "remark" : "",
+    "meetingLink" : ""
+  } ]
+}
+```
+
+**Notes**
+
+- The JSON file must contain a top-level `persons` key, whose value is an array of person objects.
+- Each person object must include the following keys: `id`, `name`, `phone`, `address`, `time`, `remark`, and `meetingLink`, otherwise the file is considered corrupted.
+  - It is possible for the person object to be missing the `tags` key. The application will treat it as the person has no tags (similar to if the value for `tags` is an empty array).
+- `id` and `name` are mandatory and cannot be left empty.
+- For `phone`, `address`, `time`, `remark`, and `meetingLink`, an empty string (`""`) indicates that the field is not set for that person and will be treated as empty once parsed.
+- For `tags`, an empty array (`[]`) indicates that no tags have been assigned to that person.
+- All field values must comply with the constraints specified for their respective commands, or the file will fail to load.
 
 ## <span style="color:#FF6600;">Command Rules</span>
 
@@ -325,6 +372,10 @@ These rules apply across multiple commands in EduConnect:
     * In `edit`, `t/` by itself clears all tags.
     * `tdel/` must be followed by a tag value (e.g. `tdel/Student`).
 
+* Invalid prefixes:
+  * If you use an unrecognised prefix (e.g. `add n/Alice f/tue 23:00-01:00`), the application will not flag `f/` as invalid. Instead, it will treat everything after `n/` as part of the name.
+  * If you see an unexpected validation error, double-check that all your prefixes are spelled correctly.
+
 ### <span style="color:#d9730d;">Duplicate contacts</span>
 * Two contacts are considered duplicates if they have the same name, phone number, and address. Name and address are compared case-insensitively.
 * EduConnect does not allow duplicate contacts.
@@ -341,9 +392,10 @@ These rules apply across multiple commands in EduConnect:
     (e.g. `A/P` can be written as `AP` or `Anak Perempuan`, `S/O` can be written as `son of`).
 
 * `p/PHONE_NUMBER`:
-  * Must contain digits only.
+  * Must contain digits only. It cannot contain spaces, or any special characters.
   * Must start with `6`, `8`, or `9`.
   * Must be exactly 8 digits long.
+  * Must not have any country code (e.g. `+65`). Assume that all numbers are Singapore numbers.
   * Rationale (Singapore): `8`/`9` are typically mobile numbers, and `6` is typically fixed-line.
   * Reference: [IMDA National Numbering Plan (PDF)](https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/frameworks-and-policies/numbering/national-numbering-plan-and-allocation-process/imda-national-numbering-plan.pdf)
 
@@ -377,7 +429,7 @@ These rules apply across multiple commands in EduConnect:
     * emojis
 
 * `l/MEETING_LINK`:
-  * If provided, it must be a valid URL starting with `http://` or `https://`, with no spaces in between.
+  * If provided, it must be a string starting with `http://` or `https://`, with no spaces in between.
 
 ### <span style="color:#d9730d;">Special case: Non-English characters in input</span>
 * Non-English (Unicode) characters are supported only in `a/ADDRESS`. Other fields restrict input due to validation rules.

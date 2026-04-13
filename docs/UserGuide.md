@@ -85,7 +85,7 @@ Format: add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [
 </div>
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
+A person can have any number of tags (including 0), and tags can be combined in any valid way (for example, a contact can be both `Tutor` and `Student`).
 </div>
 
 * Only `n/NAME` is required.
@@ -133,6 +133,7 @@ Tag rules:
 * Use this command for all tag updates. EduConnect does not provide a separate `tag` command.
 * `t/TAG` adds tags; `tdel/TAG` removes tags.
 * Only valid tags may be used: `Student`, `Parent`, `Tutor` (case-insensitive).
+* Tags are not mutually exclusive; any valid combination of tags is allowed for the same contact.
 * For a given contact, adding a tag that already exists has no effect.
 * Similarly, deleting a tag that does not exist has no effect.
 * To clear all tags, use `t/` by itself.

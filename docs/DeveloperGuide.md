@@ -467,9 +467,9 @@ Extensions:
 
 ### Glossary
 
-* **Tutor**: Refers to a private tutor, which is a user of the EduConnect application.
-* **Student**: Refers to a student whom the tutor is teaching.
-* **Parent**: Refers to a parent of a student whom the tutor is teaching.
+* **Student**: Refers to a student whom the user is teaching.
+* **Parent**: Refers to a parent of a student whom the user is teaching.
+* **Tutor**: Refers to another private tutor whom the user is in contact with.
 * **Tag**: Refers to a label that can be assigned to a given contact. There are currently 3 valid tags - "Tutor", "Student" and "Parent".
 * **ID**: Refers to an identifier for a contact. At any given point in time, each contact in EduConnect is assigned a unique ID. When issuing commands, IDs are used to refer to their corresponding contacts.
 * **Phone Number**: Refers to a Singapore phone number (8 digits, starting with 6/8/9).
@@ -489,7 +489,6 @@ Given below are instructions to test the app manually.
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
-
 </div>
 
 ### Launch and shutdown

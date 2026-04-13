@@ -10,8 +10,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class MeetingLink {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Meeting link must be a valid URL starting with http:// or https://,\n"
-            + "with no spaces in between.";
+            "Meeting link must be a string starting with http:// or https://,\n"
+                + "with no spaces in between";
 
     public static final String VALIDATION_REGEX = "https?://\\S+";
 

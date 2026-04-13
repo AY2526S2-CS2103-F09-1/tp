@@ -247,7 +247,7 @@ The fourth example gives the following expected output:
 
 ### <span style="color:#d9730d;">Clearing all entries: <code>clear</code></span>
 
-💡 Clear all entries from the address book with a two-step confirmation
+💡 Clear all entries from the address book with a two-step confirmation.
 
 <div class="alert alert-light" role="alert">
 Format: clear
@@ -256,6 +256,7 @@ Format: clear
 * The first `clear` shows a warning and does not delete anything.
 * The second consecutive `clear` deletes all contacts.
 * If any other command is entered in between (including an invalid command), the confirmation resets.
+* If the address book is already empty to begin with, the execution of the clear command will still proceed successfully - though no contacts will be cleared.
 
 Examples:
 * `clear` then `clear` clears the address book.

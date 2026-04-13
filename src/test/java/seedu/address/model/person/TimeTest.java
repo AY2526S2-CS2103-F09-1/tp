@@ -18,6 +18,7 @@ public class TimeTest {
     public void constructor_invalidTime_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new Time("25:00"));
         assertThrows(IllegalArgumentException.class, () -> new Time("18:00 - 17:30"));
+        assertThrows(IllegalArgumentException.class, () -> new Time("Monday 18:00 - 18:00"));
         assertThrows(IllegalArgumentException.class, () -> new Time("Monday"));
         assertThrows(IllegalArgumentException.class, () -> new Time("Funday 18:00"));
         assertThrows(IllegalArgumentException.class, () -> new Time("Monday 18:00 - 17:30"));
@@ -35,6 +36,7 @@ public class TimeTest {
         assertFalse(Time.isValidTime("9:30"));
         assertFalse(Time.isValidTime("093"));
         assertFalse(Time.isValidTime("18:00 - 17:30"));
+        assertFalse(Time.isValidTime("Monday 18:00 - 18:00"));
         assertFalse(Time.isValidTime("18:00 - 1830"));
         assertFalse(Time.isValidTime("Monday"));
         assertFalse(Time.isValidTime("Funday 18:00"));

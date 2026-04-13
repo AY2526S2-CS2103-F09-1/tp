@@ -224,7 +224,8 @@ MSS:
 2. EduConnect validates the provided details.
 3. EduConnect adds the contact.
 4. EduConnect shows a success message with the added contact details.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User omits a required detail, or provides an empty required detail.
@@ -261,7 +262,8 @@ MSS:
 2. EduConnect validates all IDs and checks that all specified IDs exist.
 3. EduConnect deletes the specified contacts.
 4. EduConnect shows a success message with the deleted contact details.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User provides no IDs.
@@ -292,7 +294,8 @@ MSS:
 2. EduConnect validates the contact reference and tag value.
 3. EduConnect applies the requested tag additions and deletions to the selected contact.
 4. EduConnect shows a success message.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User omits required details, or provides an empty required detail.
@@ -346,7 +349,8 @@ Guarantees:
 MSS:
 1. User requests to view contact information.
 2. EduConnect displays each contact's name and any available optional fields.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 2a. There are no contacts.
@@ -373,7 +377,8 @@ MSS:
 2. EduConnect validates the contact ID and edited field values.
 3. EduConnect updates the selected contact.
 4. EduConnect shows a success message with the updated contact details.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User omits the contact ID or all editable fields.
@@ -421,7 +426,8 @@ MSS:
 2. EduConnect validates the contact ID and field prefix.
 3. EduConnect retrieves the field value of the specified contact.
 4. EduConnect copies the value to the clipboard and shows a success message.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User omits the contact ID or the field prefix.
@@ -455,7 +461,8 @@ MSS:
 1. User requests to search contacts by entering one or more keywords, each marked with a specific field.
 2. EduConnect finds contacts whose fields match the given keywords according to the selected match mode.
 3. EduConnect shows the filtered results and match count.
-Use case ends.
+
+   Use case ends.
 
 Extensions:
 * 1a. User provides no keyword.

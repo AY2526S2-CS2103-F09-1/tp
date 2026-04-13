@@ -549,7 +549,7 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `copy 1 a/`<br>
       Expected: The address of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no address, an error message is shown instead.
 
-   1. Test case: `copy 1 l/`<br>
+   1. Test case: `copy 1 o/`<br>
       Expected: The meeting link of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no meeting link, an error message is shown instead.
 
    1. Test case: `copy 1 email` (invalid field)<br>

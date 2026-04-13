@@ -81,7 +81,7 @@ Format: help
 💡 Add a person to the address book.
 
 <div class="alert alert-light" role="alert">
-Format: add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​
+Format: add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [o/MEETING_LINK] [t/TAG]…​
 </div>
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
@@ -89,12 +89,12 @@ A person can have any number of tags (including 0)
 </div>
 
 * Only `n/NAME` is required.
-* `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `d/WEEKLY_TIMESLOT`, `l/MEETING_LINK`, and `t/TAG` are optional (see [Command Rules](#command-rules) for shared constraints and behavior such as empty values).
+* `p/PHONE_NUMBER`, `a/ADDRESS`, `r/REMARK`, `d/WEEKLY_TIMESLOT`, `o/MEETING_LINK`, and `t/TAG` are optional (see [Command Rules](#command-rules) for shared constraints and behavior such as empty values).
 
 Examples:
 * `add n/John Doe t/Student p/98765432 a/John street, block 123, #01-01 r/new student`
 * `add n/John Doe a/John street, block 123, #01-01 t/Parent t/Tutor`
-* `add n/Jane Doe p/98765432 l/https://zoom.us/j/123456789`
+* `add n/Jane Doe p/98765432 o/https://zoom.us/j/123456789`
 
 The first example gives the following expected output:
 
@@ -122,7 +122,7 @@ The example gives the following expected output:
 💡 Edit an existing person in the address book.
 
 <div class="alert alert-light" role="alert">
-Format: edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]… [tdel/TAG]…​
+Format: edit ID [n/NAME] [p/PHONE] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [o/MEETING_LINK] [t/TAG]… [tdel/TAG]…​
 </div>
 
 * `ID` specifies the person to be edited.
@@ -141,7 +141,7 @@ Tag rules:
 Examples:
 * `edit 1 p/91234567`: Set the phone number of contact 1.
 * `edit 1 d/Monday 18:00`: Set the weekly timeslot of contact 1.
-* `edit 1 d/Wednesday 1800 - 1930 l/https://zoom.us/j/123456789 t/Tutor tdel/Student`: Set weekly timeslot + meeting link, add `Tutor` tag, and remove `Student` tag.
+* `edit 1 d/Wednesday 1800 - 1930 o/https://zoom.us/j/123456789 t/Tutor tdel/Student`: Set weekly timeslot + meeting link, add `Tutor` tag, and remove `Student` tag.
 * `edit 2 t/`: Clear all tags of contact 2.
 
 The first example gives the following expected output:
@@ -229,7 +229,7 @@ The first example gives the following expected output:
 Format: copy ID FIELD
 </div>
 
-* Possible fields include `n/` for name, `p/` for phone number, `a/` for address, and `l/` for meeting link.
+* Possible fields include `n/` for name, `p/` for phone number, `a/` for address, and `o/` for meeting link.
 * Copy is not supported for the weekly timeslot, tags, or remark fields. The `d/`, `t/`, `tdel/`, and `r/`
   fields are invalid for this command.
 * If the person's field is empty, the command fails with an error message (nothing is copied to the clipboard).
@@ -238,12 +238,12 @@ Examples:
 * `copy 6 n/`: Copy the name of the person with `ID` 6 to the clipboard.
 * `copy 7 p/`: Copy the phone number of the person with `ID` 7 to the clipboard.
 * `copy 9 a/`: Copy the address of the person with `ID` 9 to the clipboard.
-* `copy 1 l/`: Copy the meeting link of the person with `ID` 1 to the clipboard.
+* `copy 1 o/`: Copy the meeting link of the person with `ID` 1 to the clipboard.
 * `copy 1 p/`: Fail if `ID` 1 is not found or the phone number field of the person with `ID` 1 is empty.
 
 The fourth example gives the following expected output:
 
-![result for 'copy 1 l/'](images/CopyCommandResult.png)
+![result for 'copy 1 o/'](images/CopyCommandResult.png)
 
 ### <span style="color:#d9730d;">Clearing all entries: <code>clear</code></span>
 
@@ -429,7 +429,7 @@ These rules apply across multiple commands in EduConnect:
     * forward slashes (`/`)
     * emojis
 
-* `l/MEETING_LINK`:
+* `o/MEETING_LINK`:
   * If provided, it must be a string starting with `http://` or `https://`, with no spaces in between.
 
 ### <span style="color:#d9730d;">Special case: Non-English characters in input</span>
@@ -460,10 +460,10 @@ These rules apply across multiple commands in EduConnect:
 
 | Action | Format and Example |
 | --- | --- |
-**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [l/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/89761234 a/123, Clementi Rd, 119224 r/new student d/Wed 18:00 - 19:30 l/https://zoom.us/j/123456789 t/Student`
-**Copy** | `copy ID FIELD`<br> e.g., `copy 1 l/`
+**Add** | `add n/NAME [p/PHONE_NUMBER] [a/ADDRESS] [r/REMARK] [d/WEEKLY_TIMESLOT] [o/MEETING_LINK] [t/TAG]…​` <br> e.g., `add n/James Ho`, `add n/James Ho p/89761234 a/123, Clementi Rd, 119224 r/new student d/Wed 18:00 - 19:30 o/https://zoom.us/j/123456789 t/Student`
+**Copy** | `copy ID FIELD`<br> e.g., `copy 1 o/`
 **Delete** | `del ID [ID]…​`<br> e.g., `del 3`, `del 1 3 5`
-**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [l/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 l/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
+**Edit** | `edit ID [n/NAME] [p/PHONE_NUMBER] [a/ADDRESS] [d/WEEKLY_TIMESLOT] [r/REMARK] [o/MEETING_LINK] [t/TAG]…​ [tdel/TAG]…​`<br> e.g., `edit 2 d/Monday 18:00 o/https://zoom.us/j/123456789 t/Parent tdel/Tutor`
 **Find** | `find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMARK]… [d/WEEKLY_TIMESLOT]…`<br> e.g., `find m/and n/James t/Student d/tue`
 **Clear** | `clear` (run twice)
 **List** | `list`

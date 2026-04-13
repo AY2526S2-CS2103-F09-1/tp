@@ -259,7 +259,6 @@ MSS:
 3. EduConnect shows a success message with the deleted contact details.
 
    Use case ends.
->>>>>>> master
 
 Extensions:
 * 1a. User provides no IDs.

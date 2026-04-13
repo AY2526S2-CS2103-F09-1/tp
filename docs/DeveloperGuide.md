@@ -37,7 +37,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2526S2-CS2103-F09-1/tp/blob/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/AY2526S2-CS2103-F09-1/tp/blob/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -58,8 +58,8 @@ The *Sequence Diagram* below shows how the components interact with each other f
 
 Each of the four main components (also shown in the diagram above),
 
-* defines its *API* in an `interface` with the same name as the Component.
-* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
+* defines its *API* in an `interface` with the same name as the component.
+* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point).
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
@@ -69,13 +69,13 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S2-CS2103-F09-1/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103-F09-1/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103-F09-1/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -86,7 +86,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2526S2-CS2103-F09-1/tp/blob/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -125,7 +125,7 @@ The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+* stores a `UserPrefs` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPrefs` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
@@ -137,7 +137,7 @@ The `Model` component,
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2526S2-CS2103-F09-1/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
 <img src="images/StorageClassDiagram.png" width="550" />
 
@@ -205,14 +205,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`    | tutor | view shortcuts I added | look it up when I forget |
 | `*`    | tutor | edit and remove those shortcuts I added if they become irrelevant | prevent shortcuts from clustering too much or I need to change it to something more convenient |
 
-*{More to be added}*
-
 ### Use cases
 
 System: EduConnect
 
 #### Use case: UC01 - Add Contact
-
 Actor: User
 
 Guarantees:
@@ -221,9 +218,8 @@ Guarantees:
 
 MSS:
 1. User requests to add a contact by providing a name (required) and any optional fields (phone number, address, weekly timeslot, remark, meeting link, tags).
-2. EduConnect validates the provided details.
-3. EduConnect adds the contact.
-4. EduConnect shows a success message with the added contact details.
+2. EduConnect adds the contact.
+3. EduConnect shows a success message with the added contact details.
 Use case ends.
 
 Extensions:
@@ -232,20 +228,20 @@ Extensions:
   * 1a2. User re-enters the contact details.
   * Steps 1a1-1a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2a. User provides an invalid format for at least one of the fields.
-  * 2a1. EduConnect shows an error message.
-  * 2a2. User re-enters the contact details.
-  * Steps 2a1-2a2 are repeated until valid input is provided.
+* 1b. User provides an invalid format for at least one of the fields.
+  * 1b1. EduConnect shows an error message.
+  * 1b2. User re-enters the contact details.
+  * Steps 1b1-1b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2b. User provides the same field more than once.
-  * 2b1. EduConnect shows an error message.
-  * 2b2. User re-enters the contact details.
-  * Steps 2b1-2b2 are repeated until valid input is provided.
+* 1c. User provides multiple values for a field that should only be specified once.
+  * 1c1. EduConnect shows an error message.
+  * 1c2. User re-enters the contact details.
+  * Steps 1c1-1c2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2c. The new contact is a duplicate of an existing contact.
-  * 2c1. EduConnect shows a duplicate contact error.
-  * 2c2. User re-enters the contact details.
-  * Steps 2c1-2c2 are repeated until valid input is provided.
+* 1d. The new contact is a duplicate of an existing contact.
+  * 1d1. EduConnect shows a duplicate contact error.
+  * 1d2. User re-enters the contact details.
+  * Steps 1d1-1d2 are repeated until valid input is provided.
   * Use case resumes from step 2.
 
 #### Use case: UC02 - Delete Contact
@@ -258,9 +254,8 @@ Guarantees:
 
 MSS:
 1. User requests to delete one or more contacts by specifying one or more contact IDs.
-2. EduConnect validates all IDs and checks that all specified IDs exist.
-3. EduConnect deletes the specified contacts.
-4. EduConnect shows a success message with the deleted contact details.
+2. EduConnect deletes the specified contacts.
+3. EduConnect shows a success message with the deleted contact details.
 Use case ends.
 
 Extensions:
@@ -269,73 +264,18 @@ Extensions:
   * 1a2. User re-submits the deletion request.
   * Steps 1a1-1a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2a. Any ID is not a valid positive integer.
-  * 2a1. EduConnect shows an error message.
-  * 2a2. User re-submits the deletion request.
-  * Steps 2a1-2a2 are repeated until valid input is provided.
-  * Use case resumes from step 2.
-* 2b. Any ID is not found in the address book.
-  * 2b1. EduConnect shows an error message.
-  * 2b2. User re-submits the deletion request.
-  * Steps 2b1-2b2 are repeated until valid input is provided.
-  * Use case resumes from step 2.
-  
-#### Use case: UC03 - Update Contact Tags
-Actor: User
-
-Guarantees:
-* On successful completion, the selected contact has the updated tags.
-* If the operation fails, no contact is modified.
-
-MSS:
-1. User requests to edit a contact's tags.
-2. EduConnect validates the contact reference and tag value.
-3. EduConnect applies the requested tag additions and deletions to the selected contact.
-4. EduConnect shows a success message.
-Use case ends.
-
-Extensions:
-* 1a. User omits required details, or provides an empty required detail.
-  * 1a1. EduConnect shows an error message and input guidance.
-  * 1a2. User re-submits the edit request.
-  * Steps 1a1-1a2 are repeated until valid input is provided.
-  * Use case resumes from step 2.
-* 1b. User provides the same required detail more than once.
+* 1b. User provides at least one invalid ID.
   * 1b1. EduConnect shows an error message.
-  * 1b2. User re-submits the edit request.
+  * 1b2. User re-submits the deletion request.
   * Steps 1b1-1b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2a. The contact reference is invalid or not found in the address book.
-  * 2a1. EduConnect shows an error message.
-  * 2a2. User re-submits the edit request.
-  * Steps 2a1-2a2 are repeated until valid input is provided.
+* 1c. User provides at least one ID which is not found in the address book.
+  * 1c1. EduConnect shows an error message.
+  * 1c2. User re-submits the deletion request.
+  * Steps 1c1-1c2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2b. The provided tag is not a valid tag.
-  * 2b1. EduConnect shows an error message.
-  * 2b2. User re-submits the edit request.
-  * Steps 2b1-2b2 are repeated until valid input is provided.
-  * Use case resumes from step 2.
-* 2c. The user requests to clear all tags and also specifies one or more tags to add or remove.
-  * 2c1. EduConnect shows an error message.
-  * 2c2. User re-submits the edit request.
-  * Steps 2c1-2c2 are repeated until valid input is provided.
-  * Use case resumes from step 2.
-* 2d. The user tries to add and delete the same tag in one command.
-  * 2d1. EduConnect shows an error message.
-  * 2d2. User re-submits the edit request.
-  * Steps 2d1-2d2 are repeated until valid input is provided.
-  * Use case resumes from step 2.
-* 3a. The selected contact already has one or more tags.
-  * 3a1. EduConnect appends any missing tags and removes any specified tags that are present.
-  * Use case resumes from step 4.
-* 3b. The user requests to clear all existing tags.
-  * 3b1. EduConnect clears all existing tags for the selected contact.
-  * Use case resumes from step 4.
-* 3c. The user specifies a tag to delete that the selected contact does not have.
-  * 3c1. EduConnect leaves the existing tags unchanged.
-  * Use case resumes from step 4.
 
-#### Use case: UC04 - View Contact Details
+#### Use case: UC03 - View Contact Details
 Actor: User
 
 Guarantees:
@@ -349,17 +289,15 @@ MSS:
 Use case ends.
 
 Extensions:
-* 2a. There are no contacts.
-  * 2a1. EduConnect displays that no contacts are currently available.
+* 1a. There are no contacts.
+  * 1a1. EduConnect displays that no contacts are currently available.
   * Use case ends.
-* 2b. A contact is missing one or more optional fields.
-  * 2b1. EduConnect displays a missing-field indicator for that field.
-  * Use case resumes from step 2.
-* 2c. Multiple contacts share the same name and tag.
-  * 2c1. EduConnect displays all matching contacts distinctly so the user can differentiate them.
-  * Use case resumes from step 2.
+* 2b. There are some contacts which are missing one or more optional fields.
+  * 2b1. If a contact has empty optional fields, EduConnect displays a missing-field indicator for each of these fields.
+  * Step 2b1 is repeated for all the contacts to be displayed.
+  * Use case ends.
 
-#### Use case: UC05 - Edit Contact
+#### Use case: UC04 - Edit Contact
 Actor: User
 
 Guarantees:
@@ -369,10 +307,9 @@ Guarantees:
 * If the operation fails, the stored contacts remain unchanged.
 
 MSS:
-1. User requests to edit a contact by specifying the contact ID and one or more fields to update.
-2. EduConnect validates the contact ID and edited field values.
-3. EduConnect updates the selected contact.
-4. EduConnect shows a success message with the updated contact details.
+1. User requests to edit a contact by specifying the contact ID, and one or more fields to update.
+2. EduConnect updates the selected contact.
+3. EduConnect shows a success message with the updated contact details.
 Use case ends.
 
 Extensions:
@@ -381,35 +318,39 @@ Extensions:
   * 1a2. User re-submits the edit request.
   * Steps 1a1-1a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 1b. User repeats a non-tag field.
+* 1b. User provides multiple values for a field that should only be specified once.
   * 1b1. EduConnect shows an error message.
   * 1b2. User re-submits the edit request.
   * Use case resumes from step 2.
-* 2a. The contact ID is invalid or not found in the address book.
-  * 2a1. EduConnect shows an error message.
-  * 2a2. User re-submits the edit request.
+* 1c. The contact ID is invalid or not found in the address book.
+  * 1c1. EduConnect shows an error message.
+  * 1c2. User re-submits the edit request.
   * Use case resumes from step 2.
-* 2b. The user provides an invalid field value.
-  * 2b1. EduConnect shows an error message.
-  * 2b2. User re-submits the edit request.
+* 1d. The user provides an invalid field value.
+  * 1d1. EduConnect shows an error message.
+  * 1d2. User re-submits the edit request.
   * Use case resumes from step 2.
-* 2c. The user provides an ID with leading zeroes.
-  * 2c1. EduConnect accepts the ID and interprets it as the corresponding positive integer.
+* 1e. The user requests to add and delete the same tag.
+  * 1e1. EduConnect shows an error message.
+  * 1e2. User re-submits the edit request.
+  * Steps 1e1-1e2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 3a. The user provides one or more tags.
-  * 3a1. EduConnect adds those tags to the contact's existing tags.
-  * Use case resumes from step 4.
-* 3b. The user requests to clear all tags.
-  * 3b1. EduConnect clears all tags from the contact.
-  * Use case resumes from step 4.
-* 3c. The user requests to clear the stored weekly timeslot.
-  * 3c1. EduConnect removes the stored weekly timeslot from the contact.
-  * Use case resumes from step 4.
-* 3d. The user requests to clear the stored meeting link.
-  * 3d1. EduConnect removes the stored meeting link from the contact.
-  * Use case resumes from step 4.
+* 1f. The user requests to clear all tags, whilst also specifying one or more tags to add or remove.
+  * 1f1. EduConnect shows an error message.
+  * 1f2. User re-submits the edit request.
+  * Steps 1f1-1f2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. The user provides one or more tags.
+  * 2a1. EduConnect adds those tags to the contact's existing tags.
+  * Use case resumes from step 3.
+* 2b. The user requests to clear all tags.
+  * 2b1. EduConnect clears all tags from the contact.
+  * Use case resumes from step 3.
+* 2c. The user requests to delete a tag that the selected contact does not have.
+  * 2c1. EduConnect leaves the existing tags unchanged.
+  * Use case resumes from step 3.
 
-#### Use case: UC06 - Copy Contact Field to Clipboard
+#### Use case: UC05 - Copy Contact Field
 Actor: User
 
 Guarantees:
@@ -417,31 +358,37 @@ Guarantees:
 * If the operation fails, the clipboard remains unchanged.
 
 MSS:
-1. User requests to copy a field of a contact by specifying the contact ID and a field prefix.
-2. EduConnect validates the contact ID and field prefix.
-3. EduConnect retrieves the field value of the specified contact.
-4. EduConnect copies the value to the clipboard and shows a success message.
+1. User requests to copy a field of a contact by specifying the contact ID and the field to copy.
+2. EduConnect retrieves the field value of the specified contact.
+3. EduConnect copies the value to the clipboard and shows a success message.
 Use case ends.
 
 Extensions:
-* 1a. User omits the contact ID or the field prefix.
+* 1a. User omits the contact ID or the field to copy.
   * 1a1. EduConnect shows an error message and input guidance.
   * 1a2. User re-submits the copy request.
   * Steps 1a1-1a2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2a. The contact ID is not found in the address book.
-  * 2a1. EduConnect shows an error message.
-  * 2a2. User re-submits the copy request.
+* 1b. The contact ID is invalid or not found in the address book.
+  * 1b1. EduConnect shows an error message.
+  * 1b2. User re-submits the copy request. 
+  * Steps 1b1-1b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 2b. The field prefix is not one of the supported fields (`n/`, `p/`, `a/`, `o/`).
-  * 2b1. EduConnect shows an error message listing the valid fields.
-  * 2b2. User re-submits the copy request.
+* 1c. User requests to copy an unknown field.
+  * 1c1. EduConnect shows an error message listing the valid fields.
+  * 1c2. User re-submits the copy request.
+  * Steps 1c1-1c2 are repeated until valid input is provided.
   * Use case resumes from step 2.
-* 3a. The specified field is empty for that contact.
-  * 3a1. EduConnect shows an error message indicating there is nothing to copy.
+* 1d. User requests to copy multiple fields from the same contact.
+  * 1d1. EduConnect shows an error message.
+  * 1d2. User re-submits the copy request.
+  * Steps 1d1-1d2 are repeated until valid input is provided.
+  * Use case resumes from step 2.
+* 2a. The specified field is empty for that contact.
+  * 2a1. EduConnect shows an error message indicating there is nothing to copy.
   * Use case ends.
 
-#### Use case: UC07 - Search Contacts by Specified Fields
+#### Use case: UC06 - Search Contacts by Specified Fields
 Actor: User
 
 Guarantees:
@@ -466,7 +413,11 @@ Extensions:
 * 1b. User provides a keyword that is not marked with a field.
   * 1b1. EduConnect shows an error message explaining the required input format.
   * 1b2. User re-enters the search input.
+  * Steps 1b1-1b2 are repeated until valid input is provided.
   * Use case resumes from step 2.
+* 1c. The user searches with flexible time formatting such as mixed `HH:mm` / `HHmm`, or with leading spaces after a prefix.
+    * 1c1. EduConnect normalizes the query.
+    * Use case resumes from step 2.
 * 2a. No contacts match the keywords.
   * 2a1. EduConnect shows empty filtered results and a count of zero.
   * Use case ends.
@@ -479,9 +430,28 @@ Extensions:
 * 2d. The user searches with flexible time formatting such as mixed `HH:mm` / `HHmm`, or with leading spaces after a prefix.
   * 2d1. EduConnect normalizes the query before matching.
   * Use case resumes from step 3.
-* 2e. The user searches for partial non-English text in a free-text field such as address.
-  * 2e1. EduConnect performs the usual substring match.
-  * Use case resumes from step 3.
+
+### Use case: UC07 - Clearing All Contacts
+Actor: User
+
+Guarantees:
+* On successful completion, EduConnect removes all contacts from the address book.
+* A two-step confirmation is employed. Upon issuing the command, the user is required to confirm their intention again, before EduConnect proceeds with the clearing of the address book.
+* If the user does not confirm that they wish to proceed with the command, the address book remains unchanged.
+
+MSS:
+1. User requests to clear all contacts from the address book.
+2. EduConnect requests for confirmation.
+3. User confirms their intention to clear all contacts.
+4. EduConnect removes all existing contacts in the address book, resulting in an empty contact list.
+5. EduConnect shows a success message indicating that all contact data has been purged.  
+Use case ends.
+
+Extensions:
+* 3a. User chooses to cancel the removal of contacts by executing another command.
+  * 3a1. EduConnect resets the two-step confirmation.
+  * 3a2. EduConnect proceeds to handle the latest command issued.
+  * Use case ends.
 
 #### Use case: UC08 - Clear All Contacts
 Actor: User
@@ -523,19 +493,22 @@ Extensions:
 
 ### Glossary
 
-* **Tutor**: Refers to a private tutor, which is a user of the EduConnect application
-* **Student**: Refers to a student whom the tutor is teaching
-* **Parent**: Refers to a parent of a student whom the tutor is teaching
-* **Mode**: Refers to the `m/` keyword in `find`, which controls how multiple search conditions are combined (OR by default; AND when specified)
-* **Phone Number**: Refers to a Singapore phone number (8 digits, typically starting with 6/8/9)
-* **Address**: Refers to a Singapore address (e.g. block + street + unit + postal code format)
-* **Weekly timeslot**: A contact's stored weekly timeslot, represented as a `Time` value in the canonical format `Day HH:mm` or `Day HH:mm - HH:mm`
-* **Meeting link**: A URL (starting with `http://` or `https://`) stored against a contact for online lessons (e.g. a Zoom or Google Meet link. This field is optional and technically any link starting with `http://` or `https://` can be stored here)
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Duplicate contacts**: Two contacts are said to be duplicates if they have the same name, phone number, and address (name and address comparisons are case-insensitive)
+* **Student**: Refers to a student whom the user is teaching.
+* **Parent**: Refers to a parent of a student whom the user is teaching.
+* **Tutor**: Refers to another private tutor whom the user is in contact with.
+* **Tag**: Refers to a label that can be assigned to a given contact. There are currently 3 valid tags - "Tutor", "Student" and "Parent".
+* **ID**: Refers to an identifier for a contact. At any given point in time, each contact in EduConnect is assigned a unique ID. When issuing commands, IDs are used to refer to their corresponding contacts.
+* **Phone Number**: Refers to a Singapore phone number (8 digits, starting with 6/8/9).
+* **Address**: Refers to a Singapore address (e.g. block + street + unit + postal code format).
+* **Weekly Timeslot**: Refers to a contact's stored weekly timeslot, represented as a `Time` value in the canonical format `Day HH:mm` or `Day HH:mm - HH:mm`.
+* **Meeting Link**: Refers to a URL (starting with `http://` or `https://`) stored against a contact for online lessons (e.g. a Zoom or Google Meet link). This field is optional and technically any link starting with `http://` or `https://` can be stored here.
+* **Remark** Refers to additional information or comments that can be added to a contact.
+* **Mode**: Refers to the `m/` keyword in `find`, which controls how multiple search conditions are combined (OR by default; AND when specified).
+* **Duplicate Contacts**: Two contacts are said to be duplicates if they have the same name, phone number, and address (name and address comparisons are case-insensitive).
 * **CLI (Command Line Interface):** A text-based way of interacting with the application by typing commands into a terminal or command prompt, instead of clicking buttons or menus.
 * **GUI (Graphical User Interface):** The visual, point-and-click interface of the application. What you see and interact with on screen, such as buttons, text fields, and windows.
 * **JSON (JavaScript Object Notation):** A plain-text file format used to store and organise data in a structured way. It is the format used by this application to save your data.
+* **Mainstream OS**: Windows, Linux, Unix, MacOS.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -545,7 +518,6 @@ Given below are instructions to test the app manually.
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
-
 </div>
 
 ### Launch and shutdown
@@ -604,7 +576,7 @@ testers are expected to do more *exploratory* testing.
       Expected: The phone number of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no phone number stored, an error message is shown instead.
 
    1. Test case: `copy 1 a/`<br>
-      Expected: The address of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no address stored, an error message is shown instead.
+      Expected: The address of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no address, an error message is shown instead.
 
    1. Test case: `copy 1 o/`<br>
       Expected: The meeting link of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no meeting link, an error message is shown instead.

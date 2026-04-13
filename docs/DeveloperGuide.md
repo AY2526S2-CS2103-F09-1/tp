@@ -433,7 +433,7 @@ Extensions:
   * 2a1. EduConnect shows an error message.
   * 2a2. User re-submits the copy request.
   * Use case resumes from step 2.
-* 2b. The field prefix is not one of the supported fields (`n/`, `p/`, `a/`, `l/`).
+* 2b. The field prefix is not one of the supported fields (`n/`, `p/`, `a/`, `o/`).
   * 2b1. EduConnect shows an error message listing the valid fields.
   * 2b2. User re-submits the copy request.
   * Use case resumes from step 2.
@@ -580,7 +580,7 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `copy 1 a/`<br>
       Expected: The address of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no meeting link, an error message is shown instead.
 
-   1. Test case: `copy 1 l/`<br>
+   1. Test case: `copy 1 o/`<br>
       Expected: The meeting link of contact `ID` 1 is copied to the clipboard. Success message is then shown. If the contact has no meeting link, an error message is shown instead.
 
    1. Test case: `copy 1 email` (invalid field)<br>

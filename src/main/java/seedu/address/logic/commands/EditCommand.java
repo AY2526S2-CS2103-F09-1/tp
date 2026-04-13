@@ -90,6 +90,14 @@ public class EditCommand extends Command {
             throw new CommandException(Messages.MESSAGE_NOT_EDITED);
         }
 
+        Optional<Tag> missingTag = editPersonDescriptor.getTagsToDelete().stream()
+                .flatMap(Set::stream)
+                .filter(tag -> !personToEdit.getTags().contains(tag))
+                .findFirst();
+        if (missingTag.isPresent()) {
+            throw new CommandException(String.format(MESSAGE_MISSING_TAG_TO_DELETE, missingTag.get().tagName));
+        }
+
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
@@ -106,8 +114,7 @@ public class EditCommand extends Command {
      * existing tags, specified deleted tags are removed, and an empty edited tag
      * set clears all tags.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor)
-            throws CommandException {
+    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(personToEdit);
         requireNonNull(editPersonDescriptor);
 
@@ -134,8 +141,7 @@ public class EditCommand extends Command {
                 updatedRemark, updatedMeetingLink);
     }
 
-    private static Set<Tag> createUpdatedTags(Set<Tag> existingTags, EditPersonDescriptor editPersonDescriptor)
-            throws CommandException {
+    private static Set<Tag> createUpdatedTags(Set<Tag> existingTags, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(existingTags);
         requireNonNull(editPersonDescriptor);
 
@@ -143,11 +149,9 @@ public class EditCommand extends Command {
                 .map(tagsToApply -> mergeTags(existingTags, tagsToApply))
                 .orElse(existingTags);
 
-        if (editPersonDescriptor.getTagsToDelete().isEmpty()) {
-            return tagsAfterAdditions;
-        }
-
-        return removeTags(tagsAfterAdditions, editPersonDescriptor.getTagsToDelete().get());
+        return editPersonDescriptor.getTagsToDelete()
+                .map(tagsToDelete -> removeTags(tagsAfterAdditions, tagsToDelete))
+                .orElse(tagsAfterAdditions);
     }
 
     private static Set<Tag> mergeTags(Set<Tag> existingTags, Set<Tag> tagsToApply) {
@@ -163,16 +167,9 @@ public class EditCommand extends Command {
         return combinedTags;
     }
 
-    private static Set<Tag> removeTags(Set<Tag> existingTags, Set<Tag> tagsToDelete) throws CommandException {
+    private static Set<Tag> removeTags(Set<Tag> existingTags, Set<Tag> tagsToDelete) {
         requireNonNull(existingTags);
         requireNonNull(tagsToDelete);
-
-        Optional<Tag> missingTag = tagsToDelete.stream()
-                .filter(tag -> !existingTags.contains(tag))
-                .findFirst();
-        if (missingTag.isPresent()) {
-            throw new CommandException(String.format(MESSAGE_MISSING_TAG_TO_DELETE, missingTag.get().tagName));
-        }
 
         Set<Tag> remainingTags = new HashSet<>(existingTags);
         remainingTags.removeAll(tagsToDelete);

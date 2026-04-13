@@ -72,8 +72,12 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_missingParts_failure() {
-        assertParseFailure(parser, VALID_NAME_AMY, MESSAGE_INVALID_FORMAT);
+        // nothing provided alongside "edit" - invalid input format
         assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
+
+        // id missing, only a string is provided alongside "edit"
+        // this string cannot be parsed into an id, so we treat it as an invalid id
+        assertParseFailure(parser, VALID_NAME_AMY, Id.MESSAGE_CONSTRAINTS);
     }
 
     @Test
@@ -87,10 +91,21 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_invalidPreamble_failure() {
-        assertParseFailure(parser, "-5" + NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
-        assertParseFailure(parser, "0" + NAME_DESC_AMY, MESSAGE_INVALID_FORMAT);
-        assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_FORMAT);
-        assertParseFailure(parser, "1 i/ string", MESSAGE_INVALID_FORMAT);
+        // non-positive id
+        assertParseFailure(parser, "-5" + NAME_DESC_AMY, Id.MESSAGE_CONSTRAINTS); // negative id
+        assertParseFailure(parser, "0" + NAME_DESC_AMY, Id.MESSAGE_CONSTRAINTS); // zero id
+
+        // wrongly formatted id
+        assertParseFailure(parser, "1 some random string", Id.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1 i/ string", Id.MESSAGE_CONSTRAINTS);
+
+        // id leading to overflow
+        long maxPossibleInt = Integer.MAX_VALUE;
+        long minPossibleInt = Integer.MIN_VALUE;
+        assertParseFailure(parser, Long.toString(maxPossibleInt + 1),
+                Id.OVERFLOW_MESSAGE_CONSTRAINTS); // positive id
+        assertParseFailure(parser, Long.toString(minPossibleInt - 1),
+                Id.OVERFLOW_MESSAGE_CONSTRAINTS); // negative id
     }
 
     @Test

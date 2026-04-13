@@ -360,7 +360,7 @@ These rules apply across multiple commands in EduConnect:
   * If the contact with the highest `ID` is deleted, that `ID` may be reused by the next added contact.
       * e.g., if the current highest `ID` is `10` and contact `9` is deleted, the next added contact will have `ID` `11`.
       * e.g., if contact `10` is deleted, the next added contact will reuse `ID` `10`.
-  * `ID` must be a positive integer (`1`, `2`, `3`, …).
+  * `ID` must be a positive integer that does not lead to an integer overflow (`1`, `2`, `3`, …, `2,147,483,647`).
 
 * Empty values:
   * For `add`, providing an optional prefix with no value creates the contact with that field missing.<br>

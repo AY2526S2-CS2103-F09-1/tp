@@ -183,14 +183,14 @@ Weekly timeslot rules (`d/`):
 * Flexible formats (e.g., `DD:HH–DDHH` or similar variations) are allowed.
 
 Examples (Find people whose):
-* `find n/alex a/geylang`: Name contains `alex` OR address contains `geylang`.
+* `find n/alex a/ang`: Name contains `alex` OR address contains `ang`.
 * `find m/and t/student n/clement`: Tagged `Student` AND name contains `clement`.
 * `find d/1200 d/thu`: Weekly timeslot is `12:00` (or within a stored time range that includes `12:00`) or is on Thursday.
 * `find d/tue 1500-1600`: Weekly timeslot is on Tuesday and is exactly `15:00 - 16:00` (or a stored single time within that range).
 
 The first example gives the following expected output:
 
-![result for 'find n/alex a/geylang'](images/FindCommandResult.png)
+![result for 'find n/alex a/ang'](images/FindCommandResult.png)
 
 Expected behavior:
 * `find p/ben` will not return an error, but will return no results (since phone numbers contain digits only).

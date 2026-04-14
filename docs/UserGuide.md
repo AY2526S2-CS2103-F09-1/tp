@@ -182,6 +182,7 @@ Weekly timeslot rules (`d/`):
   * Range time queries match an exact stored range and may also match a stored single time within the query range.
   * Day + time/range queries must match both the day and the specified time or range.
 * Flexible formats (e.g., `DD:HH–DDHH` or similar variations) are allowed.
+* For range queries, the end time must be later than the start time.
 
 Examples (Find people whose):
 * `find n/alex a/ang`: Name contains `alex` OR address contains `ang`.
@@ -421,7 +422,7 @@ These rules apply across multiple commands in EduConnect:
     * day must come before time (e.g. `d/tue 1500`, not `d/1500 tue`)
   * Valid weekdays: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`.
   * Valid time: 24-hour time (`00:00` to `23:59`). 
-  * A duration must not end before it starts. Overnight duration is not allowed. Equal start and end times are permitted.
+  * A duration must end later than it starts. Overnight duration and zero-length durations are not allowed.
   * Display is normalized (e.g. `monday 1800` → `Monday 18:00`).
   * Overlapping weekly timeslots across different contacts are allowed (e.g. staggered lessons for different students).
 

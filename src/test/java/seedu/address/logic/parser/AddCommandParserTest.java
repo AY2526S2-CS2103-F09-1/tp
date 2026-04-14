@@ -12,6 +12,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DURATION_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_NO_DAY_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_ZERO_DURATION_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.MEETING_LINK_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.MEETING_LINK_DESC_BOB;
@@ -289,6 +290,9 @@ public class AddCommandParserTest {
                 Time.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
                 + INVALID_TIME_DURATION_DESC + TAG_DESC_STUDENT + REMARK_DESC_AMY + MEETING_LINK_DESC_AMY,
+                Time.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
+                + INVALID_TIME_ZERO_DURATION_DESC + TAG_DESC_STUDENT + REMARK_DESC_AMY + MEETING_LINK_DESC_AMY,
                 Time.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY
                 + INVALID_TIME_NO_DAY_DESC + TAG_DESC_STUDENT + REMARK_DESC_AMY + MEETING_LINK_DESC_AMY,

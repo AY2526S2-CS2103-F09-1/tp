@@ -11,6 +11,7 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DURATION_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_NO_DAY_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_ZERO_DURATION_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DELETE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.MEETING_LINK_DESC_AMY;
@@ -114,6 +115,7 @@ public class EditCommandParserTest {
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_TIME_DESC, Time.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_TIME_DURATION_DESC, Time.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1" + INVALID_TIME_ZERO_DURATION_DESC, Time.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_TIME_NO_DAY_DESC, Time.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);
         assertParseFailure(parser, "1" + INVALID_UNLISTED_TAG_DESC, Tag.MESSAGE_TAG_CONSTRAINTS);

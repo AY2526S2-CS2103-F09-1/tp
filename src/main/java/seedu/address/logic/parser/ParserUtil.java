@@ -232,7 +232,11 @@ public class ParserUtil {
             return null;
         }
 
-        return canonicalStartTime + " - " + canonicalEndTime;
+        String canonicalRange = canonicalStartTime + " - " + canonicalEndTime;
+
+        // Validate the range ordering for find queries too, so reversed ranges
+        // are rejected consistently with stored weekly timeslots.
+        return Time.getCanonicalLegacyTime(canonicalRange) == null ? null : canonicalRange;
     }
 
     /**

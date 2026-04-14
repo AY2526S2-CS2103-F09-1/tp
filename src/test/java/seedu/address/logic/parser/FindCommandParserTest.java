@@ -355,7 +355,15 @@ public class FindCommandParserTest {
                 invalidTimeQueryMessage());
         assertParseFailure(parser, " " + PREFIX_TIME + "150",
                 invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "1800-1500",
+                invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "1800-1800",
+                invalidTimeQueryMessage());
         assertParseFailure(parser, " " + PREFIX_TIME + "1400 Wed",
+                invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "tue 1800-1500",
+                invalidTimeQueryMessage());
+        assertParseFailure(parser, " " + PREFIX_TIME + "tue 1800-1800",
                 invalidTimeQueryMessage());
         assertParseFailure(parser, " " + PREFIX_TIME + "tue wed",
                 invalidTimeQueryMessage());

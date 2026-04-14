@@ -61,8 +61,6 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_SUCCESS =
             "Alright, the contact with ID %d has been edited to the following:";
-    public static final String MESSAGE_MISSING_TAG_TO_DELETE =
-            "This contact does not have the tag %s.";
 
     private final Id id;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -88,14 +86,6 @@ public class EditCommand extends Command {
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new CommandException(Messages.MESSAGE_NOT_EDITED);
-        }
-
-        Optional<Tag> missingTag = editPersonDescriptor.getTagsToDelete().stream()
-                .flatMap(Set::stream)
-                .filter(tag -> !personToEdit.getTags().contains(tag))
-                .findFirst();
-        if (missingTag.isPresent()) {
-            throw new CommandException(String.format(MESSAGE_MISSING_TAG_TO_DELETE, missingTag.get().tagName));
         }
 
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);

@@ -134,7 +134,7 @@ Tag rules:
 * `t/TAG` adds tags; `tdel/TAG` removes tags.
 * Only valid tags may be used: `Student`, `Parent`, `Tutor` (case-insensitive).
 * For a given contact, adding a tag that already exists has no effect.
-* Deleting a tag that the contact does not have causes the command to fail.
+* Similarly, deleting a tag that does not exist has no effect.
 * To clear all tags, use `t/` by itself.
 * The same tag cannot be added and deleted in the same command.
 

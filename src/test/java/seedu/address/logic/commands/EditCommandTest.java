@@ -298,14 +298,14 @@ public class EditCommandTest {
                 createTagTestPerson(44, VALID_TAG_STUDENT, VALID_TAG_PARENT),
                 VALID_TAG_STUDENT);
         assertAddStudentDeleteParentSuccess(
+                createTagTestPerson(45, VALID_TAG_STUDENT),
+                VALID_TAG_STUDENT);
+        assertAddStudentDeleteParentSuccess(
                 createTagTestPerson(46, VALID_TAG_PARENT),
                 VALID_TAG_STUDENT);
-    }
-
-    @Test
-    public void execute_addStudentDeleteMissingParent_failure() {
-        assertAddStudentDeleteParentFailure(createTagTestPerson(45, VALID_TAG_STUDENT));
-        assertAddStudentDeleteParentFailure(createTagTestPerson(47));
+        assertAddStudentDeleteParentSuccess(
+                createTagTestPerson(47),
+                VALID_TAG_STUDENT);
     }
 
     @Test
@@ -352,12 +352,21 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_idInAddressBookDeleteMissingTag_failure() {
+    public void execute_idInAddressBookDeleteMissingTag_success() {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTagsToDelete(VALID_TAG_PARENT).build();
         EditCommand editCommand = new EditCommand(ID_FIRST, descriptor);
 
-        assertCommandFailure(editCommand, model,
-                String.format(EditCommand.MESSAGE_MISSING_TAG_TO_DELETE, VALID_TAG_PARENT));
+        Optional<Person> personToEditFound = model.findPersonById(ID_FIRST);
+        assertTrue(personToEditFound.isPresent());
+        Person personToEdit = personToEditFound.get();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS,
+                ID_FIRST.getValue());
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personToEdit, personToEdit);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
@@ -577,23 +586,6 @@ public class EditCommandTest {
         expectedModel.setPerson(personToEdit, editedPerson);
 
         assertCommandSuccess(editCommand, modelWithPerson, expectedMessage, expectedModel);
-    }
-
-    private void assertAddStudentDeleteParentFailure(Person personToEdit) {
-        AddressBook addressBook = new AddressBook();
-        addressBook.addPerson(personToEdit);
-        Model modelWithPerson = new ModelManager(addressBook, new UserPrefs());
-
-        Id personToEditId = personToEdit.getId();
-
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withTags(VALID_TAG_STUDENT)
-                .withTagsToDelete(VALID_TAG_PARENT)
-                .build();
-        EditCommand editCommand = new EditCommand(personToEditId, descriptor);
-
-        assertCommandFailure(editCommand, modelWithPerson,
-                String.format(EditCommand.MESSAGE_MISSING_TAG_TO_DELETE, VALID_TAG_PARENT));
     }
 
     private Person createTagTestPerson(int id, String... tags) {

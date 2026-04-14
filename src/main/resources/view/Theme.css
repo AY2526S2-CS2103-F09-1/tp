@@ -351,7 +351,7 @@
     -fx-font-family: "Segoe UI Light";
     -fx-font-size: 13pt;
     -fx-text-fill: #3E2F1C;
-    -fx-prompt-text-fill: #A67B5B;    /* placeholder text colour */
+    -fx-prompt-text-fill: #A67B5B;    /* placeholder text color */
     -fx-font-weight: bold;
 }
 

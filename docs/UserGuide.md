@@ -166,7 +166,7 @@ Format: find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMA
 * Repeating prefixes are allowed. Users can perform either an OR search or an AND search.
 * Each contact will appear at most once in the results, even if multiple fields match.
 * For a given field in the search query, contacts missing that particular field will not be matched.
-  * e.g. contacts without a phone number never match `p/…`).
+  * e.g. contacts without a phone number will never match `p/…`.
 
 Mode rules (`m`):
 * `m/` is optional, case-insensitive, and accepts only `and` or `or` (at most once).
@@ -184,14 +184,14 @@ Weekly timeslot rules (`d/`):
 * Flexible formats (e.g., `DD:HH–DDHH` or similar variations) are allowed.
 
 Examples (Find people whose):
-* `find n/alex a/geylang`: Name contains `alex` OR address contains `geylang`.
+* `find n/alex a/ang`: Name contains `alex` OR address contains `ang`.
 * `find m/and t/student n/clement`: Tagged `Student` AND name contains `clement`.
 * `find d/1200 d/thu`: Weekly timeslot is `12:00` (or within a stored time range that includes `12:00`) or is on Thursday.
 * `find d/tue 1500-1600`: Weekly timeslot is on Tuesday and is exactly `15:00 - 16:00` (or a stored single time within that range).
 
 The first example gives the following expected output:
 
-![result for 'find n/alex a/geylang'](images/FindCommandResult.png)
+![result for 'find n/alex a/ang'](images/FindCommandResult.png)
 
 Expected behavior:
 * `find p/ben` will not return an error, but will return no results (since phone numbers contain digits only).
@@ -274,13 +274,14 @@ The first `clear` gives the following expected output:
 <div class="alert alert-light" role="alert">
 Format: exit
 </div>
+
 ### <span style="color:#d9730d;">Saving the data</span>
 
 EduConnect data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### <span style="color:#d9730d;">Editing the data file</span>
 
-EduConnect data is saved automatically as a JSON file `[JAR file location]/data/educonnect.json`. Advanced users are welcome to update data directly by editing that data file. Ensure that you follow the [format specified](####how-to-edit-the-data-file).
+EduConnect data is saved automatically as a JSON file `[JAR file location]/data/educonnect.json`. Advanced users are welcome to update data directly by editing that data file. Ensure that you follow the [format specified](#how-to-edit-the-data-file).
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
 If your changes to the data file makes its format invalid, EduConnect will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
@@ -375,7 +376,7 @@ These rules apply across multiple commands in EduConnect:
     * `tdel/` must be followed by a tag value (e.g. `tdel/Student`).
 
 * Invalid prefixes:
-  * If you use an unrecognised prefix (e.g. `add n/Alice f/tue 23:00-01:00`), the application will not flag `f/` as invalid. Instead, it will treat everything after `n/` as part of the name.
+  * If you use an unrecognized prefix (e.g. `add n/Alice f/tue 23:00-01:00`), the application will not flag `f/` as invalid. Instead, it will treat everything after `n/` as part of the name.
   * If you see an unexpected validation error, double-check that all your prefixes are spelled correctly.
 
 ### <span style="color:#d9730d;">Duplicate contacts</span>
@@ -419,7 +420,8 @@ These rules apply across multiple commands in EduConnect:
     * time range: `Day HH:mm - HH:mm` or `Day HHmm - HHmm` (spaces around `-` are optional)
     * day must come before time (e.g. `d/tue 1500`, not `d/1500 tue`)
   * Valid weekdays: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`.
-  * Valid time: 24-hour time (`00:00` to `23:59`). A duration must not end before it starts.
+  * Valid time: 24-hour time (`00:00` to `23:59`). 
+  * A duration must not end before it starts. Overnight duration is not allowed. Equal start and end times are permitted.
   * Display is normalized (e.g. `monday 1800` → `Monday 18:00`).
   * Overlapping weekly timeslots across different contacts are allowed (e.g. staggered lessons for different students).
 

@@ -36,7 +36,7 @@ public class AddCommandParser implements Parser<AddCommand> {
      * Creates a new {@code AddCommandParser}.
      *
      * @param currentMaxId The maximum {@code Id} in the address book, at the time of
-     *                     {@code AddCommandParser} initialisation. If the address book
+     *                     {@code AddCommandParser} initialization. If the address book
      *                     is empty, this will be {@code Optional.empty}. Used to determine
      *                     the {@code Id} of the new contact to be added.
      */

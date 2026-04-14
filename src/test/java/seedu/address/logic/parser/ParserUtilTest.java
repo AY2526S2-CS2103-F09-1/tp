@@ -39,6 +39,7 @@ public class ParserUtilTest {
     private static final String VALID_TIME_ALTERNATE = "monday 1800";
     private static final String VALID_TIME_DURATION = "Wednesday 18:00 - 19:30";
     private static final String VALID_TIME_DURATION_ALTERNATE = "wednesday 1800 - 1930";
+    private static final String VALID_TIME_OVERNIGHT_DURATION = "Wednesday 23:00 - 01:00";
     private static final String VALID_TAG_1 = "Student";
     private static final String VALID_TAG_2 = "Parent";
 
@@ -227,6 +228,12 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseTime_validOvernightDuration_returnsTime() throws Exception {
+        Optional<Time> expectedTime = Optional.of(new Time(VALID_TIME_OVERNIGHT_DURATION));
+        assertEquals(expectedTime, ParserUtil.parseTime(Optional.of("wed 2300 - 0100")));
+    }
+
+    @Test
     public void parseTime_emptyOptional_returnsEmptyOptional() throws Exception {
         assertEquals(Optional.empty(), ParserUtil.parseTime(Optional.empty()));
     }
@@ -243,8 +250,20 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseFindTimeKeyword_invalidMixedRange_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1700-16:00"));
+    public void parseFindTimeKeyword_validOvernightRange_returnsTimeSearchKeyword() throws Exception {
+        assertEquals(new TimeSearchKeyword("Wednesday", "23:00 - 01:00"),
+                ParserUtil.parseFindTimeKeyword("wed 2300-0100"));
+    }
+
+    @Test
+    public void parseFindTimeKeyword_validMixedOvernightRange_returnsTimeSearchKeyword() throws Exception {
+        assertEquals(new TimeSearchKeyword("Monday", "17:00 - 16:00"),
+                ParserUtil.parseFindTimeKeyword("Mon 1700-16:00"));
+    }
+
+    @Test
+    public void parseFindTimeKeyword_invalidRange_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1700-160"));
         assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1700-aaaa"));
     }
 

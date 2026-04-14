@@ -21,7 +21,7 @@ public class Time {
                     + "Use: Day HH:mm, Day HHmm, Day HH:mm - HH:mm, or Day HHmm - HHmm.\n"
                     + "Day must begin with at least the first two letters of a valid day name.\n"
                     + "Time must use valid 24-hour values.\n"
-                    + "For durations, the end time must not be earlier than the start time.";
+                    + "For durations, an end time earlier than or equal to the start time continues into the next day.";
     private static final String EMPTY_STRING = "";
     private static final String DAY_TIME_SEPARATOR = " ";
     private static final String DURATION_SEPARATOR = " - ";
@@ -188,7 +188,7 @@ public class Time {
 
         LocalTime startTime = parseSingleTime(startTimeString);
         LocalTime endTime = parseSingleTime(endTimeString);
-        if (startTime == null || endTime == null || endTime.isBefore(startTime)) {
+        if (startTime == null || endTime == null) {
             return null;
         }
 

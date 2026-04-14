@@ -20,7 +20,7 @@ public class TimeTest {
         assertThrows(IllegalArgumentException.class, () -> new Time("18:00 - 17:30"));
         assertThrows(IllegalArgumentException.class, () -> new Time("Monday"));
         assertThrows(IllegalArgumentException.class, () -> new Time("Funday 18:00"));
-        assertThrows(IllegalArgumentException.class, () -> new Time("Monday 18:00 - 17:30"));
+        assertThrows(IllegalArgumentException.class, () -> new Time("Monday 18:00 - 1830"));
     }
 
     @Test
@@ -52,6 +52,8 @@ public class TimeTest {
         assertTrue(Time.isValidTime("thu 08:15 - 09:45"));
         assertTrue(Time.isValidTime("Sunday 18:00 - 19:30"));
         assertTrue(Time.isValidTime("sunday 1800 - 1930"));
+        assertTrue(Time.isValidTime("Monday 18:00 - 17:30"));
+        assertTrue(Time.isValidTime("Wednesday 1600 - 1600"));
     }
 
     @Test
@@ -76,6 +78,8 @@ public class TimeTest {
         assertEquals("Thursday 08:15 - 09:45", new Time("thu 08:15 - 09:45").value);
         assertEquals("Sunday 18:00 - 19:30", new Time("Sunday 18:00 - 19:30").value);
         assertEquals("Sunday 18:00 - 19:30", new Time("sunday 1800 - 1930").value);
+        assertEquals("Monday 18:00 - 17:30", new Time("Monday 18:00 - 17:30").value);
+        assertEquals("Wednesday 16:00 - 16:00", new Time("Wednesday 1600 - 1600").value);
     }
 
     @Test
@@ -95,6 +99,7 @@ public class TimeTest {
     public void fromStoredValue_legacyTime_returnsCanonicalLegacyValue() {
         assertEquals("18:00", Time.fromStoredValue("1800").value);
         assertEquals("18:00 - 19:30", Time.fromStoredValue("18:00 - 19:30").value);
+        assertEquals("18:00 - 17:30", Time.fromStoredValue("18:00 - 17:30").value);
     }
 
     @Test

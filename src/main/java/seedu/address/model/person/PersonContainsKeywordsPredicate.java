@@ -168,7 +168,16 @@ public class PersonContainsKeywordsPredicate implements Predicate<Person> {
             return false;
         }
 
-        return durationParts[0].compareTo(time) <= 0 && time.compareTo(durationParts[1]) <= 0;
+        int timeMinute = getMinuteOfDay(time);
+        int startMinute = getMinuteOfDay(durationParts[0]);
+        int endMinute = getMinuteOfDay(durationParts[1]);
+        return startMinute < endMinute
+                ? startMinute <= timeMinute && timeMinute <= endMinute
+                : timeMinute >= startMinute || timeMinute <= endMinute;
+    }
+
+    private int getMinuteOfDay(String time) {
+        return Integer.parseInt(time.substring(0, 2)) * 60 + Integer.parseInt(time.substring(3));
     }
 
     @Override

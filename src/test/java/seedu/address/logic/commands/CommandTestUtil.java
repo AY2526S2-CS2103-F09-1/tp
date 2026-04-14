@@ -86,8 +86,8 @@ public class CommandTestUtil {
     // not a valid hour
     public static final String INVALID_TIME_DESC = " " + PREFIX_TIME + "Monday 25:00";
 
-    // duration going backwards in time
-    public static final String INVALID_TIME_DURATION_DESC = " " + PREFIX_TIME + "Monday 18:00 - 17:30";
+    // mixed duration formats are not allowed
+    public static final String INVALID_TIME_DURATION_DESC = " " + PREFIX_TIME + "Monday 18:00 - 1730";
 
     // no day in time provided
     public static final String INVALID_TIME_NO_DAY_DESC = " " + PREFIX_TIME + "1800";

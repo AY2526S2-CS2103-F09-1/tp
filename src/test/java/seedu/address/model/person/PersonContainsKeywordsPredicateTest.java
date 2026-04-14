@@ -479,6 +479,30 @@ public class PersonContainsKeywordsPredicateTest {
     }
 
     @Test
+    public void test_timeKeywords_overnightStoredTimeBehavesAsExpected() {
+        Person overnightDuration = new PersonBuilder().withTime("Wednesday 23:00 - 01:00").build();
+
+        PersonContainsKeywordsPredicate predicate = predicateWithDateTimeKeywords(
+                List.of(new TimeSearchKeyword("", "00:30")), MatchMode.OR);
+        assertTrue(predicate.test(overnightDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(new TimeSearchKeyword("", "01:30")), MatchMode.OR);
+        assertFalse(predicate.test(overnightDuration));
+    }
+
+    @Test
+    public void test_timeKeywords_fullDayStoredTimeBehavesAsExpected() {
+        Person fullDayDuration = new PersonBuilder().withTime("Wednesday 16:00 - 16:00").build();
+
+        PersonContainsKeywordsPredicate predicate = predicateWithDateTimeKeywords(
+                List.of(new TimeSearchKeyword("", "15:59")), MatchMode.OR);
+        assertTrue(predicate.test(fullDayDuration));
+
+        predicate = predicateWithDateTimeKeywords(List.of(new TimeSearchKeyword("", "16:01")), MatchMode.OR);
+        assertTrue(predicate.test(fullDayDuration));
+    }
+
+    @Test
     public void test_noTime_false() {
         PersonContainsKeywordsPredicate predicate = predicateWithDateTimeKeywords(
                 List.of(new TimeSearchKeyword("Wednesday", "15:00")), MatchMode.OR);

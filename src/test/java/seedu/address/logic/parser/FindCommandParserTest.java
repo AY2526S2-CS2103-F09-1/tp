@@ -324,6 +324,10 @@ public class FindCommandParserTest {
 
         assertParseSuccess(parser, " " + PREFIX_TIME + "fRi 1500-1600",
                 expectedTimeFindCommand(List.of(new TimeSearchKeyword("Friday", "15:00 - 16:00")), MatchMode.OR));
+
+        assertParseSuccess(parser, " " + PREFIX_TIME + "Wed 2300-0100",
+                expectedTimeFindCommand(List.of(new TimeSearchKeyword("Wednesday", "23:00 - 01:00")),
+                        MatchMode.OR));
     }
 
     @Test

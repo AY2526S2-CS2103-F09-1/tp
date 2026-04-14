@@ -186,6 +186,7 @@ public class ParserUtilTest {
         assertThrows(ParseException.class, () -> ParserUtil.parseTime(Optional.of(INVALID_TIME)));
         assertThrows(ParseException.class, () -> ParserUtil.parseTime(Optional.of(INVALID_TIME_NO_DAY)));
         assertThrows(ParseException.class, () -> ParserUtil.parseTime(Optional.of(INVALID_TIME_DURATION)));
+        assertThrows(ParseException.class, () -> ParserUtil.parseTime(Optional.of("Wednesday 18:00 - 18:00")));
     }
 
     @Test
@@ -246,6 +247,14 @@ public class ParserUtilTest {
     public void parseFindTimeKeyword_invalidMixedRange_throwsParseException() {
         assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1700-16:00"));
         assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1700-aaaa"));
+    }
+
+    @Test
+    public void parseFindTimeKeyword_reversedRange_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("1800-1500"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1800-1500"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("1800-1800"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseFindTimeKeyword("Mon 1800-1800"));
     }
 
     @Test

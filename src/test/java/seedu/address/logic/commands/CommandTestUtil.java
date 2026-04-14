@@ -89,6 +89,9 @@ public class CommandTestUtil {
     // duration going backwards in time
     public static final String INVALID_TIME_DURATION_DESC = " " + PREFIX_TIME + "Monday 18:00 - 17:30";
 
+    // duration with equal start and end time
+    public static final String INVALID_TIME_ZERO_DURATION_DESC = " " + PREFIX_TIME + "Monday 18:00 - 18:00";
+
     // no day in time provided
     public static final String INVALID_TIME_NO_DAY_DESC = " " + PREFIX_TIME + "1800";
 

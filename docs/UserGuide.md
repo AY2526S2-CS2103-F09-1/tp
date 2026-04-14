@@ -166,7 +166,7 @@ Format: find [m/MODE] [n/NAME]… [a/ADDRESS]… [p/PHONE]… [t/TAG]… [r/REMA
 * Repeating prefixes are allowed. Users can perform either an OR search or an AND search.
 * Each contact will appear at most once in the results, even if multiple fields match.
 * For a given field in the search query, contacts missing that particular field will not be matched.
-  * e.g. contacts without a phone number never match `p/…`.
+  * e.g. contacts without a phone number will never match `p/…`.
 
 Mode rules (`m`):
 * `m/` is optional, case-insensitive, and accepts only `and` or `or` (at most once).
@@ -421,7 +421,7 @@ These rules apply across multiple commands in EduConnect:
     * day must come before time (e.g. `d/tue 1500`, not `d/1500 tue`)
   * Valid weekdays: `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`.
   * Valid time: 24-hour time (`00:00` to `23:59`). 
-  * A duration must not end before it starts. Overnight tuition is not allowed. Equal start and end times are permitted.
+  * A duration must not end before it starts. Overnight duration is not allowed. Equal start and end times are permitted.
   * Display is normalized (e.g. `monday 1800` → `Monday 18:00`).
   * Overlapping weekly timeslots across different contacts are allowed (e.g. staggered lessons for different students).
 

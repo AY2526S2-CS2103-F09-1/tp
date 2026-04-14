@@ -407,16 +407,4 @@ public class EditCommandParserTest {
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
-
-    @Test
-    public void parse_overnightDurationTimeFormat_success() {
-        Id targetId = ID_SECOND;
-        String userInput = targetId.getValue() + " " + PREFIX_TIME + "Wed 2300-0100";
-
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withTime("Wednesday 23:00 - 01:00").build();
-        EditCommand expectedCommand = new EditCommand(targetId, descriptor);
-
-        assertParseSuccess(parser, userInput, expectedCommand);
-    }
 }

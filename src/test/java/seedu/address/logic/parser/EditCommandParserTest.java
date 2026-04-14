@@ -10,8 +10,8 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DELETE_DE
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_DURATION_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_ZERO_DURATION_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_NO_DAY_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIME_ZERO_DURATION_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DELETE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_UNLISTED_TAG_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.MEETING_LINK_DESC_AMY;

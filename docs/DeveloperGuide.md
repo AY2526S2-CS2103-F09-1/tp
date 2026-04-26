@@ -11,6 +11,12 @@ title: Developer Guide
 
 * This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
 * Libraries used: [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), [JUnit5](https://github.com/junit-team/junit5)
+* AI tool declaration:
+  * Ngu Jia Hao used Copilot to develop test cases for the `Person`, `Remark`, and `Phone` classes, and to verify the correctness of the logic in `EditCommand`, particularly for editing `Phone` and `Remark`.
+  * Lim Yi Fei used GPT-5.3 to validate the flow, structure, and functionality of his implementations. He also leveraged it to develop test cases for classes related to `FindCommand`, and to perform grammar checks (e.g., converting British to American spelling).
+  * Chia Bing Xuan used GPT-5.3 to more efficiently search for relevant methods and classes within the Java API.
+  * Maleemongkol Supanutt used Claude Sonnet 4.6 to assist in developing test cases for classes related to `DeleteCommand` and `CopyCommand`, as well as to perform grammar checks for the User Guide and Developer Guide.
+  * Basil Kuok used GPT-5.3 to review code formatting, validate test cases, and check for grammatical errors.
 
 --------------------------------------------------------------------------------------------------------------------
 
